@@ -50,6 +50,11 @@ T-Deck will use later (TX, RX, VDD, GND), so the Mac can send modem commands str
 
 **Not chosen:** a small T-Deck "pass-through" program, because it would have to be written before the first test.
 
+**First tests without soldering:** KTRON's page gives the VCC input as 5–12 V DC. So the first round of tests
+runs on the board's own pin headers, with jumper wires and a 5 V supply on VCC. The board stays unmodified, and
+returnable, until Jio, VoLTE and GNSS have been checked. Only after that do the headers come off and the modem move
+to battery power.
+
 ## Power: one salvaged cell for both boards
 
 **Why:** the 1700 mAh Micromax pack is already owned, about 5 mm thick and has its own protection circuit. The

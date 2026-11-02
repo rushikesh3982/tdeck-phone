@@ -2,43 +2,105 @@
 
 ## Bench checks when the parts arrive
 
-Do these before anything goes into the case, and do the VoLTE call inside the seller's return window.
+The bench tests come in two phases:
 
-The phone firmware doesn't exist yet, so on the bench the **Mac talks to the modem through a USB-serial
-adapter**: the owned CP2102 module with a 3.3 V pin. It connects to the same four KTRON pads that the T-Deck will
-use later. The CP2102's signals are 3.3 V, the same as the T-Deck's, so no settings to change.
+- **Phase A, no soldering.** Test everything on the KTRON board's own pin headers, using plug-on jumper wires and a
+  5 V supply. Nothing is soldered to the board, so it can still go back to KTRON if Jio, VoLTE or GNSS fails. Do this
+  inside the return window.
+- **Phase B, after deciding to keep the board.** Remove the headers, solder wires, and move the modem to battery
+  power, as in the finished phone.
 
-### Bench wiring: USB-serial adapter → KTRON
+The phone firmware doesn't exist yet, so the **Mac talks to the modem through the CP2102 USB-serial adapter** (owned,
+3.3 V pin). It uses the same four KTRON pins the T-Deck will use later. The CP2102's signals are 3.3 V, the same as
+the T-Deck's, so there are no settings to change.
 
-| Adapter pin | KTRON pad | Notes |
+### What you need for phase A
+
+- KTRON board, CP2102 adapter, about 10 female-to-female jumper wires
+- **5 V supply, at least 2 A:** a phone charger with a USB breakout board or a cut-open USB cable. KTRON's page gives
+  the VCC input as 5–12 V DC. Use 5 V, because the board's regulator then runs coolest. Do **not** use the CP2102's
+  5V pin: a Mac USB port can't reliably supply the modem's current bursts.
+- LTE antenna (700–2700 MHz) and the IPX → SMA cable
+- GPS patch antenna
+- SIM: a fresh Jio SIM, or Airtel/Vi (see the SIM warning below). The holder takes **micro-SIM**.
+- Multimeter
+- Earpiece with two wires soldered to it, and a Sunrom mic (its pins push into jumper-wire ends)
+
+If something hasn't arrived yet, skip the step that needs it and come back to it. But don't run the network steps
+without the LTE antenna.
+
+### Phase A wiring (on the header pins)
+
+| From | KTRON pin | Notes |
 |---|---|---|
-| TXD | RX | |
-| RXD | TX | |
-| 3V3 | VDD | Sets the board's signal level to 3.3 V, the same as the T-Deck. Draws only microamps |
-| GND | GND | |
-| 5V | — | **Leave unconnected** |
+| CP2102 TXD | RX (left header) | |
+| CP2102 RXD | TX (left header) | The modem's replies arrive on this wire |
+| CP2102 3V3 | VDD (left header) | Sets the signal level to 3.3 V. Draws only microamps |
+| CP2102 GND | GND (left header) | |
+| CP2102 5V | — | **Leave unconnected** |
+| 5 V supply + | VCC (right header) | **Check the polarity with the multimeter first** |
+| 5 V supply − | GND (right header) | |
+| Earpiece | S+ and S− | Either way round. Nothing to ground |
+| Mic | M+ and M− | The mic pin connected to its metal can → M−. Find it with the multimeter's continuity mode |
+| LTE antenna cable | U.FL1 (top edge) | Press straight down until it clicks |
+| GPS patch | U.FL2 (beside L2) | |
 
-The adapter does **not** power the modem. The modem runs from the cell on the battery pad, the same way as in the
-finished phone ([wiring.md](wiring.md), section 2). Never connect the adapter's 5V pin to VCC or anything else.
+There is **no battery in phase A**. VCC is the board's normal input. The "never feed VCC" rule only applies once the
+cell is connected in phase B.
 
-Leave the four data wires long. After the bench tests they move to the T-Deck's Grove pins.
+KTRON's warranty doesn't cover short-circuited boards, so check every wire before switching on.
 
-### Steps
+### Phase A steps
 
-1. Remove the pin headers from the KTRON board and solder wires to the pads (see [wiring.md](wiring.md)).
-2. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + leg of the
-   330 µF capacitor, and **not** to VCC. Then connect the cell as in wiring.md.
-3. **Bench set-up:** USB-serial adapter as in the table above, LTE antenna on U.FL1, GNSS patch on U.FL2,
-   earpiece on S+/S−, mic on M+/M−, SIM in the holder on the back of the board.
-4. **First contact:** open a serial terminal on the Mac (see below) at 115200 baud. Type `AT`, and you should get
-   `OK`. Type `ATI` to see the modem's firmware build. If nothing comes back, swap the TX and RX wires at the
-   adapter.
-5. **Mic polarity:** the pin connected to the mic's metal can goes to M−.
-6. **Earpiece:** listen test at `AT+CLVL=1` (quiet) during a call.
-7. **GNSS:** after `AT+CGNSSPWR=1`, the centre pin of U.FL2 should read about 1.8–3.3 V DC (this is the
-   antenna's power). Outdoors, `AT+CGNSSINFO` should get a position fix within a couple of minutes.
-8. **VoLTE call** with a fresh SIM (see the warning below). Run the commands from the table further down. During
-   the call, `AT+CPSI?` should show `LTE`.
+0. **Look before powering.** Check the board for damage. Confirm it has **two** u.FL antenna sockets: U.FL1 at the
+   top edge (LTE), and U.FL2 beside inductor L2 (GNSS). KTRON's product page only mentions one. Look up KTRON's
+   return policy and note the last day you can return the board.
+1. **Power and serial, no SIM yet.** Connect the CP2102 and the 5 V supply. The power LED should light. If it
+   doesn't, unplug at once and recheck the polarity. Open the serial terminal (see below), wait about 20 seconds for
+   the modem to start, then type `AT`. You should get `OK`. If nothing comes back, swap TX and RX at the adapter.
+   Then check that VDD is on 3V3, and that the terminal is set to 115200 baud with a carriage return. Type `ATI` and
+   **write down the firmware build**. It matters if the Jio problem shows up.
+2. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
+   antenna is connected. Power on and wait about 30 seconds.
+
+   | Command | Good answer |
+   |---|---|
+   | `AT+CPIN?` | `+CPIN: READY` (SIM found) |
+   | `AT+CSQ` | First number 10–31 is usable signal. `99` = no signal |
+   | `AT+CEREG?` | Second number `1` (home) or `5` (roaming) = registered on 4G. `2` = still searching. `3` = refused (on a Jio SIM this is the known problem: try an Airtel/Vi SIM) |
+   | `AT+COPS?` | Operator name |
+   | `AT+CPSI?` | Shows LTE and the band |
+   | `AT*IMSRCFG="switch"` | `"switch","on"` (VoLTE path on) |
+
+   The network LED also changes its blink pattern once the modem is registered.
+3. **Call.** Connect the earpiece and mic. Then send `AT+CSDVC=1`, `AT+CLVL=1`, `AT+CMICGAIN=3`, `AT+CLIP=1`.
+   - Call your other phone with `ATD+91XXXXXXXXXX;` and answer it. The modem prints `VOICE CALL: BEGIN`.
+   - During the call, send `AT+CPSI?`. `LTE` means **VoLTE works**. `GSM` means it fell back to 2G.
+   - Listen on the earpiece and talk into the mic. Raise `AT+CLVL` a step at a time if it's too quiet. If the other
+     side hears you faintly, send `AT+CMICGAIN=5`.
+   - Hang up with `AT+CHUP`.
+   - Then call the module from your phone. `RING` and `+CLIP: "<number>"` appear. Answer with `ATA`.
+4. **SMS (receive).** Send `AT+CMGF=1` and `AT+CNMI=2,1,0,0,0`. Send an SMS to the module from your phone.
+   `+CMTI:` appears with a number at the end. `AT+CMGR=<that number>` shows the message. (Sending an SMS from the
+   module needs Ctrl-Z to finish the message, which works in Terminal's `screen` but not in the Arduino Serial
+   Monitor.)
+5. **GNSS.** Take the patch outdoors with the ceramic side facing the sky, and send `AT+CGNSSPWR=1`. Then send
+   `AT+CGNSSINFO` every minute or so. Empty commas = no fix yet. Latitude and longitude = fix. The first fix can take
+   a few minutes. If there is still no fix after about 15 minutes outdoors, check the antenna power: the centre pin
+   of U.FL2 should read about 1.8–3.3 V DC. Probe it carefully, because a slipped probe shorts it.
+6. **Decide.** If everything passed, keep the board and go to phase B. If something failed, contact KTRON before
+   the return deadline. If only Jio fails but Airtel/Vi works, that is the known Jio problem. Decide whether you can
+   live with Airtel/Vi until SIMCom fixes it.
+
+### Phase B: after deciding to keep the board
+
+1. Unplug the 5 V supply. From now on the **VCC pin is never used again**.
+2. Remove the pin headers and solder wires to the pads (see [wiring.md](wiring.md)). Leave the four data wires long.
+   They move to the T-Deck's Grove pins later.
+3. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + leg of the
+   330 µF capacitor, and **not** to VCC. Then connect the cell (through the modem power switch, if it's built) as in
+   [wiring.md](wiring.md), section 2.
+4. Repeat `AT` → `OK` and one test call, now on battery power.
 
 ### Serial terminal on the Mac
 
