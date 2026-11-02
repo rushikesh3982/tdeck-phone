@@ -62,10 +62,16 @@ no reverse current. The module's own supply window (3.4–4.2 V) matches a singl
 **Optional for v2:** replace the regulator with a buck-boost set to 3.9 V (the T-Deck MAX does this with an
 SGM6609).
 
-## Modem power switch: manual slide switch + AO3401 P-MOSFET
+## Modem power switch: manual slide switch + AO3401A P-MOSFET
 
-**Why:** there is no spare GPIO for the T-Deck to switch the modem itself. The switch goes in the case's existing
-slide-switch pocket. A plain slide switch carrying the current directly would need a rating of at least 1.5 A.
+**Why a switch at all:** the modem is wired straight to the battery, so the T-Deck's own power switch doesn't turn it
+off. There is no spare GPIO for the T-Deck to switch or reset the modem itself. Without a switch, the modem stays on
+whenever the battery is connected, and a frozen modem can only be restarted by opening the case.
+
+**Why a MOSFET:** the switch goes in the case's existing slide-switch pocket, which only fits a small switch. A
+plain slide switch carrying the modem current directly would need a rating of at least 1.5 A. With the MOSFET, the
+small switch carries only about 40 µA through a 100 kΩ resistor, and the MOSFET (rated about 4 A) carries the
+modem's current. Circuit in [wiring.md](wiring.md), section 2.
 
 ## Sleep and wake-on-call
 

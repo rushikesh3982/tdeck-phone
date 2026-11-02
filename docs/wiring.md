@@ -63,9 +63,64 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 
 ### Modem power switch
 
-The T-Deck has no spare GPIO, so the modem's power is a manual switch. A slide switch drives an AO3401 P-MOSFET
-in the battery + line to the modem. It sits in the case's GPS switch pocket. A slide switch used on its own,
-without the MOSFET, must be rated for at least 1.5 A. (The exact switch circuit is not drawn yet.)
+**Why it's needed:** the modem's battery wires join at the battery, so the T-Deck's own power switch doesn't turn
+the modem off. The T-Deck also has no spare pin to control the modem's power. Without this switch the modem stays
+on whenever the battery is connected, and the only way to restart a frozen modem would be to open the case.
+
+**Parts:** AO3401A P-MOSFET (SOT-23), one 100 kΩ resistor, and a small slide switch in the case's switch pocket.
+
+```
+                       AO3401A (P-MOSFET)
+                    ┌──────────────────────┐
+ Cell + ─────────┬──┤ S (pin 2)  D (pin 3) ├───────────► KTRON: MIC29302 pin 4 (OUTPUT)
+ (24 AWG)        │  │      G (pin 1)       │               or the + leg of the 330 µF capacitor
+                 │  └──────────┬───────────┘               (24 AWG)
+              100 kΩ           │
+                 │             │
+                 └─────────────┤
+                               │  thin wire
+                               │
+                               o
+                                /    slide switch (in the case's switch pocket)
+                               o
+                               │  thin wire
+ Cell − ───────────────────────┴───────────────────────► KTRON GND (the regulator's metal tab)
+```
+
+The resistor goes between the MOSFET's **S** and **G** pins.
+
+**How it works:**
+
+- **Switch open = modem OFF.** The 100 kΩ resistor holds the gate at battery voltage, so the MOSFET is off and the
+  modem gets no power.
+- **Switch closed = modem ON.** The switch pulls the gate to ground, the MOSFET turns on, and the modem gets the
+  battery. The resistor then draws about 40 µA, tiny next to what the modem uses.
+- The slide switch only ever carries that 40 µA, so any small slide switch that fits the pocket will do. The
+  modem's current (bursts up to about 1.5–2 A) goes through the MOSFET, which is rated about 4 A.
+- With a 3-pin slide switch, use the **middle pin** and **one outer pin**. Leave the other outer pin unconnected.
+  Which way is "on" depends on which outer pin you pick.
+
+**Building it:**
+
+- The AO3401A is tiny (SOT-23, about 3 × 1.4 mm). A SOT-23 adapter board makes it much easier to solder. The
+  resistor can sit on the same adapter board.
+- Put the MOSFET in the back half of the case, in the battery + wire between the pack and the KTRON board. Keep
+  the whole 24 AWG run 10 cm or shorter. Only the two thin wires (gate and ground) run to the switch in the front.
+- Cover the joints with heat-shrink.
+
+**Checks with the multimeter:**
+
+1. **Before soldering, find the pins.** In diode-test mode, put the red probe on D (pin 3) and the black probe on
+   S (pin 2). It should read about 0.5–0.8 V. With the probes swapped it should read OL. This is the MOSFET's
+   built-in diode, and it tells you which pin is which.
+2. **After wiring it to the KTRON board:** switch on, and the + leg of the 330 µF capacitor reads the battery
+   voltage. Switch off, and it falls to about 0 V within a few seconds.
+3. **With the modem running,** measure from S to D. It should read under about 0.1 V. More than that means the
+   MOSFET isn't fully on.
+4. **If the switch never turns the modem off,** S and D are swapped. The built-in diode is then feeding the modem.
+
+**Simpler alternative:** no MOSFET or resistor, just a slide switch rated **at least 1.5 A** directly in the battery +
+wire to the modem. It still has to fit the case's switch pocket.
 
 ## 3. Earpiece (call audio out)
 
