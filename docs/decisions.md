@@ -42,6 +42,14 @@ fix is pending. Test with a fresh Jio SIM or an Airtel/Vi SIM, inside the return
 plug-clearance slot for the LTE antenna. The Grove 3.3 V only provides the modem board's level-shifter reference.
 It is switched by GPIO10, so the firmware must hold GPIO10 high, even in sleep.
 
+## Bench tests: USB-serial adapter from the Mac (decided 2 Nov 2026)
+
+**Why:** the modem has to be tested (registration, VoLTE call, audio, GNSS) inside the seller's return window, and
+no phone firmware exists yet. A USB-serial adapter (already owned) connects to the same four KTRON pads the
+T-Deck will use later (TX, RX, VDD, GND), so the Mac can send modem commands straight away.
+
+**Not chosen:** a small T-Deck "pass-through" program, because it would have to be written before the first test.
+
 ## Power: one salvaged cell for both boards
 
 **Why:** the 1700 mAh Micromax pack is already owned, about 5 mm thick and has its own protection circuit. The

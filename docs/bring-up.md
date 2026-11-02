@@ -2,18 +2,54 @@
 
 ## Bench checks when the parts arrive
 
-Do these before anything goes into the case, and the VoLTE call inside the seller's return window.
+Do these before anything goes into the case, and do the VoLTE call inside the seller's return window.
+
+The phone firmware doesn't exist yet, so on the bench the **Mac talks to the modem through a USB-serial
+adapter** (already owned). The adapter connects to the same four KTRON pads that the T-Deck will use later.
+
+The adapter must work at **3.3 V**. If it has a 3.3 V / 5 V jumper or switch, set it to 3.3 V. It needs a 3V3 pin
+for the VDD wire.
+
+### Bench wiring: USB-serial adapter → KTRON
+
+| Adapter pin | KTRON pad | Notes |
+|---|---|---|
+| TXD | RX | |
+| RXD | TX | |
+| 3V3 | VDD | Sets the board's signal level to 3.3 V, the same as the T-Deck. Draws only microamps |
+| GND | GND | |
+| 5V | — | **Leave unconnected** |
+
+The adapter does **not** power the modem. The modem runs from the cell on the battery pad, the same way as in the
+finished phone ([wiring.md](wiring.md), section 2). Never connect the adapter's 5V pin to VCC or anything else.
+
+Leave the four data wires long. After the bench tests they move to the T-Deck's Grove pins.
+
+### Steps
 
 1. Remove the pin headers from the KTRON board and solder wires to the pads (see [wiring.md](wiring.md)).
 2. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + leg of the
-   330 µF capacitor, and **not** to VCC.
-3. **Mic polarity:** the pin connected to the mic's metal can goes to M−.
-4. **Earpiece:** listen test at `AT+CLVL=1` (quiet) during a call.
-5. **GNSS:** after `AT+CGNSSPWR=1`, the centre pin of U.FL2 should read about 1.8–3.3 V DC (this is the
+   330 µF capacitor, and **not** to VCC. Then connect the cell as in wiring.md.
+3. **Bench set-up:** USB-serial adapter as in the table above, LTE antenna on U.FL1, GNSS patch on U.FL2,
+   earpiece on S+/S−, mic on M+/M−, SIM in the holder on the back of the board.
+4. **First contact:** open a serial terminal on the Mac (see below) at 115200 baud. Type `AT`, and you should get
+   `OK`. Type `ATI` to see the modem's firmware build. If nothing comes back, swap the TX and RX wires at the
+   adapter.
+5. **Mic polarity:** the pin connected to the mic's metal can goes to M−.
+6. **Earpiece:** listen test at `AT+CLVL=1` (quiet) during a call.
+7. **GNSS:** after `AT+CGNSSPWR=1`, the centre pin of U.FL2 should read about 1.8–3.3 V DC (this is the
    antenna's power). Outdoors, `AT+CGNSSINFO` should get a position fix within a couple of minutes.
-6. **VoLTE call** with a fresh SIM (see the warning below).
+8. **VoLTE call** with a fresh SIM (see the warning below). Run the commands from the table further down. During
+   the call, `AT+CPSI?` should show `LTE`.
 
-Not decided yet: how to send these commands before the phone firmware exists.
+### Serial terminal on the Mac
+
+- **Arduino IDE Serial Monitor:** pick the adapter's port, set **115200 baud**, set line ending to
+  **Carriage return** (or **Both NL & CR**). The modem ignores commands that don't end with a carriage return.
+- **Or Terminal:** `ls /dev/cu.*` shows the adapter's name. Then `screen /dev/cu.<name> 115200`. To quit, press
+  Ctrl-A, then K, then Y.
+- If the Mac doesn't list the adapter at all, install the driver for its chip (printed on the chip or the
+  listing): CP2102 → Silicon Labs, CH340 → WCH, FT232 → FTDI.
 
 ### SIM warning
 

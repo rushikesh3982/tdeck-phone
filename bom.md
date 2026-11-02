@@ -29,6 +29,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 | Part | Used for |
 |---|---|
 | LilyGO T-Deck (base model, ESP32-S3FN16R8) | The phone itself |
+| USB-serial adapter | Bench tests from the Mac before the firmware exists ([docs/bring-up.md](docs/bring-up.md)). Must work at 3.3 V |
 | Micromax Canvas A1 (AQ4502), salvaged: 1700 mAh battery | Powers both boards |
 | Micromax Canvas A1, salvaged: earpiece receiver (32 Ω, from the top of the phone) | Call earpiece |
 | Micromax Canvas A1, salvaged: rear loudspeaker (8 Ω) and coin vibration motor | Kept for version 2 |

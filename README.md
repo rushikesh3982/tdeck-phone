@@ -48,8 +48,8 @@ fallback and GNSS.
 ## Next steps
 
 1. Order the KTRON board, GPS patch, antenna cable and mics. Buy a multimeter. Choose the LTE antenna.
-2. When the parts arrive, run the bench checks in [docs/bring-up.md](docs/bring-up.md), including a VoLTE test
-   call inside the seller's return window.
+2. When the parts arrive, run the bench checks in [docs/bring-up.md](docs/bring-up.md) from the Mac through the
+   USB-serial adapter, including a VoLTE test call inside the seller's return window.
 3. Print the stock case once and dry-fit everything. Then do the CAD work (front cut-outs, new back).
 4. Firmware: a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call,
    and a low-battery guard.
