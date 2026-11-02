@@ -81,4 +81,10 @@ fallback and GNSS.
 - LilyGO T-Deck by LilyGO (Xinyuan-LilyGO).
 - KTRON for the published board drawings, reference circuit and Eagle library.
 
+## Licence
+
+[MIT](LICENSE) for everything in this repository (docs, wiring, firmware when it comes) **except** case files
+modified from Alley Cat's design. Those stay under
+[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
+
 By Rushikesh Deshmukh · [rushiworks](https://sites.google.com/view/rushikeshdeshmukh/rushiworks)
