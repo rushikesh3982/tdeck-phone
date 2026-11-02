@@ -5,10 +5,8 @@
 Do these before anything goes into the case, and do the VoLTE call inside the seller's return window.
 
 The phone firmware doesn't exist yet, so on the bench the **Mac talks to the modem through a USB-serial
-adapter** (already owned). The adapter connects to the same four KTRON pads that the T-Deck will use later.
-
-The adapter must work at **3.3 V**. If it has a 3.3 V / 5 V jumper or switch, set it to 3.3 V. It needs a 3V3 pin
-for the VDD wire.
+adapter**: the owned CP2102 module with a 3.3 V pin. It connects to the same four KTRON pads that the T-Deck will
+use later. The CP2102's signals are 3.3 V, the same as the T-Deck's, so no settings to change.
 
 ### Bench wiring: USB-serial adapter → KTRON
 
@@ -48,8 +46,7 @@ Leave the four data wires long. After the bench tests they move to the T-Deck's 
   **Carriage return** (or **Both NL & CR**). The modem ignores commands that don't end with a carriage return.
 - **Or Terminal:** `ls /dev/cu.*` shows the adapter's name. Then `screen /dev/cu.<name> 115200`. To quit, press
   Ctrl-A, then K, then Y.
-- If the Mac doesn't list the adapter at all, install the driver for its chip (printed on the chip or the
-  listing): CP2102 → Silicon Labs, CH340 → WCH, FT232 → FTDI.
+- If the Mac doesn't list the adapter at all, install Silicon Labs' CP210x USB-to-UART driver.
 
 ### SIM warning
 
