@@ -1,13 +1,13 @@
 # Wiring
 
-Everything is soldered. The only plug is the battery's JST plug into the T-Deck. The pin headers come off the
-KTRON board and wires are soldered straight to its pads.
+Everything is soldered. The only plug is the battery's JST plug into the T-Deck. The KTRON board
+arrives without pin headers, and wires are soldered straight into its holes.
 
 ## KTRON board pads
 
 ```
-left header:   STA  NET  DTR  RI  VDD  GND  RX  TX  RST  1V8
-right header:  CLK  CS  MOSI  MISO  M-  M+  S-  S+  SCL  SDA  GND  VCC
+left row:      STA  NET  DTR  RI  VDD  GND  RX  TX  RST  1V8
+right row:     CLK  CS  MOSI  MISO  M-  M+  S-  S+  SCL  SDA  GND  VCC
 ```
 
 Used in v1: **VDD, GND, RX, TX** (data link), **M+, M−** (mic), **S+, S−** (earpiece), plus the battery feed

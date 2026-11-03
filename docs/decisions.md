@@ -17,7 +17,7 @@ B1/B3/B5/B8 and TDD B40/B41, **and** support VoLTE.
 https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/
 
 **Why:** LTE Cat-1 on FDD B1/B3/B5/B8 + TDD B34/B38/B39/B40/B41, GSM 900/1800 fallback, built-in GNSS, and
-analog audio (one mic in, one earpiece out) on reachable header pads. Small board (54.33 × 50.70 mm), in stock,
+analog audio (one mic in, one earpiece out) on reachable pads. Small board (54.33 × 50.70 mm), in stock,
 and KTRON publishes the drawings, audio reference circuit and Eagle library.
 
 **Known risk:** a Jio SIM that has ever been used in a 5G phone may not register ("PLMN not allowed"). SIMCom's
@@ -50,10 +50,10 @@ T-Deck will use later (TX, RX, VDD, GND), so the Mac can send modem commands str
 
 **Not chosen:** a small T-Deck "pass-through" program, because it would have to be written before the first test.
 
-**First tests without soldering:** KTRON's page gives the VCC input as 5–12 V DC. So the first round of tests
-runs on the board's own pin headers, with jumper wires and a 5 V supply on VCC. The board stays unmodified, and
-returnable, until Jio, VoLTE and GNSS have been checked. Only after that do the headers come off and the modem move
-to battery power.
+**First tests on a 5 V supply:** KTRON's page gives the VCC input as 5–12 V DC. The board arrives without pin
+headers, so the bench tests solder wires into just the 10 holes the phone needs. These are the same wires the phone
+uses later. The board runs from 5 V on VCC until Jio, VoLTE and GNSS have been checked, so the battery wiring waits
+until the board is known to be good. The VCC wire comes out before the battery goes in.
 
 ## Power: one salvaged cell for both boards
 
