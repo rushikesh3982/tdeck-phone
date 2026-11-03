@@ -10,7 +10,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 |---|---|---|
 | [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and the rushiWorks logo badge on the top edge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
-| [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit and GPS patch cradle (first version: print and dry-fit) | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
+| [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
 The other parts (Switch, Antenna Plug, Reset Button) are unchanged, so print those from the Printables download.
 
@@ -95,6 +95,18 @@ which covers the board with only about 1 mm to spare (about 11 cm, so use the 15
 
 ## Back: what changed
 
+**Outside.** Made from Alley Cat's *Outside Cat* edition of the X back. It has the same vertical grooves, with the
+three middle ones shortened, which leaves a clear area near the top. That area had a cat-head outline engraved in
+it. The cat is filled flush, and the **rushiWorks logo** is engraved in its place:
+
+- **Size:** 32 × 22 mm, 1 mm deep, matching the grooves. The letter strokes are about 1.1 mm wide.
+- **Clearances:** it stays clear of the grooves and of the two case-screw countersinks.
+- **Orientation:** it reads normally when you look at the back with the phone upright.
+- **Printing:** the back prints face-down, so the logo forms in the first layers and comes out crisp.
+- **Inside:** identical to the Inside Cat edition, so all the changes below are the same with either.
+
+![Back cover from outside: Outside Cat groove layout with the rushiWorks logo](images/back-outside.png)
+
 ![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
 
 ![Back from inside, coloured by height, and a tilted view](images/back-preview.png)
@@ -165,4 +177,9 @@ script. It needs Python with numpy, trimesh, shapely and manifold3d:
 
 ```
 python scripts/make_front.py "Alley Chat TD1 Standard Front GPS Inserts.stl" front-earpiece-mic.stl
+python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" back-modem-gps.stl images/back-layout.png
+python scripts/make_diagrams.py front-earpiece-mic.stl back-modem-gps.stl images
 ```
+
+Both scripts read the logo from `logo/rushi-logo.jpg`. The front and back scripts also need pillow and matplotlib,
+which they use to trace the logo.

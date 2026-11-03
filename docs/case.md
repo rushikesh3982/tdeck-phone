@@ -12,7 +12,7 @@ The outside size of the case does not change.
 | File | Use |
 |---|---|
 | `Alley Chat TD1 Standard Front GPS Inserts.stl` | Front |
-| `Alley Chat TD1 X Back Inside Cat Edition.stl` | Back (gives 23 mm behind the T-Deck) |
+| `Alley Chat TD1 X Back Outside Cat Edition.stl` | Back (gives 23 mm behind the T-Deck). The Outside Cat edition is the source for our back, with its cat replaced by the rushiWorks logo |
 | `Alley Chat TD1 Switch.stl` | Slider for the T-Deck's own power switch (right side) |
 | `Alley Chat TD1 X Antenna Plug.stl` | Only if the LoRa antenna stays inside |
 | `Alley Cat TDeck Back Cover Custom.step` | "S" back, used only for its mating edge when drawing the new back |
@@ -90,6 +90,8 @@ about 3.2 mm in from each edge. The 4G socket (U.FL1) is on the top edge. The GP
 edge, low down. The micro-SIM (push-push holder on the solder side) slides in from the bottom edge, at the end
 nearest the VDD/RX/TX header.
 
+- **Outside:** built from the *Outside Cat* edition (middle grooves shortened). The cat head is filled, and the
+  rushiWorks logo is engraved in its place (32 × 22 mm, 1 mm deep).
 - **Modem board** on four 9 mm standoffs with M3 heat-set insert holes (4.5 mm), 7 mm wide with a 10 mm foot.
   - **Placement:** top half, component side toward the back cover.
   - **Orientation:** the SIM edge faces the phone's **left** side. That puts the 4G socket on the right, toward

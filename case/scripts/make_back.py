@@ -1,9 +1,12 @@
-"""Add KTRON modem standoffs, a SIM slit and a GPS patch cradle to the Alley Cat TD1 X back.
+"""Add KTRON modem standoffs, a SIM slit, a GPS patch cradle and a network-LED window to the Alley Cat
+TD1 X back, and replace the cat on its outside with the rushiWorks logo.
 
 Usage:
-    python make_back.py "<Alley Chat TD1 X Back Inside Cat Edition.stl>" <output.stl> [layout.png]
+    python make_back.py "<Alley Chat TD1 X Back Outside Cat Edition.stl>" <output.stl> [layout.png] [logo image]
 
-Needs: numpy, trimesh, shapely, manifold3d (and matplotlib for the layout picture).
+Needs: numpy, trimesh, shapely, manifold3d, pillow, matplotlib. The logo image defaults to
+../logo/rushi-logo.jpg. (The Outside Cat and Inside Cat editions are identical except for the outer 1 mm of
+the cover, so everything inside works the same with either.)
 
 Coordinates are the original STL's own (mm). The back is modelled face-down: the outside
 face is at z = -27, the inside floor surface at z = -25.0, and the rim at z = -9 (where the
@@ -62,6 +65,20 @@ LED_TUBE_ID, LED_TUBE_OD = 3.6, 5.6
 LED_TUBE_TOP = 7.4         # above the floor
 LED_HOLE_D = 1.6
 LED_HOLE_X = 53.9
+
+
+# ---- Outside: cat head replaced by the rushiWorks logo -----------------------------------
+# The Outside Cat edition has a cat-head outline engraved 1 mm deep (z -27..-26) near the top of the cover,
+# above three shortened grooves. It is filled flush, keeping clear of the two screw countersinks, and the
+# logo is engraved 1 mm deep in the same clear area. It reads normally from behind the phone held upright
+# (right = -x, up = +y).
+CAT_FILL_BOX = (17.0, 69.5, 51.0, 102.0)       # x0, y0, x1, y1: covers the cat, no grooves inside
+COUNTERSINKS = ((19.5, 102.85), (48.5, 102.85))
+COUNTERSINK_KEEP_R = 3.4
+OUTER_Z = -27.0
+BACK_LOGO_CENTRE = (34.0, 83.75)               # between the side grooves, above the shortened ones
+BACK_LOGO_WIDTH = 32.0
+BACK_LOGO_DEPTH = 1.0
 
 
 def board_to_back(u, v):
@@ -136,6 +153,25 @@ def led_window():
     return adds, cuts
 
 
+def back_logo(logo_path):
+    import os
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from make_front import trace_logo
+    from shapely.affinity import affine_transform
+    x0, y0, x1, y1 = CAT_FILL_BOX
+    patch = box(x0, y0, x1, y1)
+    for cx, cy in COUNTERSINKS:
+        patch = patch.difference(Point(cx, cy).buffer(COUNTERSINK_KEEP_R, quad_segs=24))
+    adds = [prism_z(patch, OUTER_Z, OUTER_Z + 1.1)]
+    logo = trace_logo(logo_path)
+    lx0, ly0, lx1, ly1 = logo.bounds
+    s = BACK_LOGO_WIDTH / (lx1 - lx0)
+    cx, cy = BACK_LOGO_CENTRE
+    logo_xy = affine_transform(logo, [-s, 0, 0, s, cx + s * (lx0 + lx1) / 2, cy - s * (ly0 + ly1) / 2])
+    cuts = [prism_z(g, OUTER_Z - 1.0, OUTER_Z + BACK_LOGO_DEPTH) for g in getattr(logo_xy, "geoms", [logo_xy])]
+    return adds, cuts
+
+
 def patch_cradle():
     adds, cuts = [], []
     cx, cy = PATCH_CENTRE
@@ -158,15 +194,20 @@ def patch_cradle():
     return adds, cuts
 
 
-def main(src, dst, picture=None):
+def main(src, dst, picture=None, logo_path=None):
     back = trimesh.load(src, force="mesh")
     assert back.is_watertight
+    if logo_path is None:
+        import os
+        logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "rushi-logo.jpg")
+    a0, c0 = back_logo(logo_path)
+    back = trimesh.boolean.union([back] + a0, engine="manifold")          # fill the cat first
     a1, c1 = standoffs()
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
     a4, c4 = led_window()
     out = trimesh.boolean.union([back] + a1 + a2 + a4, engine="manifold")
-    out = trimesh.boolean.difference([out, trimesh.boolean.union(c1 + c2 + c3 + c4, engine="manifold")], engine="manifold")
+    out = trimesh.boolean.difference([out, trimesh.boolean.union(c0 + c1 + c2 + c3 + c4, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     out.export(dst)
     print(f"added {out.volume - back.volume:.1f} mm^3, watertight {out.is_watertight}, "
@@ -226,4 +267,4 @@ def draw_layout(mesh, path):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    main(*sys.argv[1:5])
