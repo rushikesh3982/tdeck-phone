@@ -97,7 +97,7 @@ So the T-Deck's own power switch turns the modem on and off as well. The MOSFET 
 modem's current. Circuit in [wiring.md](wiring.md), section 2.
 
 **Not chosen:** a separate slide switch driving the MOSFET, which was the handoff's plan. It would have used the
-front's left-side switch mount, but it's one more control to remember.
+front's left-side switch mount (now filled in), and it's one more control to remember.
 
 **Trade-off:** the modem can't be switched off on its own while the T-Deck stays on.
 

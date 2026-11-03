@@ -35,7 +35,8 @@ The GPS front also has a **slide-switch mount on its left side**. It is a slider
 15 mm apart, about 52–75 mm up from the bottom edge, and was meant for the GPS module's power switch. (The
 "Switch" file is something else: the slider for the T-Deck's own power switch on the right side.) This project
 doesn't need the mount, because the modem follows the T-Deck's own power switch (see [wiring.md](wiring.md),
-section 2). The mount's holes stay open unless we decide to fill them.
+section 2). Its window and screw holes are **filled in**, flush with the outside, so the left side is plain apart from
+the speaker grille and the Reset Button opening.
 
 The **X back** gives 23 mm of depth behind the T-Deck, enough for the modem board and battery.
 
@@ -72,6 +73,8 @@ Full details are in [case/README.md](../case/README.md).
   T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
   recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
+- **Unused slide-switch mount (filled):** the GPS version's switch window and two screw holes on the left side are
+  filled flush. The Reset Button opening below them stays.
 
 ## Back changes
 

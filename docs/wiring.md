@@ -142,7 +142,7 @@ case.
    (GPIO10 high).
 
 **Earlier plan (not used):** a separate slide switch pulling the AO3401A's gate to ground. (The front's left-side
-switch mount could have held it.)
+switch mount could have held it. It is now filled in.)
 
 ## 3. Earpiece (call audio out)
 

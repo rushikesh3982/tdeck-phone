@@ -141,10 +141,9 @@ def front_outside(front, path):
     marker(ax_bot, *P("bottom", (-44, -2, -5)), 5, dy=-8)
     marker(ax_bot, *P("bottom", (-29, -1.66, -1.0)), 6, dy=-8)
     marker(ax_left, *P("left", (-6, 39, -0.5)), 7, dx=-8)
-    marker(ax_left, *P("left", (-6, 63.5, 0.1)), 8, dx=-8)
-    marker(ax_left, *P("left", (-6, 68.6, -5.7)), 9, dx=-8, dy=-5)
-    marker(ax_right, *P("right", (-82, 47.5, -4.75)), 10, dx=8)
-    marker(ax_right, *P("right", (-82, 80.5, -5.7)), 11, dx=8)
+    marker(ax_left, *P("left", (-6, 68.6, -5.7)), 8, dx=-8, dy=-5)
+    marker(ax_right, *P("right", (-82, 47.5, -4.75)), 9, dx=8)
+    marker(ax_right, *P("right", (-82, 80.5, -5.7)), 10, dx=8)
     for ax, t in ((ax_top, "TOP EDGE"), (ax_bot, "BOTTOM EDGE"), (ax_face, "SCREEN SIDE")):
         ax.set_title(t, fontsize=8, color="0.3", pad=2)
     ax_left.set_title("LEFT SIDE", fontsize=8, color="0.3", pad=2)
@@ -159,10 +158,9 @@ def front_outside(front, path):
         (5, "USB-C: charging and programming."),
         (6, "Mic sound hole (1.5 mm). The mic sits in a\npocket right behind it."),
         (7, "Speaker grille: the T-Deck's own speaker,\nwhich plays the ringtone."),
-        (8, "Slide-switch mount from the GPS version.\nNot used (the modem follows the T-Deck's\npower switch)."),
-        (9, "Opening for the printed Reset Button part."),
-        (10, "T-Deck power switch: the printed Switch\npart slides here. It turns the modem on\nand off too."),
-        (11, "microSD card slot."),
+        (8, "Opening for the printed Reset Button part."),
+        (9, "T-Deck power switch: the printed Switch\npart slides here. It turns the modem on\nand off too."),
+        (10, "microSD card slot."),
         ("", "The SIM slit is on the back panel's\nleft side (see the back diagram)."),
     ], title="Front panel, outside (unfolded)")
     fig.savefig(path); plt.close(fig)

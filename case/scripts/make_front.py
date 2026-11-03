@@ -1,4 +1,5 @@
-"""Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front.
+"""Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front,
+and fill the unused slide-switch mount on its left side.
 
 Usage:
     python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
@@ -48,6 +49,12 @@ LIP_NOTCH_Z_TOP = 8.0         # above the top of the lip (7.3)
 MIRROR_X = -88.0
 SMA_BLOCK = [[-26.5, 99.0, -10.5], [-11.5, 109.0, 5.6]]   # around the top-left cut-out
 
+# The GPS version's slide-switch mount on the left side (window + two countersunk screw holes) is not
+# used: the modem follows the T-Deck's power switch. Fill it flush with the outside (x = -6.0) through
+# the 2.6 mm wall. The shallow recess behind it on the inside stays, and so does the Reset Button
+# opening just below it (its surround tops out at z = -4.3).
+SWITCH_MOUNT_FILL = [[-8.65, 52.8, -3.4], [-6.0, 74.2, 3.4]]
+
 
 def prism_y(poly_xz, y0, y1):
     """Extrude a polygon drawn in (x, z) along model y, from y0 to y1."""
@@ -94,6 +101,7 @@ def main(src, dst):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
     front = mirror_sma_cutout(front)
+    front = trimesh.boolean.union([front, trimesh.creation.box(bounds=SWITCH_MOUNT_FILL)], engine="manifold")
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2

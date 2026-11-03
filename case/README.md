@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket and a second SMA antenna cut-out | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, and the unused switch mount filled | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit and GPS patch cradle (first version: print and dry-fit) | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
 
@@ -41,6 +41,11 @@ that points toward your mouth when the phone is at your right ear.
   two mic wires reach the back half without the T-Deck pinching them.
 - **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
   before the inside surface of the wall.
+
+**Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
+countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled flush with
+the outside through the 2.6 mm wall. The shallow recess behind it on the inside stays, and so does the Reset Button
+opening just below it.
 
 **Second SMA antenna cut-out (top-right corner).** The Grove socket is desoldered from the T-Deck and the modem
 wires are soldered to its pads, so the Grove plug slot in that corner is no longer needed. It is filled in, and the

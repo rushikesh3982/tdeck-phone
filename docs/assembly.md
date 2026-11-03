@@ -73,7 +73,7 @@ Details and checks are in [wiring.md](wiring.md).
      ④ and ⑤).
    - Outside, put on the lock washer and nut in the round recess, and tighten.
    - Top-left is the T-Deck's own LoRa connector. Top-right is the 4G cable (recommended).
-4. **Printed Switch and Reset Button parts**: fit them into their openings (front outside ⑩ and ⑨).
+4. **Printed Switch and Reset Button parts**: fit them into their openings (front outside ⑨ and ⑧).
 5. **T-Deck**: lower it in, screen down. Its power switch must line up with the Switch part on the right side.
    Check the mic wires stay in their groove.
 
