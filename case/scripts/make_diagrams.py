@@ -29,8 +29,8 @@ COL = {"board": "#2f6db5", "battery": "#d9822b", "patch": "#7b4fb3", "sim": "#e0
 
 
 # ---------------------------------------------------------------- rendering
-def render(mesh, forward, up, res=RES):
-    """Orthographic z-buffer render. Returns (shade image, extent, right, up)."""
+def render(mesh, forward, up, res=RES, depth=False):
+    """Orthographic z-buffer render. Returns (shade image, extent, right, up[, depth buffer])."""
     f = np.asarray(forward, float); w = np.asarray(up, float)
     r = np.cross(f, w)
     V = mesh.vertices
@@ -63,7 +63,29 @@ def render(mesh, forward, up, res=RES):
         gx, gy = gx[ins], gy[ins]
         upd = z > zbuf[gy, gx]
         zbuf[gy[upd], gx[upd]] = z[upd]; img[gy[upd], gx[upd]] = shade[k]
+    if depth:
+        return img, [umin, umax, vmin, vmax], r, w, zbuf
     return img, [umin, umax, vmin, vmax], r, w
+
+
+LOGO_FLOOR_Y = 108.55                      # engraved logo floor on the top-edge badge (front file)
+BADGE_FACE_UV = (35.6, 52.4, -8.8, 1.7)    # badge face seen from above: u = -x, v = z
+
+
+def show_logo(img, ext, zbuf, res=RES):
+    """Darken the engraved logo in a top-edge view (its floor faces the camera, so shading can't show it)."""
+    ny, nx = img.shape
+    u = ext[0] + (np.arange(nx) + 0.5) * res
+    v = ext[2] + (np.arange(ny) + 0.5) * res
+    U, V = np.meshgrid(u, v)
+    u0, u1, v0, v1 = BADGE_FACE_UV
+    rad = 1.6                                          # badge face corner radius
+    du = np.maximum(np.abs(U - (u0 + u1) / 2) - ((u1 - u0) / 2 - rad), 0)
+    dv = np.maximum(np.abs(V - (v0 + v1) / 2) - ((v1 - v0) / 2 - rad), 0)
+    inside = du ** 2 + dv ** 2 < (rad - 0.15) ** 2
+    mask = (np.abs(zbuf - LOGO_FLOOR_Y) < 0.04) & inside
+    img = img.copy(); img[mask] *= 0.4
+    return img
 
 
 def show(ax, img, ext):
@@ -112,7 +134,9 @@ def front_outside(front, path):
         "left": ((-1, 0, 0), (0, 1, 0)),    # phone's left side, screen side toward the face view
         "right": ((1, 0, 0), (0, 1, 0)),    # phone's right side
     }
-    R = {k: render(front, *v) for k, v in views.items()}
+    R = {k: render(front, *v) for k, v in views.items() if k != "top"}
+    ti, te, tr, tw, tz = render(front, *views["top"], depth=True)
+    R["top"] = (show_logo(ti, te, tz), te, tr, tw)
     fig = plt.figure(figsize=(15, 11.5), dpi=110)
     # unfolded layout: [left][face][right] with top above and bottom below the face
     W_face = R["face"][1][1] - R["face"][1][0]; H_face = R["face"][1][3] - R["face"][1][2]
@@ -154,7 +178,7 @@ def front_outside(front, path):
         (1, "Earpiece grille (1 × 6 mm slot). The earpiece\nsits in the pocket right behind it."),
         (2, "SMA cut-out, top-left: the T-Deck's LoRa\nantenna (where it is now)."),
         (3, "SMA cut-out, top-right (old Grove corner):\n4G antenna, recommended. Nut and washer go\nin the round recess outside."),
-        (4, "Logo panel. The earpiece pocket is behind\nit, inside the case."),
+        (4, "rushiWorks logo badge, engraved. The\nearpiece pocket is behind it, inside."),
         (5, "USB-C: charging and programming."),
         (6, "Mic sound hole (1.5 mm). The mic sits in a\npocket right behind it."),
         (7, "Speaker grille: the T-Deck's own speaker,\nwhich plays the ringtone."),
@@ -350,6 +374,16 @@ def stack(front, back, path, layout):
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 
+def top_edge(front, path):
+    img, ext, r, w, z = render(front, (0, -1, 0), (0, 0, 1), 0.05, depth=True)
+    img = show_logo(img, ext, z, 0.05)
+    fig, ax = plt.subplots(figsize=(11, 3.8), dpi=110)
+    show(ax, img, ext)
+    ax.set_title("Top edge, seen from above with the screen side toward you: LoRa SMA (left), "
+                 "rushiWorks logo badge, 4G SMA (right)", fontsize=9)
+    fig.tight_layout(); fig.savefig(path); plt.close(fig)
+
+
 def main(front_path, back_path, out_dir):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import make_back as mb
@@ -363,6 +397,7 @@ def main(front_path, back_path, out_dir):
     front_inside(front, os.path.join(out_dir, "assembly-front-inside.png"))
     back_inside(back, os.path.join(out_dir, "assembly-back-inside.png"), layout)
     stack(front, back, os.path.join(out_dir, "assembly-stack.png"), layout)
+    top_edge(front, os.path.join(out_dir, "front-top-edge.png"))
     print("done")
 
 

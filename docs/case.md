@@ -73,6 +73,8 @@ Full details are in [case/README.md](../case/README.md).
   T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
   recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
+- **rushiWorks logo badge (top edge):** the cat and GPS-pin badge is replaced by a fresh 1 mm raised badge with
+  the rushiWorks logo engraved (10 mm tall, 0.45 mm deep), traced from [case/logo/rushi-logo.jpg](../case/logo/rushi-logo.jpg).
 - **Unused slide-switch mount (filled):** the GPS version's switch window, two screw holes and the switch-body
   recess on the inside are filled. The wall is copied from its normal shape just beside the mount. The Reset Button
   opening below them stays.

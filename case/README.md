@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, and the unused switch mount filled | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and the rushiWorks logo badge on the top edge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit and GPS patch cradle (first version: print and dry-fit) | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
 
@@ -42,6 +42,20 @@ that points toward your mouth when the phone is at your right ear.
 - **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
   before the inside surface of the wall.
 
+**rushiWorks logo badge (top edge).** Alley Cat's raised badge with the cat and GPS-pin art is removed, and
+the top wall under it is restored to its plain shape, copied from beside the badge. A fresh badge takes its place:
+
+- **Badge:** a 1 mm raised pad with 45° bevels and a 16.8 × 10.5 mm flat face.
+- **Logo:** engraved 0.45 mm deep, 10 mm tall (about 14.3 mm wide). Traced from
+  [logo/rushi-logo.jpg](logo/rushi-logo.jpg). The letter strokes are about 0.5 mm wide.
+- **Orientation:** it reads normally when you look down at the top edge with the screen toward you.
+- **Optional:** fill the engraving with paint for contrast.
+
+The badge is a vertical wall in the print orientation, so the engraving prints cleanly. If the small letters come
+out faint on your printer, the strokes can be made a little bolder in the script.
+
+![Top edge: LoRa SMA cut-out, logo badge, 4G SMA cut-out](images/front-top-edge.png)
+
 **Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
 countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled
 completely, including the recess for the switch body on the inside. The fill copies the wall's normal shape from
@@ -73,8 +87,6 @@ in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
 that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
-
-![Top edge with the two identical SMA cut-outs](images/front-top-edge-sma.png)
 
 ![Screen side](images/front-screen-side.png)
 

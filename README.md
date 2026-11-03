@@ -87,8 +87,12 @@ fallback and GNSS.
 
 ## Licence
 
-[MIT](LICENSE) for everything in this repository (docs, wiring, firmware when it comes) **except** case files
-modified from Alley Cat's design. Those stay under
-[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
+[MIT](LICENSE) for everything in this repository (docs, wiring, firmware when it comes) **except**:
+
+- **Case files modified from Alley Cat's design.** These stay under
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
+- **The rushiWorks name and logo** ([case/logo/](case/logo/), and the logo engraved on the case's top-edge badge).
+  These belong to Rushikesh Deshmukh. The MIT licence doesn't cover them, and CC BY-SA 4.0 doesn't license
+  trademark rights, so neither licence lets anyone else use the name or logo.
 
 By Rushikesh Deshmukh · [rushiworks](https://sites.google.com/view/rushikeshdeshmukh/rushiworks)

@@ -2,9 +2,10 @@
 and fill the unused slide-switch mount on its left side.
 
 Usage:
-    python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
+    python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl> [logo image]
 
-Needs: numpy, trimesh, shapely, manifold3d.
+Needs: numpy, trimesh, shapely, manifold3d, pillow, matplotlib (to trace the logo).
+The logo image defaults to ../logo/rushi-logo.jpg (black logo on white).
 
 Coordinates are the original STL's own (mm). The front is modelled face-down:
 the screen face is at z = -14.7 and the inside faces +z. Looking at the screen,
@@ -58,6 +59,19 @@ SWITCH_WALL_SLICE_Y = 77.0
 SWITCH_FILL_Y = (51.0, 75.6)
 SWITCH_FILL_CLIP = (-10.6, -4.15, -5.9, 4.3)        # x0, z0, x1, z1 of the wall slice used
 RESET_KEEP_OUT = [[-12.0, 65.0, -10.0], [-5.0, 72.0, -3.4]]
+
+# Top-edge badge: Alley Cat's raised badge with the cat + GPS-pin art is removed (the top wall under it is
+# restored from its plain profile, sampled beside the badge), and a fresh badge with the rushiWorks logo
+# engraved in it takes its place. The badge is a 1 mm raised pad with 45-degree bevels; its flat face is a
+# rounded rectangle at y = 109.0. Viewed from outside the top edge, the logo reads normally.
+BADGE_CUT_X = (-55.75, -32.25)       # old badge lies within this (the wall is plain at both ends)
+BADGE_CUT_Z = (-11.6, 4.2)
+BADGE_FACE = (-52.4, -35.6, -8.8, 1.7)   # x0, x1, z0, z1 of the flat face
+BADGE_FACE_R = 1.6
+BADGE_FACE_Y = 109.0
+BADGE_HEIGHT = 1.0                   # above the plain wall (y = 108.0)
+LOGO_HEIGHT = 10.0                   # logo's overall height on the badge face
+LOGO_DEPTH = 0.45                    # engraving depth (1.05 mm of wall stays behind it)
 
 
 def prism_y(poly_xz, y0, y1):
@@ -114,11 +128,72 @@ def fill_switch_mount(front):
     return trimesh.boolean.union([front, fill], engine="manifold")
 
 
-def main(src, dst):
+def prism_x(poly_yz, x0, x1):
+    """Extrude a polygon drawn in (y, z) along model x, from x0 to x1."""
+    mesh = trimesh.creation.extrude_polygon(poly_yz, height=x1 - x0)
+    rot = np.array([[0, 0, 1, x0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=float)
+    mesh.apply_transform(rot)
+    return mesh
+
+
+def trace_logo(path):
+    """Trace a black-on-white logo image into shapely polygons (image pixels, y up)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from PIL import Image, ImageFilter
+    from shapely.ops import unary_union
+    img = Image.open(path).convert("L").filter(ImageFilter.GaussianBlur(1.2))
+    ink = 1.0 - np.asarray(img, float) / 255.0
+    fig, ax = plt.subplots()
+    cs = ax.contour(ink[::-1], levels=[0.5])
+    plt.close(fig)
+    rings = [Polygon(r) for p in cs.get_paths() for r in p.to_polygons() if len(r) > 3]
+    shape = None
+    for r in sorted(rings, key=lambda q: -q.area):       # rings inside others (the R's counter) are holes
+        r = r.buffer(0)
+        shape = r if shape is None else (shape.difference(r) if shape.contains(r) else shape.union(r))
+    return unary_union(shape).simplify(0.25)
+
+
+def replace_badge_with_logo(front, logo_path):
+    from shapely.affinity import affine_transform
+    from shapely.geometry import box as sbox
+    # 1. plain top-wall profile y(z), sampled beside the badge, and a cutter above it over the badge
+    zs = np.arange(BADGE_CUT_Z[0], BADGE_CUT_Z[1] + 1e-9, 0.1)
+    origins = np.array([[BADGE_CUT_X[0] - 1.3, 130.0, z] for z in zs])
+    loc, idx, _ = front.ray.intersects_location(origins, np.tile([0, -1, 0], (len(zs), 1)), multiple_hits=False)
+    prof = np.full(len(zs), np.nan); prof[idx] = loc[:, 1]
+    assert not np.isnan(prof).any(), "could not sample the top wall profile"
+    ring = [(y, z) for y, z in zip(prof, zs)] + [(112.0, zs[-1]), (112.0, zs[0])]
+    front = trimesh.boolean.difference([front, prism_x(Polygon(ring), *BADGE_CUT_X)], engine="manifold")
+    # 2. fresh badge: rounded-rectangle face, 45-degree bevel down to the wall, short skirt into it
+    x0, x1, z0, z1 = BADGE_FACE
+    face = sbox(x0 + BADGE_FACE_R, z0 + BADGE_FACE_R, x1 - BADGE_FACE_R, z1 - BADGE_FACE_R).buffer(BADGE_FACE_R, quad_segs=12)
+    base = face.buffer(BADGE_HEIGHT, quad_segs=12)
+    pts = [(x, BADGE_FACE_Y, z) for x, z in face.exterior.coords]
+    pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT, z) for x, z in base.exterior.coords]
+    pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT - 0.4, z) for x, z in base.exterior.coords]
+    front = trimesh.boolean.union([front, trimesh.convex.convex_hull(np.array(pts))], engine="manifold")
+    # 3. engrave the logo, reading normally from outside the top edge (right = -x, up = +z)
+    logo = trace_logo(logo_path)
+    lx0, ly0, lx1, ly1 = logo.bounds
+    s = LOGO_HEIGHT / (ly1 - ly0)
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    logo_xz = affine_transform(logo, [-s, 0, 0, s, cx + s * (lx0 + lx1) / 2, cz - s * (ly0 + ly1) / 2])
+    parts = [prism_y(g, BADGE_FACE_Y - LOGO_DEPTH, BADGE_FACE_Y + 1.0) for g in getattr(logo_xz, "geoms", [logo_xz])]
+    return trimesh.boolean.difference([front] + parts, engine="manifold")
+
+
+def main(src, dst, logo_path=None):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
     front = mirror_sma_cutout(front)
     front = fill_switch_mount(front)
+    if logo_path is None:
+        import os
+        logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "rushi-logo.jpg")
+    front = replace_badge_with_logo(front, logo_path)
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2
@@ -145,4 +220,4 @@ def main(src, dst):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(*sys.argv[1:4])
