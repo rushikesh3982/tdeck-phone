@@ -13,9 +13,12 @@ The outside size of the case does not change.
 |---|---|
 | `Alley Chat TD1 Standard Front GPS Inserts.stl` | Front |
 | `Alley Chat TD1 X Back Inside Cat Edition.stl` | Back (gives 23 mm behind the T-Deck) |
-| `Alley Chat TD1 Switch.stl` | Slide-switch part |
+| `Alley Chat TD1 Switch.stl` | Slider for the T-Deck's own power switch (right side) |
 | `Alley Chat TD1 X Antenna Plug.stl` | Only if the LoRa antenna stays inside |
 | `Alley Cat TDeck Back Cover Custom.step` | "S" back, used only for its mating edge when drawing the new back |
+
+The modified front is in this repository: [case/front-earpiece-mic.stl](../case/front-earpiece-mic.stl). Print that
+instead of the downloaded front.
 
 Fasteners: 2× M3×5 heat-set inserts (4.5 mm hole) + 2× M3×8 screws.
 
@@ -25,11 +28,16 @@ test piece first.
 ## Why these variants
 
 The **Standard front** keeps the pocket for the T-Deck's speaker, which plays the ringtone. The **GPS** version of
-the front adds two pockets that this project reuses:
+the front adds a module pocket at the top centre above the screen. It measures 16.4 × 7.3 mm inside, and becomes the
+**earpiece pocket**.
 
-- a module pocket at the top centre above the screen, sized for an M10-Mini-class GPS
-  (~12–16 × 15–18 × 5–7 mm), which becomes the **earpiece pocket**;
-- a slide-switch pocket, which becomes the **modem power switch**.
+An earlier note said the GPS front also has a slide-switch pocket for the modem power switch. A check of the STL
+on 3 Nov 2026 found none:
+
+- the "Switch" file is the slider for the T-Deck's own power switch;
+- the blind slot in the top-right corner has no opening to the outside.
+
+Where the modem switch goes is decided with the back.
 
 The **X back** gives 23 mm of depth behind the T-Deck, enough for the modem board and battery.
 
@@ -44,18 +52,22 @@ Rejected: the Slim front (no speaker pocket), and the Nuts and TBall variants.
 
 ## Front changes
 
-- **Earpiece**, in the GPS pocket:
-  - a grille: a row of five 0.8 mm holes, or a 1 × 6 mm slot;
-  - the receiver's foam ring between its face and the grille;
-  - a spacer or foam behind it so it presses against the grille;
-  - wires out through the pocket's existing cable path.
-- **Microphone:** a 6.3 mm pocket, 3 mm deep, in the bottom edge wall beside the USB-C opening, with a 1.5 mm
-  sound hole.
-- **LTE antenna:** the top corner opposite the LoRa antenna has a blind vertical slot, which is clearance for a
+The earpiece and mic cuts are done (3 Nov 2026): [case/front-earpiece-mic.stl](../case/front-earpiece-mic.stl).
+Full details are in [case/README.md](../case/README.md).
+
+- **Earpiece (done):** a 1 × 6 mm slot through the 3.6 mm face above the screen, centred under the GPS pocket.
+  - The receiver lies on the pocket floor facing the slot, with its foam ring in between and foam behind it.
+  - The receiver has to fit inside 16.4 × 7.3 mm.
+  - Its wires leave through the open back of the pocket.
+- **Microphone (done):** bottom edge, 15 mm left of the USB-C opening as you look at the screen. That corner points
+  toward the mouth when the phone is at the right ear.
+  - A 6.3 mm pocket opens on the inside, with a 1.2 mm skin and a 1.5 mm sound hole.
+  - A wire groove runs up the inside wall and through the mating lip.
+- **LTE antenna (later):** the top corner opposite the LoRa antenna has a blind vertical slot, which is clearance for a
   Grove *plug*. This project solders wires instead of using a plug, so that slot is replaced with a mirror of the
   LoRa SMA cut-out (6.5 mm hole + hex recess) for the LTE antenna. Dry-fit check: the antenna connector body must
   clear the empty Grove socket housing under it.
-- **Modem power switch:** in the existing slide-switch pocket.
+- **Modem power switch:** the front has no pocket for it. Decided with the back.
 
 ## Back changes
 

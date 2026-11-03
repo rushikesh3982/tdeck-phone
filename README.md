@@ -44,13 +44,15 @@ fallback and GNSS.
 | [docs/bring-up.md](docs/bring-up.md) | First power-on checks and the modem commands |
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
+| [case/](case/) | Modified case files to print (CC BY-SA 4.0), starting with the front |
 
 ## Next steps
 
 1. Order the KTRON board, GPS patch, antenna cable and mics. Buy a multimeter. Choose the LTE antenna.
 2. When the parts arrive, run the bench checks in [docs/bring-up.md](docs/bring-up.md) from the Mac through the
    USB-serial adapter, including a VoLTE test call inside the seller's return window.
-3. Print the stock case once and dry-fit everything. Then do the CAD work (front cut-outs, new back).
+3. Case: the front's earpiece grille and mic pocket are done ([case/](case/)). Print it and dry-fit, then redo
+   the back.
 4. Firmware: a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call,
    and a low-battery guard.
 

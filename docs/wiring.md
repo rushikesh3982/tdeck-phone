@@ -67,7 +67,8 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 the modem off. The T-Deck also has no spare pin to control the modem's power. Without this switch the modem stays
 on whenever the battery is connected, and the only way to restart a frozen modem would be to open the case.
 
-**Parts:** AO3401A P-MOSFET (SOT-23), one 100 kΩ resistor, and a small slide switch in the case's switch pocket.
+**Parts:** AO3401A P-MOSFET (SOT-23), one 100 kΩ resistor, and a small slide switch. (Where the switch goes in the case is decided
+with the back.)
 
 ```
                        AO3401A (P-MOSFET)
@@ -81,7 +82,7 @@ on whenever the battery is connected, and the only way to restart a frozen modem
                                │  thin wire
                                │
                                o
-                                /    slide switch (in the case's switch pocket)
+                                /    slide switch
                                o
                                │  thin wire
  Cell − ───────────────────────┴───────────────────────► KTRON GND (the regulator's metal tab)
@@ -95,7 +96,7 @@ The resistor goes between the MOSFET's **S** and **G** pins.
   modem gets no power.
 - **Switch closed = modem ON.** The switch pulls the gate to ground, the MOSFET turns on, and the modem gets the
   battery. The resistor then draws about 40 µA, tiny next to what the modem uses.
-- The slide switch only ever carries that 40 µA, so any small slide switch that fits the pocket will do. The
+- The slide switch only ever carries that 40 µA, so any small slide switch will do. The
   modem's current (bursts up to about 1.5–2 A) goes through the MOSFET, which is rated about 4 A.
 - With a 3-pin slide switch, use the **middle pin** and **one outer pin**. Leave the other outer pin unconnected.
   Which way is "on" depends on which outer pin you pick.
@@ -105,7 +106,7 @@ The resistor goes between the MOSFET's **S** and **G** pins.
 - The AO3401A is tiny (SOT-23, about 3 × 1.4 mm). A SOT-23 adapter board makes it much easier to solder. The
   resistor can sit on the same adapter board.
 - Put the MOSFET in the back half of the case, in the battery + wire between the pack and the KTRON board. Keep
-  the whole 24 AWG run 10 cm or shorter. Only the two thin wires (gate and ground) run to the switch in the front.
+  the whole 24 AWG run 10 cm or shorter. Only the two thin wires (gate and ground) run to the switch.
 - Cover the joints with heat-shrink.
 
 **Checks with the multimeter:**
@@ -120,7 +121,7 @@ The resistor goes between the MOSFET's **S** and **G** pins.
 4. **If the switch never turns the modem off,** S and D are swapped. The built-in diode is then feeding the modem.
 
 **Simpler alternative:** no MOSFET or resistor, just a slide switch rated **at least 1.5 A** directly in the battery +
-wire to the modem. It still has to fit the case's switch pocket.
+wire to the modem. A switch with that rating is usually bigger, so it is harder to fit in the case.
 
 ## 3. Earpiece (call audio out)
 

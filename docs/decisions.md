@@ -73,7 +73,7 @@ SGM6609).
 off. There is no spare GPIO for the T-Deck to switch or reset the modem itself. Without a switch, the modem stays on
 whenever the battery is connected, and a frozen modem can only be restarted by opening the case.
 
-**Why a MOSFET:** the switch goes in the case's existing slide-switch pocket, which only fits a small switch. A
+**Why a MOSFET:** a small slide switch is easier to fit in the case. A
 plain slide switch carrying the modem current directly would need a rating of at least 1.5 A. With the MOSFET, the
 small switch carries only about 40 µA through a 100 kΩ resistor, and the MOSFET (rated about 4 A) carries the
 modem's current. Circuit in [wiring.md](wiring.md), section 2.
@@ -133,7 +133,7 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 ## Case: Alley Cat TD1, Standard front (GPS inserts) + X back
 
 **Why:** the Standard front keeps the T-Deck speaker pocket. The GPS version's module pocket becomes the earpiece
-pocket and its switch pocket becomes the modem power switch. The X back gives 23 mm of depth, enough for the
+pocket. The X back gives 23 mm of depth, enough for the
 modem board on 14 mm standoffs plus the battery (21.6 mm stack).
 
 **Rejected:** Slim front (no speaker pocket), Nuts and TBall variants.

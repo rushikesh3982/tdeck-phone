@@ -1,0 +1,101 @@
+"""Cut the earpiece grille and mic pocket into the Alley Cat TD1 front.
+
+Usage:
+    python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
+
+Needs: numpy, trimesh, shapely, manifold3d.
+
+Coordinates are the original STL's own (mm). The front is modelled face-down:
+the screen face is at z = -14.7 and the inside faces +z. Looking at the screen,
+"left" is +x and "right" is -x. The top edge is +y and the bottom edge is -y.
+"""
+import sys
+
+import numpy as np
+import trimesh
+from shapely.geometry import LineString, Point, Polygon
+
+# Earpiece grille: a 1 x 6 mm slot through the 3.6 mm face, centred under the
+# GPS pocket (pocket: x -52.2..-35.8, y 100.2..107.5, floor at z -11.1).
+SLOT_CENTRE = (-44.0, 103.85)  # x, y
+SLOT_LENGTH = 6.0              # along x
+SLOT_WIDTH = 1.0               # along y
+SLOT_Z = (-16.0, -10.5)        # through the face, out into the empty pocket
+
+# Mic: Sunrom 6027 (6 x 2.7 mm) in the bottom wall, left of USB-C as you look at
+# the screen. The pocket opens inside the case. The mic is pushed in from inside
+# until it touches the 1.2 mm skin, and a 1.5 mm sound hole goes through the skin.
+MIC_X = -29.0                 # 15 mm left of the USB-C centre (x -44)
+MIC_Z = -1.0                  # wall is 5.4-7.7 mm thick here
+OUTER_Y = -1.658              # outer surface of the bottom wall at MIC_X
+SKIN = 1.2
+POCKET_D = 6.3
+SOUND_HOLE_D = 1.5
+POCKET_END_Y = 9.0            # past the inside surface (3.8-6.0)
+# Wire groove from the mic pocket up the inside wall, through the mating lip,
+# so the two mic wires reach the back half without being pinched by the T-Deck.
+GROOVE_W = 2.4
+GROOVE_Y = (2.7, 12.0)        # starts behind the mic body, clears the outer mating face
+GROOVE_Z_TOP = 4.4            # just above the mating face (z 4.3)
+LIP_NOTCH_Y = (2.4, 12.0)     # through the whole lip, including its hook (outermost y 2.55)
+LIP_NOTCH_Z_TOP = 8.0         # above the top of the lip (7.3)
+
+
+def prism_y(poly_xz, y0, y1):
+    """Extrude a polygon drawn in (x, z) along model y, from y0 to y1."""
+    mesh = trimesh.creation.extrude_polygon(poly_xz, height=y1 - y0)
+    # local (X, Y, Z) -> model (x, z, -y); Z = 0 lands on y1, Z = h lands on y0
+    rot = np.array([[1, 0, 0, 0],
+                    [0, 0, -1, y1],
+                    [0, 1, 0, 0],
+                    [0, 0, 0, 1]], dtype=float)
+    mesh.apply_transform(rot)
+    return mesh
+
+
+def prism_z(poly_xy, z0, z1):
+    mesh = trimesh.creation.extrude_polygon(poly_xy, height=z1 - z0)
+    mesh.apply_translation([0, 0, z0])
+    return mesh
+
+
+def teardrop(cx, cz, d, res=64):
+    """Circle with a 45-degree roof on top (+z), so it prints without supports."""
+    r = d / 2
+    # arc from 135 deg round the bottom to 405 (= 45) deg, then the roof apex
+    angles = np.radians(np.linspace(135, 405, res))
+    pts = [(cx + r * np.cos(a), cz + r * np.sin(a)) for a in angles]
+    pts.append((cx, cz + r * np.sqrt(2)))
+    return Polygon(pts)
+
+
+def main(src, dst):
+    front = trimesh.load(src, force="mesh")
+    assert front.is_watertight, "source mesh is not watertight"
+
+    cx, cy = SLOT_CENTRE
+    half = (SLOT_LENGTH - SLOT_WIDTH) / 2
+    slot = LineString([(cx - half, cy), (cx + half, cy)]).buffer(SLOT_WIDTH / 2, quad_segs=16)
+    cut_slot = prism_z(slot, *SLOT_Z)
+
+    floor_y = OUTER_Y + SKIN
+    cut_pocket = prism_y(teardrop(MIC_X, MIC_Z, POCKET_D), floor_y, POCKET_END_Y)
+    cut_hole = prism_y(Point(MIC_X, MIC_Z).buffer(SOUND_HOLE_D / 2, quad_segs=16),
+                       OUTER_Y - 3.0, floor_y + 0.1)
+    def band(z0, z1):
+        return Polygon([(MIC_X - GROOVE_W / 2, z0), (MIC_X + GROOVE_W / 2, z0),
+                        (MIC_X + GROOVE_W / 2, z1), (MIC_X - GROOVE_W / 2, z1)])
+    cut_groove = prism_y(band(MIC_Z, GROOVE_Z_TOP), *GROOVE_Y)
+    cut_notch = prism_y(band(GROOVE_Z_TOP, LIP_NOTCH_Z_TOP), *LIP_NOTCH_Y)
+
+    cutters = trimesh.boolean.union([cut_slot, cut_pocket, cut_hole, cut_groove, cut_notch],
+                                    engine="manifold")
+    out = trimesh.boolean.difference([front, cutters], engine="manifold")
+    assert out.is_watertight, "result is not watertight"
+    out.export(dst)
+    print(f"removed {front.volume - out.volume:.1f} mm^3, faces {len(out.faces)}, "
+          f"watertight {out.is_watertight}, bodies {len(out.split(only_watertight=False))}")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1], sys.argv[2])
