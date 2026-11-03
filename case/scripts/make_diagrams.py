@@ -68,6 +68,29 @@ def render(mesh, forward, up, res=RES, depth=False):
     return img, [umin, umax, vmin, vmax], r, w
 
 
+BADGE_FACE_Y = 109.0                       # top-edge badge face (front file)
+BADGE_FACE_XZ = (-52.4, -35.6, -8.8, 1.7)  # its flat face rectangle (x0, x1, z0, z1), corner radius 1.6
+
+
+def show_badge_art(img, ext, zbuf, r, w, res=RES):
+    """Shade the engraving on the top-edge badge by depth (its floors face the camera, so shading can't show it)."""
+    ny, nx = img.shape
+    u = ext[0] + (np.arange(nx) + 0.5) * res
+    v = ext[2] + (np.arange(ny) + 0.5) * res
+    U, V = np.meshgrid(u, v)
+    X, Z = U * r[0] + V * w[0], U * r[2] + V * w[2]     # view axes are along x and z here
+    x0, x1, z0, z1 = BADGE_FACE_XZ
+    rad = 1.6
+    du = np.maximum(np.abs(X - (x0 + x1) / 2) - ((x1 - x0) / 2 - rad), 0)
+    dv = np.maximum(np.abs(Z - (z0 + z1) / 2) - ((z1 - z0) / 2 - rad), 0)
+    inside = du ** 2 + dv ** 2 < (rad - 0.15) ** 2
+    depth = BADGE_FACE_Y - zbuf
+    img = img.copy()
+    img[inside & (depth > 0.2) & (depth < 0.5)] *= 0.62     # head
+    img[inside & (depth >= 0.5) & (depth < 0.9)] *= 0.25    # eyes and nose
+    return img
+
+
 def show(ax, img, ext):
     ax.imshow(img, origin="lower", extent=ext, cmap="gray", vmin=0, vmax=1.05, interpolation="bilinear")
     ax.set_xticks([]); ax.set_yticks([])
@@ -114,7 +137,9 @@ def front_outside(front, path):
         "left": ((-1, 0, 0), (0, 1, 0)),    # phone's left side, screen side toward the face view
         "right": ((1, 0, 0), (0, 1, 0)),    # phone's right side
     }
-    R = {k: render(front, *v) for k, v in views.items()}
+    R = {k: render(front, *v) for k, v in views.items() if k != "top"}
+    ti, te, tr, tw, tz = render(front, *views["top"], depth=True)
+    R["top"] = (show_badge_art(ti, te, tz, tr, tw), te, tr, tw)
     fig = plt.figure(figsize=(15, 11.5), dpi=110)
     # unfolded layout: [left][face][right] with top above and bottom below the face
     W_face = R["face"][1][1] - R["face"][1][0]; H_face = R["face"][1][3] - R["face"][1][2]
@@ -156,7 +181,7 @@ def front_outside(front, path):
         (1, "Earpiece grille (1 × 6 mm slot). The earpiece\nsits in the pocket right behind it."),
         (2, "SMA cut-out, top-left: the T-Deck's LoRa\nantenna (where it is now)."),
         (3, "SMA cut-out, top-right (old Grove corner):\n4G antenna, recommended. Nut and washer go\nin the round recess outside."),
-        (4, "Alley Cat's badge (cat + GPS pin), kept as\ndesigned: a visible credit to the case's\ndesigner. The earpiece pocket is behind it."),
+        (4, "Alley Cat's cat-head logo on the badge: a\nvisible credit to the case's designer. Reads\nupright with the phone screen-up (upside\ndown in this unfolded view). The earpiece\npocket is behind it."),
         (5, "USB-C: charging and programming."),
         (6, "Mic sound hole (1.5 mm). The mic sits in a\npocket right behind it."),
         (7, "Speaker grille: the T-Deck's own speaker,\nwhich plays the ringtone."),
@@ -353,12 +378,13 @@ def stack(front, back, path, layout):
 
 
 def top_edge(front, path):
-    # looking down at the top edge of the phone held upright: screen side toward you (bottom of the view)
-    img, ext, r, w = render(front, (0, -1, 0), (0, 0, 1), 0.05)
+    # looking at the top edge with the phone screen-up: screen side at the top of the view
+    img, ext, r, w, z = render(front, (0, -1, 0), (0, 0, -1), 0.04, depth=True)
+    img = show_badge_art(img, ext, z, r, w, 0.04)
     fig, ax = plt.subplots(figsize=(11, 3.8), dpi=110)
     show(ax, img, ext)
-    ax.set_title("Top edge, looking down at it with the screen toward you: LoRa SMA (left), Alley Cat's badge, "
-                 "4G SMA (right)", fontsize=9)
+    ax.set_title("Top edge with the phone lying screen-up (screen side at the top): 4G SMA (left), "
+                 "Alley Cat's cat-head badge, LoRa SMA (right)", fontsize=9)
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 

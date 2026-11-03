@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, and the unused switch mount filled. Alley Cat's top-edge badge is kept as designed | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
@@ -42,11 +42,16 @@ that points toward your mouth when the phone is at your right ear.
 - **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
   before the inside surface of the wall.
 
-**Top-edge badge kept as designed.** Alley Cat's raised badge with the cat and GPS-pin art stays on the top edge,
-exactly as in their file. It's a visible credit to the case's designer. It reads upright when you look down at
-the top edge with the screen toward you.
+**Alley Cat's cat-head logo on the top-edge badge.** It's a visible credit to the case's designer.
 
-![Top edge: LoRa SMA cut-out, Alley Cat's badge, 4G SMA cut-out](images/front-top-edge.png)
+- **Badge:** the original badge (cat ears + GPS pin) is replaced by a fresh one of the same footprint: a 1 mm raised
+  pad with 45° bevels and a 16.8 × 10.5 mm face.
+- **The cat:** the cat head is taken from Alley Cat's own TD1 files, and is the same cat as on her *Alley Chat HT
+  Pocket* case (see [logo/](logo/)). It's 9.4 mm tall and cut the same way as on the HT Pocket: the head recessed
+  0.35 mm, the closed eyes and nose 0.7 mm deep.
+- **Orientation:** it reads upright when the phone lies screen-up, with the ears toward the screen side.
+
+![Top edge with the phone screen-up: 4G SMA cut-out, Alley Cat's cat-head badge, LoRa SMA cut-out](images/front-top-edge.png)
 
 **Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
 countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled

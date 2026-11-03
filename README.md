@@ -82,7 +82,7 @@ fallback and GNSS.
   https://www.printables.com/model/741124-lilygo-t-deck-td1-case, licensed
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Modified case files from this project must be
   shared under the same licence, with this credit. Alley Cat's
-  cat and GPS-pin badge on the front's top edge is kept as designed, as a visible credit.
+  cat-head logo, taken from her TD1 files, is on the front's top-edge badge as a visible credit.
 - LilyGO T-Deck by LilyGO (Xinyuan-LilyGO).
 - KTRON for the published board drawings, reference circuit and Eagle library.
 
@@ -92,7 +92,8 @@ fallback and GNSS.
 
 - **Case files modified from Alley Cat's design.** These stay under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
-- **The rushiWorks name and logo** ([case/logo/](case/logo/), and the logo engraved on the case's back cover).
+- **The rushiWorks name and logo** ([case/logo/rushi-logo.jpg](case/logo/rushi-logo.jpg), and the logo engraved on
+  the case's back cover).
   These belong to Rushikesh Deshmukh. The MIT licence doesn't cover them, and CC BY-SA 4.0 doesn't license
   trademark rights, so neither licence lets anyone else use the name or logo.
 

@@ -1,9 +1,9 @@
 """Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front,
-and fill the unused slide-switch mount on its left side. Alley Cat's cat + GPS-pin badge on the top edge is
-kept as designed, as a visible credit to the case's designer.
+and fill the unused slide-switch mount on its left side. The top-edge badge carries Alley Cat's cat-head logo
+(from ../logo/alley-cat-head.json, taken from her TD1 files) as a visible credit to the case's designer.
 
 Usage:
-    python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
+    python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl> [cat logo json]
 
 Needs: numpy, trimesh, shapely, manifold3d.
 
@@ -59,6 +59,21 @@ SWITCH_WALL_SLICE_Y = 77.0
 SWITCH_FILL_Y = (51.0, 75.6)
 SWITCH_FILL_CLIP = (-10.6, -4.15, -5.9, 4.3)        # x0, z0, x1, z1 of the wall slice used
 RESET_KEEP_OUT = [[-12.0, 65.0, -10.0], [-5.0, 72.0, -3.4]]
+
+# Top-edge badge: Alley Cat's raised badge with the cat + GPS-pin art is replaced by a fresh badge of the same
+# footprint carrying her cat-head logo, cut the way it is on her Alley Chat HT Pocket case: the head recessed,
+# the closed eyes and nose cut deeper. The top wall under the old badge is restored from its plain profile
+# (sampled beside the badge). The logo reads upright with the phone screen-up (screen side at the top of the
+# view): there, right = +x and up = -z, so the ears point toward the screen side.
+BADGE_CUT_X = (-55.75, -32.25)       # old badge lies within this (the wall is plain at both ends)
+BADGE_CUT_Z = (-11.6, 4.2)
+BADGE_FACE = (-52.4, -35.6, -8.8, 1.7)   # x0, x1, z0, z1 of the flat face (covers the earpiece pocket's width)
+BADGE_FACE_R = 1.6
+BADGE_FACE_Y = 109.0
+BADGE_HEIGHT = 1.0                   # above the plain wall (y = 108.0)
+CAT_HEIGHT = 9.4                     # cat head, ears to chin
+CAT_HEAD_DEPTH = 0.35
+CAT_FEATURE_DEPTH = 0.70             # eyes and nose (0.8 mm of wall stays behind them)
 
 
 
@@ -116,11 +131,59 @@ def fill_switch_mount(front):
     return trimesh.boolean.union([front, fill], engine="manifold")
 
 
-def main(src, dst):
+def prism_x(poly_yz, x0, x1):
+    """Extrude a polygon drawn in (y, z) along model x, from x0 to x1."""
+    mesh = trimesh.creation.extrude_polygon(poly_yz, height=x1 - x0)
+    rot = np.array([[0, 0, 1, x0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=float)
+    mesh.apply_transform(rot)
+    return mesh
+
+
+def replace_badge_with_cat(front, cat_json):
+    import json
+    from shapely.affinity import affine_transform
+    from shapely.geometry import box as sbox, shape as sshape
+    from shapely.ops import unary_union
+    # 1. plain top-wall profile y(z), sampled beside the badge, and a cutter above it over the old badge
+    zs = np.arange(BADGE_CUT_Z[0], BADGE_CUT_Z[1] + 1e-9, 0.1)
+    origins = np.array([[BADGE_CUT_X[0] - 1.3, 130.0, z] for z in zs])
+    loc, idx, _ = front.ray.intersects_location(origins, np.tile([0, -1, 0], (len(zs), 1)), multiple_hits=False)
+    prof = np.full(len(zs), np.nan); prof[idx] = loc[:, 1]
+    assert not np.isnan(prof).any(), "could not sample the top wall profile"
+    ring = [(y, z) for y, z in zip(prof, zs)] + [(112.0, zs[-1]), (112.0, zs[0])]
+    front = trimesh.boolean.difference([front, prism_x(Polygon(ring), *BADGE_CUT_X)], engine="manifold")
+    # 2. fresh badge: rounded-rectangle face, 45-degree bevel down to the wall, short skirt into it
+    x0, x1, z0, z1 = BADGE_FACE
+    face = sbox(x0 + BADGE_FACE_R, z0 + BADGE_FACE_R, x1 - BADGE_FACE_R, z1 - BADGE_FACE_R).buffer(BADGE_FACE_R, quad_segs=12)
+    base = face.buffer(BADGE_HEIGHT, quad_segs=12)
+    pts = [(x, BADGE_FACE_Y, z) for x, z in face.exterior.coords]
+    pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT, z) for x, z in base.exterior.coords]
+    pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT - 0.4, z) for x, z in base.exterior.coords]
+    front = trimesh.boolean.union([front, trimesh.convex.convex_hull(np.array(pts))], engine="manifold")
+    # 3. cat head: drawing (x right, y up, ears up) -> badge face (right = +x, up = -z)
+    art = json.load(open(cat_json))
+    head = unary_union([sshape(g) for g in art["head"]])
+    feats = unary_union([sshape(g) for g in art["eyes"] + art["nose"]])
+    hx0, hy0, hx1, hy1 = head.bounds
+    s = CAT_HEIGHT / (hy1 - hy0)
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    tf = [s, 0, 0, -s, cx - s * (hx0 + hx1) / 2, cz + s * (hy0 + hy1) / 2]
+    cuts = []
+    for g, depth in ((head, CAT_HEAD_DEPTH), (feats, CAT_FEATURE_DEPTH)):
+        g = affine_transform(g, tf)
+        cuts += [prism_y(p, BADGE_FACE_Y - depth, BADGE_FACE_Y + 1.0) for p in getattr(g, "geoms", [g])]
+    return trimesh.boolean.difference([front] + cuts, engine="manifold")
+
+
+def main(src, dst, cat_json=None):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
     front = mirror_sma_cutout(front)
     front = fill_switch_mount(front)
+    if cat_json is None:
+        import os
+        cat_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "alley-cat-head.json")
+    front = replace_badge_with_cat(front, cat_json)
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2
@@ -147,4 +210,4 @@ def main(src, dst):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:3])
+    main(*sys.argv[1:4])
