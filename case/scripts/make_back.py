@@ -77,7 +77,7 @@ COUNTERSINKS = ((19.5, 102.85), (48.5, 102.85))
 COUNTERSINK_KEEP_R = 3.4
 OUTER_Z = -27.0
 BACK_LOGO_CENTRE = (34.0, 83.75)               # between the side grooves, above the shortened ones
-BACK_LOGO_WIDTH = 32.0
+BACK_LOGO_WIDTH = 24.0
 BACK_LOGO_DEPTH = 1.0
 
 # ---- Inside floor: Alley Cat's engraved cat head and "Alley Chat TD1 X" text (0.2-0.4 mm deep, x 12-56,

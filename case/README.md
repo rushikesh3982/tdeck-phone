@@ -95,7 +95,7 @@ which covers the board with only about 1 mm to spare (about 11 cm, so use the 15
 three middle ones shortened, which leaves a clear area near the top. That area had a cat-head outline engraved in
 it. The cat is filled flush, and the **rushiWorks logo** is engraved in its place:
 
-- **Size:** 32 × 22 mm, 1 mm deep, matching the grooves. The letter strokes are about 1.1 mm wide.
+- **Size:** 24 × 17 mm, 1 mm deep, matching the grooves. The letter strokes are about 0.8 mm wide.
 - **Clearances:** it stays clear of the grooves and of the two case-screw countersinks.
 - **Orientation:** it reads normally when you look at the back with the phone upright.
 - **Printing:** the back prints face-down, so the logo forms in the first layers and comes out crisp.

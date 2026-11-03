@@ -92,7 +92,7 @@ edge, low down. The micro-SIM (push-push holder on the solder side) slides in fr
 nearest the VDD/RX/TX header.
 
 - **Outside:** built from the *Outside Cat* edition (middle grooves shortened). The cat head is filled, and the
-  rushiWorks logo is engraved in its place (32 × 22 mm, 1 mm deep).
+  rushiWorks logo is engraved in its place (24 × 17 mm, 1 mm deep).
 - **Inside floor:** Alley Cat's engraved cat head and "Alley Chat TD1 X" text are filled flat (they're hidden once
   assembled). The cat-head logo on the front's top-edge badge credits the designer instead.
 - **Modem board** on four 9 mm standoffs with M3 heat-set insert holes (4.5 mm), 7 mm wide with a 10 mm foot.
