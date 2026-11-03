@@ -17,7 +17,7 @@ B1/B3/B5/B8 and TDD B40/B41, **and** support VoLTE.
 https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/
 
 **Why:** LTE Cat-1 on FDD B1/B3/B5/B8 + TDD B34/B38/B39/B40/B41, GSM 900/1800 fallback, built-in GNSS, and
-analog audio (one mic in, one earpiece out) on reachable pads. Small board (54.33 × 50.70 mm), in stock,
+analog audio (one mic in, one earpiece out) on reachable pads. Small board (54.33 × 57.23 mm), in stock,
 and KTRON publishes the drawings, audio reference circuit and Eagle library.
 
 **Known risk:** a Jio SIM that has ever been used in a 5G phone may not register ("PLMN not allowed"). SIMCom's
@@ -78,8 +78,8 @@ That wire is already connected to the KTRON's VDD pad, and it only has power whi
 So the T-Deck's own power switch turns the modem on and off as well. The MOSFET (rated about 4 A) carries the
 modem's current. Circuit in [wiring.md](wiring.md), section 2.
 
-**Not chosen:** a separate slide switch driving the MOSFET, which was the handoff's plan. It needs a pocket in the
-case (the front has none), and it's one more control to remember.
+**Not chosen:** a separate slide switch driving the MOSFET, which was the handoff's plan. It would have used the
+front's left-side switch mount, but it's one more control to remember.
 
 **Trade-off:** the modem can't be switched off on its own while the T-Deck stays on.
 

@@ -137,8 +137,8 @@ case.
 5. **If the modem never comes on,** check the AO3400A's orientation, and that the Grove 3.3 V is really there
    (GPIO10 high).
 
-**Earlier plan (not used):** a separate slide switch pulling the AO3401A's gate to ground. It would need a pocket
-in the case, and the front has none.
+**Earlier plan (not used):** a separate slide switch pulling the AO3401A's gate to ground. (The front's left-side
+switch mount could have held it.)
 
 ## 3. Earpiece (call audio out)
 

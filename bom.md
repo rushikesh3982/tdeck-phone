@@ -6,7 +6,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 
 | # | Part | Where | Price | Status | Notes |
 |---|---|---|---|---|---|
-| 1 | KTRON KSTM1548: SIMCom A7672S 4G + GNSS development board | [ktron.in](https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/) | ₹1,530 | to order | In stock. 54.33 × 50.70 mm, 28 g |
+| 1 | KTRON KSTM1548: SIMCom A7672S 4G + GNSS development board | [ktron.in](https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/) | ₹1,530 | to order | In stock. 54.33 × 57.23 mm, 28 g |
 | 2 | KTRON GPS active patch antenna KSTA1417 | [ktron.in](https://www.ktron.in/product/gps-antenna-with-ufl-female-connector/) | ₹105 | to order | 25 × 25 × ~8 mm, 4 corner holes, short u.FL lead |
 | 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | to order | 10 or 15 cm both fine |
 | 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | to choose | **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |

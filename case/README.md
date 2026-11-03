@@ -10,9 +10,9 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 |---|---|---|
 | [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille and mic pocket | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
+| [back-modem-gps.stl](back-modem-gps.stl) | **Draft, don't print yet.** Back with modem standoffs and GPS patch cradle | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
 
-Everything else (X back, Switch, Antenna Plug, Reset Button) is unchanged for now, so print those from the
-Printables download. The back gets its own changes next (see [../docs/case.md](../docs/case.md)).
+The other parts (Switch, Antenna Plug, Reset Button) are unchanged, so print those from the Printables download.
 
 ## Front: what changed
 
@@ -43,10 +43,48 @@ that points toward your mouth when the phone is at your right ear.
 
 ![Close-ups from inside: mic pocket with sound hole and wire groove (left), earpiece slot in the GPS pocket (right)](images/front-cuts-inside.png)
 
+## Back: what changed (draft)
+
+![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
+
+![Back from inside, coloured by height, and a tilted view](images/back-preview.png)
+
+**Modem standoffs.** Four columns at the KTRON board's holes.
+
+- **Board:** the KTRON is 54.33 × 57.23 mm, with its holes on a 47.90 × 50.70 mm rectangle.
+- **Columns:** 7 mm wide, with a 10 mm foot. Their tops are 14 mm above the inside floor.
+- **Inserts:** each column has a 4.5 mm hole, 6 mm deep, for an M3 × 5 heat-set insert. The board is held with
+  M3 × 6 screws from its solder side.
+- **Board orientation:** component side down toward the back cover. The SIM edge faces the phone's left side,
+  the 4G socket faces right, and the GPS socket is at the bottom, just above the patch.
+
+**GPS patch cradle.** A 25.6 mm square fence near the bottom.
+
+- **Ledges:** the patch's board rests on four corner ledges, ceramic side down, 0.5 mm clear of the floor.
+- **Cable:** there is a cable notch in each side.
+- **Fixing:** a dab of glue, or foam pressed down by the battery.
+
+### Measurements needed before printing the back (and adding the SIM slit)
+
+1. **330 µF capacitor height** above the board, the tallest part. The standoffs assume about 13 mm.
+2. **SIM holder:**
+   - Its height above the board.
+   - Push-push (click in, click out) or not?
+   - With a SIM locked in, how far does the card stick out past the board's edge?
+3. **GPS patch:**
+   - Board size.
+   - Ceramic size and thickness.
+   - Total thickness.
+   - Mounting-hole positions.
+   - Cable length.
+4. **T-Deck thickness**, screen face to back. 11 mm is assumed.
+5. **Battery** length × width × thickness.
+
 ## Printing
 
-- Print the files as they are oriented: screen side down on the bed, no supports. The slot is vertical, and the
-  mic pocket has a 45° roof.
+- Print the files as they are oriented, outer face down on the bed (the screen side for the front), with no
+  supports. The earpiece slot is vertical, the mic pocket has a 45° roof, and the back's standoffs and cradle grow
+  straight up.
 - PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill.
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
 - **Print `test-mic-coupon.stl` first** (a few minutes). Check that the mic slides in and sits against the skin. If
