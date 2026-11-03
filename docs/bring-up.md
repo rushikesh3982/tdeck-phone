@@ -127,6 +127,14 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    **not** to VCC. Then connect the cell (through the modem power switch, if it's built) as in
    [wiring.md](wiring.md), section 2.
 4. Repeat `AT` → `OK` and one test call, now on battery power.
+5. **LEDs:**
+   - **Power LED (PWR):** check it on battery power. If it's dark, it's on the unused VCC input and draws nothing,
+     so leave it. If it lights, it's on the battery rail and draws about 2 mA all the time. Remove its resistor R6
+     (1 kΩ, just below it).
+   - **Network LED (NETLIGHT):** once registered it is lit half the time (200 ms on / 200 ms off) through R1
+     (220 Ω, beside it). That's roughly 2–4 mA on average, depending on the LED's colour, and the AT commands
+     can't switch it off. To save power but keep it visible through the back's window, replace R1 with a 1 kΩ
+     0805, which uses about a fifth of the current. Or remove R1 to turn it off completely.
 
 ### Serial terminal on the Mac
 

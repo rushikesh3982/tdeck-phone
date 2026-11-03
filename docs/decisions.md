@@ -85,6 +85,17 @@ The standoffs drop to 9 mm and the SIM slit ends up fully inside the back's wall
 **Not chosen:** SMD 6.3 V parts (330 µF 6.3 × 7.7 mm, 100 µF 5 × 5.3 mm). They would fit the old pads, but a 6.3 V
 capacitor is unsafe on VCC, and they would have to be bought. A thinner battery was not chosen either.
 
+## Status LED: one window, for the network LED (decided 3 Nov 2026)
+
+**Why:** a glance at the back shows whether the modem is searching (lit steadily) or registered (200 ms on /
+200 ms off, from SIMCom's A7672S hardware design guide). The power LED gets no window. KTRON describes it as
+showing the input supply, so on battery power (VCC unused) it should stay dark. If it turns out to be on the
+battery rail, its resistor R6 comes off.
+
+**Power:** the network LED runs through 220 Ω (R1) and is lit half the time when registered, roughly 2–4 mA on
+average. The A76XX AT command manual has no command to turn it off. Replacing R1 with 1 kΩ is the suggested
+compromise.
+
 ## Modem power switch: follows the T-Deck's own switch (decided 3 Nov 2026)
 
 **Why a switch at all:** the modem is wired straight to the battery, so on its own it would stay on whenever the

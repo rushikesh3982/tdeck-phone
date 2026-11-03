@@ -120,6 +120,17 @@ which covers the board with only about 1 mm to spare (about 11 cm, so use the 15
 - **Cable notches:** 4 mm wide, in every side, for the cable that leaves the middle of one side of the board.
 - **Fixing:** a dab of hot glue at two corners. The 95 mm cable easily reaches the GPS socket about 6 mm away.
 
+**Network LED window.** The KTRON's network LED (NETLIGHT) faces the back cover from 9 mm up.
+
+- **Light tube:** 3.6 mm bore, from the floor to 1.6 mm under the board, so the light goes straight out and the
+  power LED next to it doesn't leak through.
+- **Hole:** 1.6 mm through the cover, on the flat floor of the decorative groove beside the LED (1 mm thick there).
+- **Where it shows:** near the top of the back, on the phone's right side. When you look at the back, that's the
+  top-left area.
+- **Blink pattern** (SIMCom): lit steadily while searching for the network; 200 ms on / 200 ms off once
+  registered.
+- **Optional:** a drop of clear glue or UV resin seals the hole and spreads the light.
+
 **Depth** (inside floor to the T-Deck's back, 23 mm with LilyGO's 11 mm T-Deck): 9 standoffs + 1.6 board + 1.5 SIM
 holder + 1 foam + 9 battery = 22.1 mm. The battery (65 × 55 × 9 mm) lies over the board, its long side running top
 to bottom, with its connector end toward the bottom, over the patch.

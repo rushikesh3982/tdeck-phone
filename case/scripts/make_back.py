@@ -52,6 +52,18 @@ SLIT_W, SLIT_H = 15.0, 1.8         # inside opening (card is 12 x 0.8 mm)
 SLIT_FLARE = 0.6                   # extra on every side at the outside face, as a lead-in
 
 
+# ---- Network LED window --------------------------------------------------------
+# KTRON's NETLIGHT LED (0805, next to T1 and its 220 ohm resistor R1) is on the component side, so it faces the
+# back cover from 9 mm up. A printed light tube runs from the floor to 1.6 mm under the board, and a 1.6 mm hole
+# goes through the cover. The hole sits on the flat floor of the decorative groove (x 53-55, 1 mm thick there),
+# just beside the LED; the tube is centred between the two so it covers both. Position from KTRON's photo (+-0.5 mm).
+NETLIGHT_UV = (45.6, 3.58)
+LED_TUBE_ID, LED_TUBE_OD = 3.6, 5.6
+LED_TUBE_TOP = 7.4         # above the floor
+LED_HOLE_D = 1.6
+LED_HOLE_X = 53.9
+
+
 def board_to_back(u, v):
     """Board drawing coords (u, v) -> back (x, y)."""
     return X0 - v, Y0 - (BOARD_W - u)
@@ -114,6 +126,16 @@ def sim_slit():
     return [funnel, straight], (yc, zc)
 
 
+def led_window():
+    lx, ly = board_to_back(*NETLIGHT_UV)
+    cx = (lx + LED_HOLE_X) / 2
+    ring = Point(cx, ly).buffer(LED_TUBE_OD / 2, quad_segs=24).difference(Point(cx, ly).buffer(LED_TUBE_ID / 2, quad_segs=24))
+    adds = [prism_z(ring, FLOOR_Z - 0.6, FLOOR_Z + LED_TUBE_TOP)]
+    cuts = [prism_z(Point(cx, ly).buffer(LED_TUBE_ID / 2, quad_segs=24), FLOOR_Z + 0.01, FLOOR_Z + LED_TUBE_TOP + 1),
+            prism_z(Point(LED_HOLE_X, ly).buffer(LED_HOLE_D / 2, quad_segs=16), FLOOR_Z - 3.0, FLOOR_Z + 0.05)]
+    return adds, cuts
+
+
 def patch_cradle():
     adds, cuts = [], []
     cx, cy = PATCH_CENTRE
@@ -142,8 +164,9 @@ def main(src, dst, picture=None):
     a1, c1 = standoffs()
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
-    out = trimesh.boolean.union([back] + a1 + a2, engine="manifold")
-    out = trimesh.boolean.difference([out, trimesh.boolean.union(c1 + c2 + c3, engine="manifold")], engine="manifold")
+    a4, c4 = led_window()
+    out = trimesh.boolean.union([back] + a1 + a2 + a4, engine="manifold")
+    out = trimesh.boolean.difference([out, trimesh.boolean.union(c1 + c2 + c3 + c4, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     out.export(dst)
     print(f"added {out.volume - back.volume:.1f} mm^3, watertight {out.is_watertight}, "
@@ -182,6 +205,10 @@ def draw_layout(mesh, path):
     ax.plot([-4.5, -4.5], [yc - SLIT_W / 2, yc + SLIT_W / 2], color="tab:orange", lw=4)
     ax.annotate("SIM slit (in the wall)", (-4.5, yc), (8, yc - 12), fontsize=7, color="tab:orange",
                 arrowprops=dict(arrowstyle="->", color="tab:orange"))
+    lx, ly = board_to_back(*NETLIGHT_UV)
+    ax.add_patch(Circle(((lx + LED_HOLE_X) / 2, ly), LED_TUBE_OD / 2, fill=False, ec="tab:green", lw=1.2))
+    ax.plot(lx, ly, "*", color="tab:green", ms=8)
+    ax.text(lx - 3, ly - 4.5, "network LED\n+ window", ha="center", fontsize=6.5, color="tab:green")
     cx, cy = PATCH_CENTRE
     hp = PATCH_PCB / 2
     ax.add_patch(MPoly([(cx - hp, cy - hp), (cx + hp, cy - hp), (cx + hp, cy + hp), (cx - hp, cy + hp)],

@@ -242,6 +242,12 @@ def back_inside(back, path, layout):
     # 4G cable route
     x1, y1 = btb(24.8, 3.6)
     ax.plot([x1, 61, 61, 59], [y1, y1 + 3, 98, 104], color=COL["cable"], lw=2.2)
+    # network LED + light tube window, and the power LED
+    lx, ly = btb(*layout["NETLIGHT_UV"])
+    ax.add_patch(Circle(((lx + layout["LED_HOLE_X"]) / 2, ly), layout["LED_TUBE_OD"] / 2, fill=False, ec=COL["cable"], lw=1.4))
+    ax.plot(lx, ly, "*", color="#00a651", ms=9, mec="0.2", mew=0.4)
+    px, py = btb(50.58, 7.63)
+    ax.add_patch(Rectangle((px - 1.0, py - 0.6), 2.0, 1.2, fc="0.75", ec="0.3", lw=0.6))
     # MOSFET board in the strip
     ax.add_patch(FancyBboxPatch((58.5, 52), 7, 9, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
     # callouts
@@ -264,6 +270,8 @@ def back_inside(back, path, layout):
     marker(ax, 19.6, 102.85, 14, dy=6)
     marker(ax, 48.5, 102.85, 14, dy=6)
     marker(ax, 19.0, 6.5, 15, dx=-9, dy=6)
+    marker(ax, lx, ly, 16, dx=-7, dy=-6)
+    marker(ax, px, py, 17, dx=-6, dy=4)
     ax_key = fig.add_axes([0.51, 0.04, 0.47, 0.9])
     key(ax_key, [
         (1, "Standoffs (4) with M3 × 5 heat-set inserts. The KTRON board\nsits on them, held by 4 × M3 × 6 screws."),
@@ -281,6 +289,8 @@ def back_inside(back, path, layout):
         (13, "MOSFET switch board (AO3401A + AO3400A), in the battery +\nline to the modem."),
         (14, "Case screw holes (2): M3 × 8 from outside into the front's inserts."),
         (15, "Mic wires arrive here from the front's groove; run them under\nthe board to J3."),
+        (16, "Network LED (NETLIGHT) and its window: a light tube up to just\nunder the LED, and a 1.6 mm hole through the back cover."),
+        (17, "Power LED (PWR): no window. Probably dark on battery power."),
     ], title="Back panel, inside")
     fig.savefig(path); plt.close(fig)
 
@@ -344,7 +354,8 @@ def main(front_path, back_path, out_dir):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import make_back as mb
     layout = dict(board_to_back=mb.board_to_back, BOARD_W=mb.BOARD_W, BOARD_H=mb.BOARD_H,
-                  PATCH_CENTRE=mb.PATCH_CENTRE, PATCH_PCB=mb.PATCH_PCB, X0=mb.X0)
+                  PATCH_CENTRE=mb.PATCH_CENTRE, PATCH_PCB=mb.PATCH_PCB, X0=mb.X0,
+                  NETLIGHT_UV=mb.NETLIGHT_UV, LED_HOLE_X=mb.LED_HOLE_X, LED_TUBE_OD=mb.LED_TUBE_OD)
     front = trimesh.load(front_path, force="mesh")
     back = trimesh.load(back_path, force="mesh")
     os.makedirs(out_dir, exist_ok=True)

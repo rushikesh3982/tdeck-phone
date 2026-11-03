@@ -101,6 +101,8 @@ nearest the VDD/RX/TX header.
   - A 27 mm square opening with a 7 mm fence, for the measured 26 × 26 mm patch with its 25 × 25 × 4 mm ceramic.
   - The ceramic faces down onto four 0.5 mm pads.
   - There is a cable notch in every side, and the patch is fixed with glue.
+- **Network LED window**: a printed light tube under the KTRON's NETLIGHT LED, and a 1.6 mm hole through the
+  back cover (in a decorative groove). There is no window for the power LED.
 - **Battery** (65 × 55 × 9 mm) lies over the board, its long side top to bottom, with its connector end over the
   patch.
 
