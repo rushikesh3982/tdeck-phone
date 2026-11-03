@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and the rushiWorks logo badge on the top edge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, and the unused switch mount filled. Alley Cat's top-edge badge is kept as designed | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
@@ -42,20 +42,11 @@ that points toward your mouth when the phone is at your right ear.
 - **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
   before the inside surface of the wall.
 
-**rushiWorks logo badge (top edge).** Alley Cat's raised badge with the cat and GPS-pin art is removed, and
-the top wall under it is restored to its plain shape, copied from beside the badge. A fresh badge takes its place:
+**Top-edge badge kept as designed.** Alley Cat's raised badge with the cat and GPS-pin art stays on the top edge,
+exactly as in their file. It's a visible credit to the case's designer. It reads upright when you look down at
+the top edge with the screen toward you.
 
-- **Badge:** a 1 mm raised pad with 45° bevels and a 16.8 × 10.5 mm flat face.
-- **Logo:** engraved 0.45 mm deep, 10 mm tall (about 14.3 mm wide). Traced from
-  [logo/rushi-logo.jpg](logo/rushi-logo.jpg). The letter strokes are about 0.5 mm wide.
-- **Orientation:** it reads normally when the phone lies screen-up, or is tipped back toward you, so that
-  the screen side is at the top of your view.
-- **Optional:** fill the engraving with paint for contrast.
-
-The badge is a vertical wall in the print orientation, so the engraving prints cleanly. If the small letters come
-out faint on your printer, the strokes can be made a little bolder in the script.
-
-![Top edge: LoRa SMA cut-out, logo badge, 4G SMA cut-out](images/front-top-edge.png)
+![Top edge: LoRa SMA cut-out, Alley Cat's badge, 4G SMA cut-out](images/front-top-edge.png)
 
 **Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
 countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled
@@ -104,6 +95,8 @@ it. The cat is filled flush, and the **rushiWorks logo** is engraved in its plac
 - **Orientation:** it reads normally when you look at the back with the phone upright.
 - **Printing:** the back prints face-down, so the logo forms in the first layers and comes out crisp.
 - **Inside:** identical to the Inside Cat edition, so all the changes below are the same with either.
+- **Inside floor:** Alley Cat's engraved cat head and "Alley Chat TD1 X" text (hidden once assembled) are filled
+  flat. The designer is credited by the badge kept on the front's top edge and in the README.
 
 ![Back cover from outside: Outside Cat groove layout with the rushiWorks logo](images/back-outside.png)
 
@@ -181,5 +174,4 @@ python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" back
 python scripts/make_diagrams.py front-earpiece-mic.stl back-modem-gps.stl images
 ```
 
-Both scripts read the logo from `logo/rushi-logo.jpg`. The front and back scripts also need pillow and matplotlib,
-which they use to trace the logo.
+The back script reads the logo from `logo/rushi-logo.jpg`, and also needs pillow and matplotlib to trace it.

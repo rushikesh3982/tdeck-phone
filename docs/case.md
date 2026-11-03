@@ -73,8 +73,8 @@ Full details are in [case/README.md](../case/README.md).
   T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
   recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
-- **rushiWorks logo badge (top edge):** the cat and GPS-pin badge is replaced by a fresh 1 mm raised badge with
-  the rushiWorks logo engraved (10 mm tall, 0.45 mm deep), traced from [case/logo/rushi-logo.jpg](../case/logo/rushi-logo.jpg).
+- **Top-edge badge (kept):** Alley Cat's cat and GPS-pin badge stays exactly as designed, as a visible credit to
+  the case's designer.
 - **Unused slide-switch mount (filled):** the GPS version's switch window, two screw holes and the switch-body
   recess on the inside are filled. The wall is copied from its normal shape just beside the mount. The Reset Button
   opening below them stays.
@@ -92,6 +92,8 @@ nearest the VDD/RX/TX header.
 
 - **Outside:** built from the *Outside Cat* edition (middle grooves shortened). The cat head is filled, and the
   rushiWorks logo is engraved in its place (32 × 22 mm, 1 mm deep).
+- **Inside floor:** Alley Cat's engraved cat head and "Alley Chat TD1 X" text are filled flat (they're hidden once
+  assembled). The front's top-edge badge credits the designer instead.
 - **Modem board** on four 9 mm standoffs with M3 heat-set insert holes (4.5 mm), 7 mm wide with a 10 mm foot.
   - **Placement:** top half, component side toward the back cover.
   - **Orientation:** the SIM edge faces the phone's **left** side. That puts the 4G socket on the right, toward

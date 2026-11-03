@@ -80,6 +80,12 @@ BACK_LOGO_CENTRE = (34.0, 83.75)               # between the side grooves, above
 BACK_LOGO_WIDTH = 32.0
 BACK_LOGO_DEPTH = 1.0
 
+# ---- Inside floor: Alley Cat's engraved cat head and "Alley Chat TD1 X" text (0.2-0.4 mm deep, x 12-56,
+# y 15-85) are filled flat. The designer is credited by the cat + GPS-pin badge kept on the front's top edge
+# and in the README. The patch only fills below the flat floor (z = -25.0), inside its flat area.
+INSIDE_FILL = (4.0, 10.5, 64.0, 98.5)         # x0, y0, x1, y1, within the flat floor (x 3.3-64.7, y 9.8-99.2)
+INSIDE_FILL_Z = (-25.45, FLOOR_Z)
+
 
 def board_to_back(u, v):
     """Board drawing coords (u, v) -> back (x, y)."""
@@ -153,16 +159,34 @@ def led_window():
     return adds, cuts
 
 
+def trace_logo(path):
+    """Trace a black-on-white logo image into shapely polygons (image pixels, y up)."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from PIL import Image, ImageFilter
+    from shapely.ops import unary_union
+    img = Image.open(path).convert("L").filter(ImageFilter.GaussianBlur(1.2))
+    ink = 1.0 - np.asarray(img, float) / 255.0
+    fig, ax = plt.subplots()
+    cs = ax.contour(ink[::-1], levels=[0.5])
+    plt.close(fig)
+    rings = [Polygon(r) for p in cs.get_paths() for r in p.to_polygons() if len(r) > 3]
+    shape = None
+    for r in sorted(rings, key=lambda q: -q.area):       # rings inside others (the R's counter) are holes
+        r = r.buffer(0)
+        shape = r if shape is None else (shape.difference(r) if shape.contains(r) else shape.union(r))
+    return unary_union(shape).simplify(0.25)
+
+
 def back_logo(logo_path):
-    import os
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from make_front import trace_logo
     from shapely.affinity import affine_transform
     x0, y0, x1, y1 = CAT_FILL_BOX
     patch = box(x0, y0, x1, y1)
     for cx, cy in COUNTERSINKS:
         patch = patch.difference(Point(cx, cy).buffer(COUNTERSINK_KEEP_R, quad_segs=24))
-    adds = [prism_z(patch, OUTER_Z, OUTER_Z + 1.1)]
+    adds = [prism_z(patch, OUTER_Z, OUTER_Z + 1.1),
+            prism_z(box(*INSIDE_FILL), *INSIDE_FILL_Z)]
     logo = trace_logo(logo_path)
     lx0, ly0, lx1, ly1 = logo.bounds
     s = BACK_LOGO_WIDTH / (lx1 - lx0)
@@ -201,7 +225,7 @@ def main(src, dst, picture=None, logo_path=None):
         import os
         logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "rushi-logo.jpg")
     a0, c0 = back_logo(logo_path)
-    back = trimesh.boolean.union([back] + a0, engine="manifold")          # fill the cat first
+    back = trimesh.boolean.union([back] + a0, engine="manifold")          # fill both cats first
     a1, c1 = standoffs()
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
