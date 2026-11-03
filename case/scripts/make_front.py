@@ -1,4 +1,4 @@
-"""Cut the earpiece grille and mic pocket into the Alley Cat TD1 front.
+"""Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front.
 
 Usage:
     python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
@@ -40,6 +40,14 @@ GROOVE_Z_TOP = 4.4            # just above the mating face (z 4.3)
 LIP_NOTCH_Y = (2.4, 12.0)     # through the whole lip, including its hook (outermost y 2.55)
 LIP_NOTCH_Z_TOP = 8.0         # above the top of the lip (7.3)
 
+# Second SMA antenna cut-out, top-right corner (where the Grove plug slot was; the Grove socket is
+# desoldered and the modem wires are soldered on instead). It is an exact mirror of the case's own
+# SMA cut-out in the top-left corner, across the case centre line x = -44: 2.8 mm deep 12 mm nut
+# recess, 2 mm wall with a 6.56 mm hole, 3 mm deep 8.4 mm hex pocket, axis at z = -2.85. Copying the
+# whole corner block also fills the Grove slot, so the nut has a solid wall to clamp against.
+MIRROR_X = -88.0
+SMA_BLOCK = [[-26.5, 99.0, -10.5], [-11.5, 109.0, 5.6]]   # around the top-left cut-out
+
 
 def prism_y(poly_xz, y0, y1):
     """Extrude a polygon drawn in (x, z) along model y, from y0 to y1."""
@@ -69,9 +77,23 @@ def teardrop(cx, cz, d, res=64):
     return Polygon(pts)
 
 
+def mirror_sma_cutout(front):
+    """Replace the top-right corner block with a mirror image of the top-left one."""
+    mirror = np.eye(4)
+    mirror[0, 0], mirror[0, 3] = -1.0, MIRROR_X
+    block_left = trimesh.creation.box(bounds=SMA_BLOCK)
+    block_right = block_left.copy()
+    block_right.apply_transform(mirror)
+    piece = trimesh.boolean.intersection([front, block_left], engine="manifold")
+    piece.apply_transform(mirror)
+    rest = trimesh.boolean.difference([front, block_right], engine="manifold")
+    return trimesh.boolean.union([rest, piece], engine="manifold")
+
+
 def main(src, dst):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
+    front = mirror_sma_cutout(front)
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2

@@ -36,10 +36,10 @@ fix is pending. Test with a fresh Jio SIM or an Airtel/Vi SIM, inside the return
 | Waveshare SIM7600G-H HAT, ₹6–8k | Expensive, 5 V, big |
 | LilyGO T-A7670G | Has its own ESP32, so it duplicates the T-Deck |
 
-## Data link: wires soldered to the Grove socket pins
+## Data link: wires soldered to the T-Deck's Grove pads
 
-**Why:** it is the T-Deck's only free external port. Soldering instead of using a Grove plug frees the case's
-plug-clearance slot for the LTE antenna. The Grove 3.3 V only provides the modem board's level-shifter reference.
+**Why:** it is the T-Deck's only free external port. The Grove socket itself is desoldered and the wires are
+soldered to its pads. That frees the case's Grove plug slot, and its corner now has a second SMA antenna cut-out. The Grove 3.3 V only provides the modem board's level-shifter reference.
 It is switched by GPIO10, so the firmware must hold GPIO10 high, even in sleep.
 
 ## Bench tests: USB-serial adapter from the Mac (decided 2 Nov 2026)
@@ -147,8 +147,8 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 
 - **LTE:** an external SMA antenna **rated 700–2700 MHz**, through a short IPX → SMA female cable to U.FL1.
   Rejected: the KTRON "4G LTE 3.5 dBi foldable" antenna. It is out of stock, and its own spec says 2.4–5 GHz,
-  which misses most of the Indian LTE bands (B1, B3, B5, B8, B40). Placed at the top corner opposite the LoRa antenna, for symmetry and to stay
-  away from the T-Deck's Wi-Fi/BT antenna at the top centre.
+  which misses most of the Indian LTE bands (B1, B3, B5, B8, B40). Both top corners of the front have identical SMA cut-outs. The 4G antenna goes top-right
+  (old Grove corner), close to the modem's 4G socket, and away from the T-Deck's Wi-Fi/BT antenna at the top centre.
 - **GNSS:** KTRON KSTA1417 active ceramic patch, ₹105, on U.FL2, which powers active antennas. At least 60 mm from
   the LTE antenna.
 - **LoRa:** unchanged, the T-Deck's own cable and the case's existing antenna hole.

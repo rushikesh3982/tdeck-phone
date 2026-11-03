@@ -61,10 +61,16 @@ Full details are in [case/README.md](../case/README.md).
   toward the mouth when the phone is at the right ear.
   - A 6.3 mm pocket opens on the inside, with a 1.2 mm skin and a 1.5 mm sound hole.
   - A wire groove runs up the inside wall and through the mating lip.
-- **LTE antenna (later):** the top corner opposite the LoRa antenna has a blind vertical slot, which is clearance for a
-  Grove *plug*. This project solders wires instead of using a plug, so that slot is replaced with a mirror of the
-  LoRa SMA cut-out (6.5 mm hole + hex recess) for the LTE antenna. Dry-fit check: the antenna connector body must
-  clear the empty Grove socket housing under it.
+- **Second SMA antenna cut-out (done):** the Grove socket is desoldered from the T-Deck and the wires are soldered
+  to its pads, so the Grove plug slot in the top-right corner is filled in. The corner gets an exact mirror of the
+  top-left SMA cut-out:
+  - 6.56 mm hole through a 2 mm wall;
+  - 8.4 mm hex pocket inside;
+  - 12 mm nut recess outside.
+
+  The KTRON IPX → SMA-female cable fits it. Before printing, check that the connector's tail (3–8 mm past the
+  T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
+  recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
 
 ## Back changes
@@ -94,8 +100,7 @@ nearest the VDD/RX/TX header.
 - **Battery** (65 × 55 × 9 mm) lies over the board, its long side top to bottom, with its connector end over the
   patch.
 
-**Still to do:** the 4G antenna cut-out in the front's top-right corner (postponed). After the dry fit, maybe a
-retainer for the battery.
+**Still to do:** after the dry fit, maybe a retainer for the battery.
 
 ### Depth check (23 mm available)
 

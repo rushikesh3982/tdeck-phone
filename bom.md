@@ -8,7 +8,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 |---|---|---|---|---|---|
 | 1 | KTRON KSTM1548: SIMCom A7672S 4G + GNSS development board | [ktron.in](https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/) | ₹1,530 | to order | In stock. 54.33 × 57.23 mm, 28 g |
 | 2 | KTRON GPS active patch antenna KSTA1417 | [ktron.in](https://www.ktron.in/product/gps-antenna-with-ufl-female-connector/) | ₹105 | to order | 25 × 25 × ~8 mm, 4 corner holes, short u.FL lead |
-| 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | to order | 10 or 15 cm both fine |
+| 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | to order 10 cm for the top-right corner (recommended). The 15 cm version ([KSTA0380](https://www.ktron.in/product/rf-cable-ipx-to-sma-female/), ₹42) if the 4G antenna goes top-left. Comes with nut and washers |
 | 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | to choose | **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
 | 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | to order | Order 3 (spares) |
 | 6 | Multimeter | any | ~₹250 | to buy | Needed **before** soldering the battery wire to the modem board |

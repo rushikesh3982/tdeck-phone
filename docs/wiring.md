@@ -18,7 +18,8 @@ holder is on the back of the board.
 
 ## 1. Data link: T-Deck Grove socket → KTRON
 
-Four wires soldered to the Grove socket pins on the back of the T-Deck board. No Grove plug.
+The Grove socket is desoldered from the T-Deck, and the four wires are soldered to its pads. No Grove plug. This
+also frees that corner of the case for a second SMA antenna cut-out.
 
 | T-Deck Grove pin | ESP32-S3 pin | Direction | KTRON pad | Notes |
 |---|---|---|---|---|
@@ -172,9 +173,15 @@ The T-Deck's own speaker plays the ringtone when the modem sends `RING`. No extr
 
 | Antenna | Connects to | Part | Where it goes |
 |---|---|---|---|
-| LTE | KTRON U.FL1 (top edge) | SMA antenna rated 700–2700 MHz, through the IPX → SMA female cable | Case top corner opposite the LoRa antenna. Away from the top centre, where the T-Deck's Wi-Fi/BT antenna is |
+| LTE | KTRON U.FL1 (top edge) | SMA antenna rated 700–2700 MHz, through the KTRON IPX → SMA female cable | Recommended: the case's top-right SMA cut-out (old Grove corner), close to U.FL1. Away from the top centre, where the T-Deck's Wi-Fi/BT antenna is |
 | GNSS | KTRON U.FL2 (beside L2; it powers an active antenna) | KTRON KSTA1417 active patch | Bottom half of the back, at least 60 mm from the LTE antenna, ceramic side toward the back cover |
-| LoRa | T-Deck's own u.FL | T-Deck's own u.FL-to-SMA cable | The case's existing antenna hole (or the printed plug if the LoRa antenna stays inside) |
+| LoRa | T-Deck's own u.FL | T-Deck's own u.FL-to-SMA cable | The case's top-left SMA cut-out, where it already sits (or the printed plug if the LoRa antenna stays inside) |
+
+Both top corners now have identical SMA cut-outs, so either antenna can go in either corner. **Recommended:** 4G
+in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top-left, where it already sits.
+From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
+that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
+which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
 
 ## Version 2: speakerphone
 
