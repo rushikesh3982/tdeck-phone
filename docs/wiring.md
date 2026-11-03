@@ -24,7 +24,7 @@ Four wires soldered to the Grove socket pins on the back of the T-Deck board. No
 |---|---|---|---|---|
 | TX | GPIO43 | → | RX | |
 | RX | GPIO44 | ← | TX | Incoming calls (`RING`) arrive on this wire |
-| VCC (switched 3.3 V) | switched by GPIO10 | → | VDD | Reference for the board's level shifters only (microamps). Does **not** power the modem |
+| VCC (switched 3.3 V) | switched by GPIO10 | → | VDD | Reference for the board's level shifters (microamps). Also tells the modem power switch to turn on (section 2). Does **not** power the modem |
 | GND | — | — | GND | |
 
 Serial settings: 115200 baud, 8N1.
@@ -43,7 +43,7 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 ```
  Cell + ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (+)
           │
-          └── modem switch (slide switch + AO3401) ─► KTRON: MIC29302 pin 4 (OUTPUT)
+          └── modem power switch (AO3401A) ──────────► KTRON: MIC29302 pin 4 (OUTPUT)
                                                         or the + leg of the 330 µF capacitor
  Cell − ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (−)
           │
@@ -61,67 +61,84 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 - The modem runs from 3.4 V to 4.2 V. The firmware turns the modem off cleanly below 3.3 V
   (`AT+CPMVT=1,3300,4300`). The screen treats a battery reading under 3.5 V (BAT_ADC, GPIO4) as "modem off".
 
-### Modem power switch
+### Modem power switch: the modem follows the T-Deck's own switch
 
-**Why it's needed:** the modem's battery wires join at the battery, so the T-Deck's own power switch doesn't turn
-the modem off. The T-Deck also has no spare pin to control the modem's power. Without this switch the modem stays
-on whenever the battery is connected, and the only way to restart a frozen modem would be to open the case.
+**Why it's needed:** the modem's battery wires join at the battery, so without help the T-Deck's own power switch
+would not turn the modem off. The modem would stay on whenever the battery is connected, and a frozen modem could
+only be restarted by opening the case.
 
-**Parts:** AO3401A P-MOSFET (SOT-23), one 100 kΩ resistor, and a small slide switch. (Where the switch goes in the case is decided
-with the back.)
+**How:** the Grove 3.3 V wire (already going to the KTRON's VDD pad) only has power while the T-Deck is on, because
+the firmware keeps GPIO10 high, also in sleep. That 3.3 V switches the modem's battery feed through two small
+MOSFETs. So the **T-Deck's own power switch turns the modem on and off too**. No separate switch and no hole in the
+case.
+
+**Parts:** AO3401A P-MOSFET, AO3400A N-MOSFET (both SOT-23), two 100 kΩ resistors.
 
 ```
-                       AO3401A (P-MOSFET)
-                    ┌──────────────────────┐
- Cell + ─────────┬──┤ S (pin 2)  D (pin 3) ├───────────► KTRON: MIC29302 pin 4 (OUTPUT)
- (24 AWG)        │  │      G (pin 1)       │               or the + leg of the 330 µF capacitor
-                 │  └──────────┬───────────┘               (24 AWG)
-              100 kΩ           │
-                 │             │
-                 └─────────────┤
-                               │  thin wire
-                               │
-                               o
-                                /    slide switch
-                               o
-                               │  thin wire
- Cell − ───────────────────────┴───────────────────────► KTRON GND (the regulator's metal tab)
+                        AO3401A (P-MOSFET)
+                     ┌──────────────────────┐
+ Cell + ──────────┬──┤ S (pin 2)  D (pin 3) ├─────────► KTRON: MIC29302 pin 4 (OUTPUT)
+ (24 AWG)         │  │      G (pin 1)       │              or the + leg of the 330 µF capacitor
+                  │  └──────────┬───────────┘              (24 AWG)
+               100 kΩ           │
+                  │             │
+                  └─────────────┤
+                                │
+                     ┌──────────┴───────────┐
+                     │      D (pin 3)       │
+                     │  AO3400A (N-MOSFET)  │
+ Grove 3.3 V ───┬────┤ G (pin 1)            │
+ (thin wire from│    │      S (pin 2)       │
+  the VDD pad)  │    └──────────┬───────────┘
+             100 kΩ             │
+                │               │
+ Cell − ────────┴───────────────┴──────────────────────► KTRON GND (the regulator's metal tab)
 ```
 
-The resistor goes between the MOSFET's **S** and **G** pins.
+- The first 100 kΩ goes between the AO3401A's **S** and **G** pins.
+- The second 100 kΩ goes between the AO3400A's **G** and **S** pins (that is, to ground).
 
 **How it works:**
 
-- **Switch open = modem OFF.** The 100 kΩ resistor holds the gate at battery voltage, so the MOSFET is off and the
+- **T-Deck on:** the firmware holds GPIO10 high, so the Grove 3.3 V is on. The AO3400A turns on and pulls the
+  AO3401A's gate to ground. The AO3401A turns on and the modem gets the battery.
+- **T-Deck off** (its own power switch): the Grove 3.3 V is gone. The resistors hold both MOSFETs off, and the
   modem gets no power.
-- **Switch closed = modem ON.** The switch pulls the gate to ground, the MOSFET turns on, and the modem gets the
-  battery. The resistor then draws about 40 µA, tiny next to what the modem uses.
-- The slide switch only ever carries that 40 µA, so any small slide switch will do. The
-  modem's current (bursts up to about 1.5–2 A) goes through the MOSFET, which is rated about 4 A.
-- With a 3-pin slide switch, use the **middle pin** and **one outer pin**. Leave the other outer pin unconnected.
-  Which way is "on" depends on which outer pin you pick.
+- **Frozen modem:** switch the T-Deck off and on.
+- **Current used:** while on, the two resistors draw about 75 µA in total, tiny next to the modem. While off,
+  nothing.
+- **The modem's current** (bursts up to about 1.5–2 A) goes through the AO3401A, which is rated about 4 A.
+- **What you give up:** the modem can't be switched off on its own while the T-Deck stays on.
+- **Not checked yet:** whether the T-Deck runs from USB with its switch off. If it does, the modem comes on as
+  well once the firmware sets GPIO10.
 
 **Building it:**
 
-- The AO3401A is tiny (SOT-23, about 3 × 1.4 mm). A SOT-23 adapter board makes it much easier to solder. The
-  resistor can sit on the same adapter board.
-- Put the MOSFET in the back half of the case, in the battery + wire between the pack and the KTRON board. Keep
-  the whole 24 AWG run 10 cm or shorter. Only the two thin wires (gate and ground) run to the switch.
+- Both MOSFETs are tiny (SOT-23, about 3 × 1.4 mm). SOT-23 adapter boards, or a small scrap of perfboard, make
+  them much easier to solder. The resistors can sit on the same board.
+- Put this little board in the back half of the case, in the battery + wire between the pack and the KTRON board.
+  Keep the whole 24 AWG run 10 cm or shorter.
+- Besides the two 24 AWG battery wires, it needs two thin wires: one to the KTRON's VDD pad (Grove 3.3 V) and one
+  to ground.
 - Cover the joints with heat-shrink.
 
 **Checks with the multimeter:**
 
-1. **Before soldering, find the pins.** In diode-test mode, put the red probe on D (pin 3) and the black probe on
-   S (pin 2). It should read about 0.5–0.8 V. With the probes swapped it should read OL. This is the MOSFET's
-   built-in diode, and it tells you which pin is which.
-2. **After wiring it to the KTRON board:** switch on, and the + leg of the 330 µF capacitor reads the battery
-   voltage. Switch off, and it falls to about 0 V within a few seconds.
-3. **With the modem running,** measure from S to D. It should read under about 0.1 V. More than that means the
-   MOSFET isn't fully on.
-4. **If the switch never turns the modem off,** S and D are swapped. The built-in diode is then feeding the modem.
+1. **Before soldering, find the pins** in diode-test mode. Each should read about 0.5–0.8 V one way and OL the
+   other. This is the MOSFET's built-in diode, and it tells you which pin is which.
+   - AO3401A: red probe on D (pin 3), black on S (pin 2).
+   - AO3400A: red probe on S (pin 2), black on D (pin 3).
+2. **After wiring:**
+   - T-Deck on, with the firmware setting GPIO10 high: the + leg of the 330 µF capacitor reads the battery voltage.
+   - T-Deck off: it falls to about 0 V within a few seconds.
+3. **With the modem running,** measure the AO3401A from S to D. It should read under about 0.1 V.
+4. **If the modem stays on with the T-Deck off,** the AO3401A's S and D are swapped. Its built-in diode is then
+   feeding the modem.
+5. **If the modem never comes on,** check the AO3400A's orientation, and that the Grove 3.3 V is really there
+   (GPIO10 high).
 
-**Simpler alternative:** no MOSFET or resistor, just a slide switch rated **at least 1.5 A** directly in the battery +
-wire to the modem. A switch with that rating is usually bigger, so it is harder to fit in the case.
+**Earlier plan (not used):** a separate slide switch pulling the AO3401A's gate to ground. It would need a pocket
+in the case, and the front has none.
 
 ## 3. Earpiece (call audio out)
 

@@ -16,7 +16,8 @@ So:
   Grove socket pins.
 - **Calls run on the modem itself.** An earpiece and a microphone are wired straight to the modem board.
   The T-Deck shows the dialer and SMS screens and plays the ringtone on its own speaker.
-- **One battery powers both boards:** a 1700 mAh cell salvaged from a Micromax Canvas A1.
+- **One battery powers both boards:** a 1700 mAh cell salvaged from a Micromax Canvas A1. The T-Deck's own power
+  switch turns the modem on and off too, through a small MOSFET switch.
 - Everything fits inside the Alley Cat TD1 case (Printables 741124) with a re-laid-out back. The outside size
   of the case does not change.
 
@@ -26,7 +27,7 @@ So:
   screen, keyboard,                                   │      │      └────── GPS patch antenna
   speaker (ringtone)                               earpiece  mic
        │                                              │
-       └─────────── 1700 mAh cell ──── modem switch ──┘
+       └─────────── 1700 mAh cell ──── MOSFET ────────┘
 ```
 
 ## Why India needs a specific modem

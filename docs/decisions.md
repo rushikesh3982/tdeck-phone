@@ -67,16 +67,21 @@ no reverse current. The module's own supply window (3.4–4.2 V) matches a singl
 **Optional for v2:** replace the regulator with a buck-boost set to 3.9 V (the T-Deck MAX does this with an
 SGM6609).
 
-## Modem power switch: manual slide switch + AO3401A P-MOSFET
+## Modem power switch: follows the T-Deck's own switch (decided 3 Nov 2026)
 
-**Why a switch at all:** the modem is wired straight to the battery, so the T-Deck's own power switch doesn't turn it
-off. There is no spare GPIO for the T-Deck to switch or reset the modem itself. Without a switch, the modem stays on
-whenever the battery is connected, and a frozen modem can only be restarted by opening the case.
+**Why a switch at all:** the modem is wired straight to the battery, so on its own it would stay on whenever the
+battery is connected. The T-Deck's power switch wouldn't reach it, and a frozen modem could only be restarted by
+opening the case.
 
-**Why a MOSFET:** a small slide switch is easier to fit in the case. A
-plain slide switch carrying the modem current directly would need a rating of at least 1.5 A. With the MOSFET, the
-small switch carries only about 40 µA through a 100 kΩ resistor, and the MOSFET (rated about 4 A) carries the
+**What:** an AO3401A P-MOSFET in the modem's battery feed, turned on through an AO3400A N-MOSFET by the Grove 3.3 V.
+That wire is already connected to the KTRON's VDD pad, and it only has power while the T-Deck is on (GPIO10 high).
+So the T-Deck's own power switch turns the modem on and off as well. The MOSFET (rated about 4 A) carries the
 modem's current. Circuit in [wiring.md](wiring.md), section 2.
+
+**Not chosen:** a separate slide switch driving the MOSFET, which was the handoff's plan. It needs a pocket in the
+case (the front has none), and it's one more control to remember.
+
+**Trade-off:** the modem can't be switched off on its own while the T-Deck stays on.
 
 ## Sleep and wake-on-call
 

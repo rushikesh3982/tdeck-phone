@@ -12,7 +12,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 | 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | to choose | **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
 | 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | to order | Order 3 (spares) |
 | 6 | Multimeter | any | ~₹250 | to buy | Needed **before** soldering the battery wire to the modem board |
-| 7 | AO3401A P-MOSFET (SOT-23) + 100 kΩ resistor + small slide switch | any | ~₹20 | v1 | Modem power switch, circuit in [docs/wiring.md](docs/wiring.md). The slide switch only carries microamps, so any small one will do. Prefer AO3401**A** (the older AO3401 is weaker at low battery) |
+| 7 | AO3401A P-MOSFET + AO3400A N-MOSFET (both SOT-23) + 2× 100 kΩ resistors | any | ~₹20 | v1 | Modem power switch: the modem follows the T-Deck's own switch, circuit in [docs/wiring.md](docs/wiring.md). Prefer AO3401**A** (the older AO3401 is weaker at low battery) |
 | 8 | M3 heat-set inserts (4.5 mm hole), M3 screws, M2 self-tapping screws | any | — | case stage | Case closure: 2× M3×5 inserts + 2× M3×8 screws. Modem board: 4 more M3 inserts + screws. GPS patch: M2 self-tappers |
 
 **Rough total** for items 1–7: about ₹2,100–2,200, before shipping and fasteners.

@@ -37,7 +37,8 @@ on 3 Nov 2026 found none:
 - the "Switch" file is the slider for the T-Deck's own power switch;
 - the blind slot in the top-right corner has no opening to the outside.
 
-Where the modem switch goes is decided with the back.
+No separate modem switch is needed anyway: the modem now follows the T-Deck's own power switch
+(see [wiring.md](wiring.md), section 2).
 
 The **X back** gives 23 mm of depth behind the T-Deck, enough for the modem board and battery.
 
@@ -67,7 +68,7 @@ Full details are in [case/README.md](../case/README.md).
   Grove *plug*. This project solders wires instead of using a plug, so that slot is replaced with a mirror of the
   LoRa SMA cut-out (6.5 mm hole + hex recess) for the LTE antenna. Dry-fit check: the antenna connector body must
   clear the empty Grove socket housing under it.
-- **Modem power switch:** the front has no pocket for it. Decided with the back.
+- **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
 
 ## Back changes
 

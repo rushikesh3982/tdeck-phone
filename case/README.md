@@ -31,8 +31,9 @@ that points toward your mouth when the phone is at your right ear.
 - **Pocket:** 6.3 mm round, opening on the inside of the case. Its top is pointed (a "teardrop") so it prints
   without supports.
 - **Skin and sound hole:** 1.2 mm of plastic is left at the outside, with a 1.5 mm sound hole through it.
-- **Fitting the mic:** push the Sunrom 6027 (6 × 2.7 mm) in from inside until it touches the skin. Hold it with a
-  dab of glue.
+- **Fitting the mic, before the T-Deck goes in:** the pocket opens on the inside face of the bottom wall, which
+  the T-Deck covers once it's in. Push the Sunrom 6027 (6 × 2.7 mm) in from inside until it touches the skin. Hold
+  it with a dab of glue, lay its wires in the groove, then fit the T-Deck.
 - **Wire groove:** a 2.4 mm groove runs from the pocket up the inside wall and through the mating lip, so the
   two mic wires reach the back half without the T-Deck pinching them.
 - **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
