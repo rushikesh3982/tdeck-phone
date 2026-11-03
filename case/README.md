@@ -14,6 +14,9 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 The other parts (Switch, Antenna Plug, Reset Button) are unchanged, so print those from the Printables download.
 
+**Assembly diagrams** (what every cut-out is for, and where each part goes) and the step-by-step assembly order are in
+[../docs/assembly.md](../docs/assembly.md).
+
 ## Front: what changed
 
 Only these changes were made. The outer size and everything else are exactly as the original.

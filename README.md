@@ -44,6 +44,7 @@ fallback and GNSS.
 | [docs/wiring.md](docs/wiring.md) | Every wire: data link, battery, earpiece, mic, antennas |
 | [docs/bring-up.md](docs/bring-up.md) | First power-on checks and the modem commands |
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
+| [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
 | [case/](case/) | Modified case files to print (CC BY-SA 4.0), starting with the front |
 
