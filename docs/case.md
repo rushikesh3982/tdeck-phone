@@ -69,52 +69,46 @@ Full details are in [case/README.md](../case/README.md).
 
 ## Back changes
 
-**Draft ready, not for printing yet (3 Nov 2026):** [case/back-modem-gps.stl](../case/back-modem-gps.stl), made by
-[case/scripts/make_back.py](../case/scripts/make_back.py) from the X back. Before printing, it needs measurements
-from the real parts and the SIM slit (see [case/README.md](../case/README.md)).
+**First version ready to print and dry-fit (3 Nov 2026):** [case/back-modem-gps.stl](../case/back-modem-gps.stl),
+made by [case/scripts/make_back.py](../case/scripts/make_back.py) from the X back. Details and pictures are in
+[case/README.md](../case/README.md).
 
 KTRON board (from KTRON's drawing): **54.33 × 57.23 mm**, four 3.2 mm holes on a **47.90 × 50.70 mm** rectangle,
 about 3.2 mm in from each edge. The 4G socket (U.FL1) is on the top edge. The GPS socket (U.FL2) is on the left
-edge, low down. The SIM card slides in from the bottom edge, at the end nearest the VDD/RX/TX header.
+edge, low down. The micro-SIM (push-push holder on the solder side) slides in from the bottom edge, at the end
+nearest the VDD/RX/TX header.
 
-**Done in the draft:**
-
-- **Modem board** on four standoffs with M3 heat-set insert holes (4.5 mm). The standoffs are 7 mm wide, with a
-  10 mm foot for stiffness. Their tops are 14 mm above the inside floor (the 330 µF capacitor is about 13 mm,
-  plus 1 mm).
-  - **Placement:** top half, **component side toward the back cover**, so the capacitors hang into the
-    standoff gap.
+- **Modem board** on four 9 mm standoffs with M3 heat-set insert holes (4.5 mm), 7 mm wide with a 10 mm foot.
+  - **Placement:** top half, component side toward the back cover.
   - **Orientation:** the SIM edge faces the phone's **left** side. That puts the 4G socket on the right, toward
     the planned 4G antenna corner, and the GPS socket near the bottom, right above the patch.
-  - **Fixing:** the board is held by M3 × 6 screws from the solder side.
+  - **Fixing:** M3 × 6 screws from the solder side.
+  - **Capacitor swap:** the 9 mm height needs the KTRON's two 11 mm capacitors replaced by radial ones laid flat
+    ([bring-up.md](bring-up.md), phase B).
+- **SIM slit** in the left wall, 15 × 1.8 mm, flared on the outside, in line with the SIM holder. It is fully in the
+  back panel, 4.65 mm below the rim.
 - **GPS patch cradle** in the bottom half, about 90 mm from the 4G antenna corner.
-  - A 25.6 mm square fence, with corner ledges that hold the patch's board 4.5 mm off the floor. The ceramic
-    faces the back cover with a 0.5 mm air gap.
-  - A cable notch in every side, so the patch can face any way.
-  - The patch is held with a dab of glue, or pressed down by foam.
-  - The sizes are estimated from KTRON's photos until the real patch is measured.
+  - A 27 mm square opening with a 7 mm fence, for the measured 26 × 26 mm patch with its 25 × 25 × 4 mm ceramic.
+  - The ceramic faces down onto four 0.5 mm pads.
+  - There is a cable notch in every side, and the patch is fixed with glue.
+- **Battery** (65 × 55 × 9 mm) lies over the board, its long side top to bottom, with its connector end over the
+  patch.
 
-**Still to do:**
-
-- **SIM slit:** in the left side wall, in line with the SIM holder (about 52–65 mm up from the bottom). The slit
-  sits right at the joint between front and back, so it needs the card's exact height (see
-  [case/README.md](../case/README.md)).
-- **Battery:** where it sits depends on its size. It goes between the board and the T-Deck, or over the patch.
-- **4G antenna** cut-out in the front's top-right corner (postponed).
+**Still to do:** the 4G antenna cut-out in the front's top-right corner (postponed). After the dry fit, maybe a
+retainer for the battery.
 
 ### Depth check (23 mm available)
 
-Measured from the inside floor of the back. The T-Deck (11 mm thick) leaves 23 mm.
+Measured from the inside floor of the back. The T-Deck (11 mm thick, LilyGO's figure) leaves 23 mm.
 
 | Stack | Total |
 |---|---|
-| Modem board: 14 standoff + 1.6 board + 1 foam + 5 battery | **21.6 mm** |
-| Same, if the battery also lies on the SIM holder (~1.5–2 mm on the solder side) | **~23.5 mm: too much.** Keep the battery off the SIM holder |
-| Modem board with low-profile capacitors (8 mm standoffs) | **15.6 mm** |
-| GPS patch: 0.5 air gap + ~8 patch + 5 battery | **~13.5 mm** |
+| Modem board: 9 standoffs + 1.6 board + 1.5 SIM holder + 1 foam + 9 battery | **22.1 mm** |
+| Same with the stock 11 mm capacitors (12 mm standoffs) | **25.1 mm: doesn't fit**, hence the capacitor swap |
+| GPS patch: 0.5 pads + 4 ceramic + 1.6 board + ~2.5 shield | **~8.6 mm** (the battery passes above it) |
 
 ## Order of work
 
-1. Measure the real parts (see [case/README.md](../case/README.md)), then the SIM slit is added.
-2. Print the mic test coupon, then the front and back.
-3. Dry-fit the T-Deck, modem board, battery, patch and antennas.
+1. Print the mic test coupon, then the front and back.
+2. Swap the KTRON's two tall capacitors after the 5 V bench tests ([bring-up.md](bring-up.md), phase B).
+3. Dry-fit the T-Deck, modem board, battery, patch and antennas, and check that a SIM goes in through the slit.

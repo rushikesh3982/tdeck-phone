@@ -34,7 +34,8 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 |---|---|
 | LilyGO T-Deck (base model, ESP32-S3FN16R8) | The phone itself |
 | CP2102 USB-serial adapter (with 3.3 V pin) | Bench tests from the Mac before the firmware exists ([docs/bring-up.md](docs/bring-up.md)) |
-| Micromax Canvas A1 (AQ4502), salvaged: 1700 mAh battery | Powers both boards |
+| Micromax Canvas A1 (AQ4502), salvaged: 1700 mAh battery, 65 × 55 × 9 mm | Powers both boards |
+| Radial electrolytics: 470 µF 16 V (6–7 × 12 mm) and 100 µF 16 V (4–5 × 8 mm) | Replace the KTRON's 11 mm tall C11 and C17, laid flat, so the board fits under the battery |
 | Micromax Canvas A1, salvaged: earpiece receiver (32 Ω, from the top of the phone) | Call earpiece |
 | Micromax Canvas A1, salvaged: rear loudspeaker (8 Ω) and coin vibration motor | Kept for version 2 |
 | Vanix Tracx-1b (Quectel EC200U-CN) | Not used in v1. No reachable audio pins. Keep for data/GPS tests or sell |
@@ -53,4 +54,3 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 | Speakerphone, option A: SmartElex Digital Speaker Module (8002 amp + 8 Ω speaker) | Robu | ₹189 | 40 × 40 × 14 mm, 2–5.5 V |
 | Speakerphone, option B: Waveshare 2030 cavity speaker (8 Ω 2 W) + PAM8403 amp board | ThinkRobotics | ₹300 + amp | Speaker 20 × 30 × 5.5 mm |
 | Buck-boost regulator set to 3.9 V (optional) | — | — | Replaces the modem board's LDO (the T-Deck MAX does this with an SGM6609) |
-| Low-profile capacitors (optional) | — | — | Lets the modem board standoffs drop from 14 mm to 8 mm |

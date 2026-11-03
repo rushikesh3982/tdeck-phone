@@ -1,4 +1,4 @@
-"""Add KTRON modem standoffs and a GPS patch cradle to the Alley Cat TD1 X back.
+"""Add KTRON modem standoffs, a SIM slit and a GPS patch cradle to the Alley Cat TD1 X back.
 
 Usage:
     python make_back.py "<Alley Chat TD1 X Back Inside Cat Edition.stl>" <output.stl> [layout.png]
@@ -6,14 +6,21 @@ Usage:
 Needs: numpy, trimesh, shapely, manifold3d (and matplotlib for the layout picture).
 
 Coordinates are the original STL's own (mm). The back is modelled face-down: the outside
-face is at z = -27, the inside floor surface at z = -25.0, and the rim at z = -9. Seen from
-inside the back, +x is the phone's RIGHT side and -x its LEFT side (as you look at the
-screen). +y is the top of the phone.
+face is at z = -27, the inside floor surface at z = -25.0, and the rim at z = -9 (where the
+front's top face, z = 4.3 in the front's file, meets it). Seen from inside the back, +x is the
+phone's RIGHT side and -x its LEFT side (as you look at the screen). +y is the top of the phone.
+The left side wall runs from x = -4 (outside) to x = -2 (inside).
 
 KTRON board (KSTM1548), from KTRON's drawing: 54.33 x 57.23 mm, four 3.2 mm holes on a
-47.90 x 50.70 mm rectangle. The 4G socket (U.FL1) is on the top edge, and the SIM card slides
-in from the bottom edge. The board is mounted component side toward the back cover, turned
-so that its SIM edge faces the phone's LEFT side.
+47.90 x 50.70 mm rectangle. The 4G socket (U.FL1) is on the top edge, and the micro-SIM card
+slides in from the bottom edge (push-push holder on the solder side, at the J1 header end).
+The board is mounted component side toward the back cover, turned so that its SIM edge faces
+the phone's LEFT side.
+
+Depth (inside floor to T-Deck back, 23 mm with LilyGO's 11 mm T-Deck):
+9 standoff + 1.6 board + 1.5 SIM holder + 1 foam + 9 battery = 22.1 mm.
+The standoffs assume the stock 11 mm SMD capacitors are replaced by radial ones laid flat:
+470 uF 16 V (<= 7 mm across) for C11, 100 uF 16 V (<= 5 mm) for C17.
 """
 import sys
 
@@ -22,18 +29,27 @@ import trimesh
 from shapely.geometry import Point, Polygon, box
 
 FLOOR_Z = -25.0            # inside floor surface
+WALL_IN_X, WALL_OUT_X = -2.0, -4.0   # left side wall, inside and outside faces
 
 # ---- KTRON board ------------------------------------------------------------
 BOARD_W, BOARD_H = 54.33, 57.23            # drawing: u across (J1 header at u=0), v down (U.FL1 at v=0)
 HOLES_UV = [(3.215, 3.265), (51.115, 3.265), (3.215, 53.965), (51.115, 53.965)]
-X0 = 56.53                 # back x of the board's U.FL1 edge (v = 0)
+SIM_EDGE_X = -1.4          # board's SIM edge, 0.6 mm from the left wall
+X0 = SIM_EDGE_X + BOARD_H  # back x of the board's U.FL1 edge (v = 0)
 Y0 = 98.30                 # back y of the board's J3 edge (u = BOARD_W), just below the screw columns
-STANDOFF_H = 14.0          # tallest part (330 uF cap, ~13 mm) + 1 mm
-STANDOFF_D = 7.0           # the 100 uF cap is ~2 mm from one hole, so no wider than this
+STANDOFF_H = 9.0           # tallest part on the component side: 470 uF laid flat (~7 mm) + ~1 mm under it + 1 mm
+STANDOFF_D = 7.0
 INSERT_D = 4.5             # M3 x 5 heat-set insert hole
 INSERT_DEPTH = 6.0
 FLARE_D = 10.0             # wider foot so the column stays stiff while the insert is heated in
-FLARE_H = 4.0              # (the caps hang down to 1 mm above the floor, and still clear this)
+FLARE_H = 2.5
+PCB_T = 1.6
+
+# ---- SIM slit -----------------------------------------------------------------
+SIM_CARD_U = 14.6          # card centre line across the board (holder spans u 7.3-21.9 on KTRON's drawing)
+CARD_ABOVE_BOARD = 0.75    # card mid-plane above the solder side, standard 1.5 mm push-push holder
+SLIT_W, SLIT_H = 15.0, 1.8         # inside opening (card is 12 x 0.8 mm)
+SLIT_FLARE = 0.6                   # extra on every side at the outside face, as a lead-in
 
 
 def board_to_back(u, v):
@@ -41,19 +57,20 @@ def board_to_back(u, v):
     return X0 - v, Y0 - (BOARD_W - u)
 
 
-# ---- GPS patch (KTRON KSTA1417) -------------------------------------------
-# Estimated from KTRON's photos until measured: 25 x 25 mm PCB, ceramic ~22.7 mm square and
-# ~4 mm thick on one face, metal shield on the other, ~8 mm overall.
+# ---- GPS patch (KTRON KSTA1417), measured ----------------------------------
+# 26 x 26 mm board, 25 x 25 x 4 mm ceramic (sits slightly crooked), no mounting holes,
+# cable leaves the board from the middle of one side, 95 mm long.
 PATCH_CENTRE = (21.5, 26.0)
-PATCH_PCB = 25.0
-FIT = 0.3                  # clearance each side
+PATCH_PCB = 26.0
+OPENING = 27.0             # room for the board and a slightly rotated ceramic
 FENCE_T = 1.2
 CERAMIC_H = 4.0
-AIR_GAP = 0.5              # keep the ceramic just off the cover
-PCB_T = 1.0
-FENCE_ABOVE_PCB = 1.0
-GUSSET_LEG = 2.8           # corner ledges the PCB rests on; clear of the ceramic's rounded corners
+AIR_GAP = 0.5              # the ceramic rests on four small pads, just off the cover
+PAD = 3.0                  # pad size, placed under the ceramic near its corners
+PAD_OFFSET = 9.5           # pad centres from the patch centre
+FENCE_H = 7.0              # above the floor: 0.5 gap + 4 ceramic + 1.6 board + ~0.9
 CABLE_NOTCH_W = 4.0
+CABLE_NOTCH_FROM = 4.2     # notch bottom above the floor (just under the patch board)
 
 
 def prism_z(poly, z0, z1):
@@ -62,57 +79,76 @@ def prism_z(poly, z0, z1):
     return m
 
 
-def build_parts():
+def standoffs():
     adds, cuts = [], []
     base_z = FLOOR_Z - 0.6                     # sink into the 2 mm floor (outer grooves start at -26)
     top_z = FLOOR_Z + STANDOFF_H
+    k = FLARE_D / (FLARE_D - STANDOFF_D)
     for u, v in HOLES_UV:
         x, y = board_to_back(u, v)
         adds.append(prism_z(Point(x, y).buffer(STANDOFF_D / 2, quad_segs=24), base_z, top_z))
-        foot = trimesh.creation.cone(radius=FLARE_D / 2, height=2 * FLARE_H * (FLARE_D / (FLARE_D - STANDOFF_D)) / 2,
-                                     sections=48)
-        # cone tip above; cut it to a frustum from the floor up to FLARE_H
+        foot = trimesh.creation.cone(radius=FLARE_D / 2, height=FLARE_H * k, sections=48)
         foot = trimesh.boolean.intersection([foot, trimesh.creation.box(bounds=[[-6, -6, 0], [6, 6, FLARE_H]])],
                                             engine="manifold")
         foot.apply_translation([x, y, FLOOR_Z - 0.01])
         adds.append(foot)
         adds.append(prism_z(Point(x, y).buffer(FLARE_D / 2, quad_segs=24), base_z, FLOOR_Z))
+        if x < 10:   # columns next to the left wall: join them to it, no thin crevice
+            adds.append(prism_z(box(WALL_IN_X - 0.5, y - STANDOFF_D / 2, x, y + STANDOFF_D / 2), base_z, top_z))
         cuts.append(prism_z(Point(x, y).buffer(INSERT_D / 2, quad_segs=24), top_z - INSERT_DEPTH, top_z + 1))
+    return adds, cuts
 
+
+def sim_slit():
+    _, yc = board_to_back(SIM_CARD_U, BOARD_H)
+    zc = FLOOR_Z + STANDOFF_H + PCB_T + CARD_ABOVE_BOARD
+    pts = []
+    for x, w, h in ((WALL_IN_X + 0.1, SLIT_W, SLIT_H),
+                    (WALL_OUT_X - 0.6, SLIT_W + 2 * SLIT_FLARE * 1.3, SLIT_H + 2 * SLIT_FLARE * 1.3)):
+        for sy in (-1, 1):
+            for sz in (-1, 1):
+                pts.append([x, yc + sy * w / 2, zc + sz * h / 2])
+    funnel = trimesh.convex.convex_hull(np.array(pts))
+    straight = trimesh.creation.box(bounds=[[WALL_IN_X - 0.2, yc - SLIT_W / 2, zc - SLIT_H / 2],
+                                            [WALL_IN_X + 0.6, yc + SLIT_W / 2, zc + SLIT_H / 2]])
+    return [funnel, straight], (yc, zc)
+
+
+def patch_cradle():
+    adds, cuts = [], []
     cx, cy = PATCH_CENTRE
-    inner = PATCH_PCB + 2 * FIT
-    outer = inner + 2 * FENCE_T
-    ledge_z = FLOOR_Z + AIR_GAP + CERAMIC_H
-    fence_top = ledge_z + PCB_T + FENCE_ABOVE_PCB
+    base_z = FLOOR_Z - 0.6
+    inner, outer = OPENING, OPENING + 2 * FENCE_T
     ring = box(cx - outer / 2, cy - outer / 2, cx + outer / 2, cy + outer / 2).difference(
         box(cx - inner / 2, cy - inner / 2, cx + inner / 2, cy + inner / 2))
-    adds.append(prism_z(ring, base_z, fence_top))
-    h = inner / 2
+    adds.append(prism_z(ring, base_z, FLOOR_Z + FENCE_H))
     for sx in (-1, 1):
         for sy in (-1, 1):
-            corner = (cx + sx * h, cy + sy * h)
-            tri = Polygon([corner, (corner[0] - sx * GUSSET_LEG, corner[1]), (corner[0], corner[1] - sy * GUSSET_LEG)])
-            adds.append(prism_z(tri.buffer(0.01), base_z, ledge_z))
-    # cable notches in the middle of every side, down to the PCB level, so the patch can face any way
+            px, py = cx + sx * PAD_OFFSET, cy + sy * PAD_OFFSET
+            adds.append(prism_z(box(px - PAD / 2, py - PAD / 2, px + PAD / 2, py + PAD / 2), base_z, FLOOR_Z + AIR_GAP))
+    h = inner / 2
+    w = CABLE_NOTCH_W / 2
     for dx, dy in ((0, 1), (0, -1), (1, 0), (-1, 0)):
         nx, ny = cx + dx * (h + FENCE_T / 2), cy + dy * (h + FENCE_T / 2)
-        w = CABLE_NOTCH_W / 2
         notch = box(nx - (FENCE_T if dx else w), ny - (FENCE_T if dy else w),
                     nx + (FENCE_T if dx else w), ny + (FENCE_T if dy else w))
-        cuts.append(prism_z(notch, ledge_z, fence_top + 1))
+        cuts.append(prism_z(notch, FLOOR_Z + CABLE_NOTCH_FROM, FLOOR_Z + FENCE_H + 1))
     return adds, cuts
 
 
 def main(src, dst, picture=None):
     back = trimesh.load(src, force="mesh")
     assert back.is_watertight
-    adds, cuts = build_parts()
-    out = trimesh.boolean.union([back] + adds, engine="manifold")
-    out = trimesh.boolean.difference([out, trimesh.boolean.union(cuts, engine="manifold")], engine="manifold")
+    a1, c1 = standoffs()
+    a2, c2 = patch_cradle()
+    c3, (slit_y, slit_z) = sim_slit()
+    out = trimesh.boolean.union([back] + a1 + a2, engine="manifold")
+    out = trimesh.boolean.difference([out, trimesh.boolean.union(c1 + c2 + c3, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     out.export(dst)
     print(f"added {out.volume - back.volume:.1f} mm^3, watertight {out.is_watertight}, "
-          f"bodies {len(out.split(only_watertight=False))}")
+          f"bodies {len(out.split(only_watertight=False))}; SIM slit centre y {slit_y:.2f}, z {slit_z:.2f} "
+          f"({slit_z - FLOOR_Z:.2f} mm above the floor, {-9.0 - slit_z:.2f} mm below the rim)")
     if picture:
         draw_layout(out, picture)
 
@@ -124,32 +160,31 @@ def draw_layout(mesh, path):
     import matplotlib.pyplot as plt
     from matplotlib.patches import Circle, Polygon as MPoly
 
-    sec = trimesh.intersections.mesh_plane(mesh, [0, 0, 1], [0, 0, -12.0])
     fig, ax = plt.subplots(figsize=(8, 11), dpi=110)
-    for s in sec:
-        ax.plot(s[:, 0], s[:, 1], color="0.6", lw=0.6)
-    sec2 = trimesh.intersections.mesh_plane(mesh, [0, 0, 1], [0, 0, FLOOR_Z + 2.0])
-    for s in sec2:
-        ax.plot(s[:, 0], s[:, 1], color="0.25", lw=0.8)
+    for z, col in ((-12.0, "0.6"), (FLOOR_Z + 2.0, "0.25")):
+        for s in trimesh.intersections.mesh_plane(mesh, [0, 0, 1], [0, 0, z]):
+            ax.plot(s[:, 0], s[:, 1], color=col, lw=0.7)
 
     def bpoly(pts, **kw):
         ax.add_patch(MPoly([board_to_back(u, v) for u, v in pts], closed=True, **kw))
 
     bpoly([(0, 0), (BOARD_W, 0), (BOARD_W, BOARD_H), (0, BOARD_H)], fill=False, ec="tab:blue", lw=1.5)
     bpoly([(7.3, 41.0), (21.9, 41.0), (21.9, 57.23), (7.3, 57.23)], fc="tab:orange", alpha=0.35, ec="tab:orange")
-    for (u, v, r, name) in [(44.4, 28.8, 5.4, "330 uF"), (42.85, 48.1, 4.45, "100 uF")]:
+    for (u, v, r, name) in [(44.4, 28.8, 5.4, "C11\n(470 µF\nflat)"), (42.85, 48.1, 4.45, "C17")]:
         x, y = board_to_back(u, v)
-        ax.add_patch(Circle((x, y), r, fc="tab:red", alpha=0.25, ec="tab:red"))
-        ax.text(x, y, name, ha="center", va="center", fontsize=7)
+        ax.add_patch(Circle((x, y), r, fc="tab:red", alpha=0.18, ec="tab:red", ls="--"))
+        ax.text(x, y, name, ha="center", va="center", fontsize=6)
     for (u, v, name) in [(24.8, 3.6, "U.FL1 (4G)"), (2.2, 41.5, "U.FL2 (GPS)")]:
         x, y = board_to_back(u, v)
         ax.plot(x, y, "s", color="tab:green")
         ax.text(x, y - 2.5, name, ha="center", fontsize=7, color="tab:green")
-    x, y = board_to_back(14.6, 57.23)
-    ax.annotate("SIM card goes in here", (x, y), (x + 8, y - 9), fontsize=7,
-                arrowprops=dict(arrowstyle="->", color="tab:orange"), color="tab:orange")
+    _, yc = board_to_back(SIM_CARD_U, BOARD_H)
+    ax.plot([-4.5, -4.5], [yc - SLIT_W / 2, yc + SLIT_W / 2], color="tab:orange", lw=4)
+    ax.annotate("SIM slit (in the wall)", (-4.5, yc), (8, yc - 12), fontsize=7, color="tab:orange",
+                arrowprops=dict(arrowstyle="->", color="tab:orange"))
     cx, cy = PATCH_CENTRE
-    ax.add_patch(MPoly([(cx - 12.5, cy - 12.5), (cx + 12.5, cy - 12.5), (cx + 12.5, cy + 12.5), (cx - 12.5, cy + 12.5)],
+    hp = PATCH_PCB / 2
+    ax.add_patch(MPoly([(cx - hp, cy - hp), (cx + hp, cy - hp), (cx + hp, cy + hp), (cx - hp, cy + hp)],
                        closed=True, fc="tab:purple", alpha=0.2, ec="tab:purple"))
     ax.text(cx, cy, "GPS patch\n(ceramic down)", ha="center", va="center", fontsize=7)
     for u, v in HOLES_UV:

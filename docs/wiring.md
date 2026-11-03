@@ -44,7 +44,7 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
  Cell + ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (+)
           │
           └── modem power switch (AO3401A) ──────────► KTRON: MIC29302 pin 4 (OUTPUT)
-                                                        or the + leg of the 330 µF capacitor
+                                                        or the + pad of C11 (bulk capacitor)
  Cell − ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (−)
           │
           └──────────────────────────────────────► KTRON GND (the regulator's metal tab)
@@ -55,8 +55,11 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 - **Never feed the KTRON VCC pad while the cell is connected.**
 - The board's MIC29302 regulator (K1) stays on the board but does nothing. Its datasheet allows the output to sit
   above the input with no reverse current, and its enable pin is low when nothing is on VCC.
-- **Before soldering:** with the multimeter, check that the pad you chose has continuity to the + leg of the
-  330 µF capacitor and **not** to VCC.
+- **Before soldering:** with the multimeter, check that the pad you chose has continuity to the + pad of C11
+  and **not** to VCC.
+- **C11 is the bulk capacitor** next to the modem chip. It was a 330 µF 50 V SMD can, 11 mm tall, which is too tall to
+  fit under the battery. It gets replaced by a 470 µF 16 V radial capacitor laid flat (see
+  [bring-up.md](bring-up.md), phase B).
 - The T-Deck's own charger charges the cell over USB-C and stops at 4.2 V, which suits this cell.
 - The modem runs from 3.4 V to 4.2 V. The firmware turns the modem off cleanly below 3.3 V
   (`AT+CPMVT=1,3300,4300`). The screen treats a battery reading under 3.5 V (BAT_ADC, GPIO4) as "modem off".
@@ -78,7 +81,7 @@ case.
                         AO3401A (P-MOSFET)
                      ┌──────────────────────┐
  Cell + ──────────┬──┤ S (pin 2)  D (pin 3) ├─────────► KTRON: MIC29302 pin 4 (OUTPUT)
- (24 AWG)         │  │      G (pin 1)       │              or the + leg of the 330 µF capacitor
+ (24 AWG)         │  │      G (pin 1)       │              or the + pad of C11 (bulk capacitor)
                   │  └──────────┬───────────┘              (24 AWG)
                100 kΩ           │
                   │             │
@@ -129,7 +132,7 @@ case.
    - AO3401A: red probe on D (pin 3), black on S (pin 2).
    - AO3400A: red probe on S (pin 2), black on D (pin 3).
 2. **After wiring:**
-   - T-Deck on, with the firmware setting GPIO10 high: the + leg of the 330 µF capacitor reads the battery voltage.
+   - T-Deck on, with the firmware setting GPIO10 high: the + pad of C11 reads the battery voltage.
    - T-Deck off: it falls to about 0 V within a few seconds.
 3. **With the modem running,** measure the AO3401A from S to D. It should read under about 0.1 V.
 4. **If the modem stays on with the T-Deck off,** the AO3401A's S and D are swapped. Its built-in diode is then

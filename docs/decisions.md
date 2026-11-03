@@ -57,15 +57,33 @@ until the board is known to be good. The VCC wire comes out before the battery g
 
 ## Power: one salvaged cell for both boards
 
-**Why:** the 1700 mAh Micromax pack is already owned, about 5 mm thick and has its own protection circuit. The
+**Why:** the 1700 mAh Micromax pack is already owned (65 × 55 × 9 mm) and has its own protection circuit. The
 T-Deck's charger stops at 4.2 V, which suits it.
 
-**Modem feed:** straight from the cell to the modem board's regulator output (MIC29302 pin 4, or the + leg of
-the 330 µF capacitor). The regulator stays fitted and does nothing. Its datasheet allows output above input with
+**Modem feed:** straight from the cell to the modem board's regulator output (MIC29302 pin 4, or the + pad of
+C11, the bulk capacitor). The regulator stays fitted and does nothing. Its datasheet allows output above input with
 no reverse current. The module's own supply window (3.4–4.2 V) matches a single lithium cell.
 
 **Optional for v2:** replace the regulator with a buck-boost set to 3.9 V (the T-Deck MAX does this with an
 SGM6609).
+
+## KTRON's tall capacitors swapped for radial ones laid flat (decided 3 Nov 2026)
+
+**Why:** the battery turned out to be 9 mm thick, not 5 mm. The board's two SMD electrolytics (C11 330 µF 50 V and
+C17 100 µF 50 V) are 11 mm tall and hang below the board, so with them the stack would be
+12 + 1.6 + 1.5 + 9 = 24.1 mm, more than the 23 mm available.
+
+**What:** owned radial capacitors laid flat, glued to the board:
+
+- **C11 → 470 µF 16 V** (6–7 × 12 mm). It sits on the modem's battery rail, which never exceeds 4.2 V, and the
+  extra capacitance helps with transmit bursts.
+- **C17 → 100 µF 16 V** (4–5 × 8 mm), or left off. It is probably the regulator's input on VCC, which is unused on
+  battery power. 16 V also covers a 12 V supply if VCC is ever used again.
+
+The standoffs drop to 9 mm and the SIM slit ends up fully inside the back's wall.
+
+**Not chosen:** SMD 6.3 V parts (330 µF 6.3 × 7.7 mm, 100 µF 5 × 5.3 mm). They would fit the old pads, but a 6.3 V
+capacitor is unsafe on VCC, and they would have to be bought. A thinner battery was not chosen either.
 
 ## Modem power switch: follows the T-Deck's own switch (decided 3 Nov 2026)
 
@@ -139,7 +157,7 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 
 **Why:** the Standard front keeps the T-Deck speaker pocket. The GPS version's module pocket becomes the earpiece
 pocket. The X back gives 23 mm of depth, enough for the
-modem board on 14 mm standoffs plus the battery (21.6 mm stack).
+modem board on 9 mm standoffs plus the 9 mm battery (22.1 mm stack).
 
 **Rejected:** Slim front (no speaker pocket), Nuts and TBall variants.
 

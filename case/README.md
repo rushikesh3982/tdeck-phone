@@ -10,7 +10,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 |---|---|---|
 | [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille and mic pocket | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
-| [back-modem-gps.stl](back-modem-gps.stl) | **Draft, don't print yet.** Back with modem standoffs and GPS patch cradle | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
+| [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit and GPS patch cradle (first version: print and dry-fit) | `Alley Chat TD1 X Back Inside Cat Edition.stl` |
 
 The other parts (Switch, Antenna Plug, Reset Button) are unchanged, so print those from the Printables download.
 
@@ -43,7 +43,7 @@ that points toward your mouth when the phone is at your right ear.
 
 ![Close-ups from inside: mic pocket with sound hole and wire groove (left), earpiece slot in the GPS pocket (right)](images/front-cuts-inside.png)
 
-## Back: what changed (draft)
+## Back: what changed
 
 ![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
 
@@ -52,33 +52,40 @@ that points toward your mouth when the phone is at your right ear.
 **Modem standoffs.** Four columns at the KTRON board's holes.
 
 - **Board:** the KTRON is 54.33 × 57.23 mm, with its holes on a 47.90 × 50.70 mm rectangle.
-- **Columns:** 7 mm wide, with a 10 mm foot. Their tops are 14 mm above the inside floor.
+- **Columns:** 7 mm wide, with a 10 mm foot, and their tops 9 mm above the inside floor. The two next to the left
+  wall are joined to it.
 - **Inserts:** each column has a 4.5 mm hole, 6 mm deep, for an M3 × 5 heat-set insert. The board is held with
   M3 × 6 screws from its solder side.
 - **Board orientation:** component side down toward the back cover. The SIM edge faces the phone's left side,
-  the 4G socket faces right, and the GPS socket is at the bottom, just above the patch.
+  0.6 mm from the wall. The 4G socket faces right, and the GPS socket is at the bottom, just above the patch.
+- **9 mm only works after the capacitor swap.** The KTRON's two 11 mm tall capacitors are replaced by radial
+  ones laid flat (see [../docs/bring-up.md](../docs/bring-up.md), phase B). Nothing on the board's component side
+  may stand more than 8 mm high.
 
-**GPS patch cradle.** A 25.6 mm square fence near the bottom.
+**SIM slit.** Through the left side wall, in line with the SIM holder.
 
-- **Ledges:** the patch's board rests on four corner ledges, ceramic side down, 0.5 mm clear of the floor.
-- **Cable:** there is a cable notch in each side.
-- **Fixing:** a dab of glue, or foam pressed down by the battery.
+- **Size:** 15 × 1.8 mm on the inside, flaring to about 16 × 3 mm on the outside so the card finds its way in.
+- **Position:** its centre is 11.35 mm above the inside floor and 4.65 mm below the rim, so it is entirely in the
+  back panel. That is the card's height in a standard 1.5 mm push-push micro-SIM holder sitting on a board on 9 mm
+  standoffs.
+- **Using it:** push the card in until it clicks, using a fingernail or a SIM pin. Push again to release it, then
+  pull it out.
+- **SIM size:** a nano-SIM in a micro adapter can catch in push-push holders. A fresh multi-cut SIM, popped out at
+  micro size, is safer.
 
-### Measurements needed before printing the back (and adding the SIM slit)
+![Left side of the back from outside, showing the SIM slit](images/back-sim-slit.png)
 
-1. **330 µF capacitor height** above the board, the tallest part. The standoffs assume about 13 mm.
-2. **SIM holder:**
-   - Its height above the board.
-   - Push-push (click in, click out) or not?
-   - With a SIM locked in, how far does the card stick out past the board's edge?
-3. **GPS patch:**
-   - Board size.
-   - Ceramic size and thickness.
-   - Total thickness.
-   - Mounting-hole positions.
-   - Cable length.
-4. **T-Deck thickness**, screen face to back. 11 mm is assumed.
-5. **Battery** length × width × thickness.
+**GPS patch cradle.** A fence with a 27 mm square opening near the bottom. It is sized for the measured patch:
+26 × 26 mm board and a 25 × 25 × 4 mm ceramic that sits slightly crooked.
+
+- **Pads:** the ceramic faces down and rests on four 3 mm pads, 0.5 mm high, so it stays just off the cover.
+- **Fence:** 7 mm tall.
+- **Cable notches:** 4 mm wide, in every side, for the cable that leaves the middle of one side of the board.
+- **Fixing:** a dab of hot glue at two corners. The 95 mm cable easily reaches the GPS socket about 6 mm away.
+
+**Depth** (inside floor to the T-Deck's back, 23 mm with LilyGO's 11 mm T-Deck): 9 standoffs + 1.6 board + 1.5 SIM
+holder + 1 foam + 9 battery = 22.1 mm. The battery (65 × 55 × 9 mm) lies over the board, its long side running top
+to bottom, with its connector end toward the bottom, over the patch.
 
 ## Printing
 

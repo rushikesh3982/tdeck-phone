@@ -114,10 +114,19 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 
 1. Unplug the 5 V supply. Desolder the two bench power wires (VCC and the GND beside it). From now on the **VCC
    hole is never used again**.
-2. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + leg of the
-   330 µF capacitor, and **not** to VCC. Then connect the cell (through the modem power switch, if it's built) as in
+2. **Swap the two tall capacitors.** The stock ones are 11 mm tall SMD cans, too tall for the board to fit under the
+   9 mm battery. Before removing each one, note which pad is +.
+   - **C11** (330 µF 50 V, next to the modem chip): replace it with the **470 µF 16 V** radial capacitor, laid flat
+     (about 7 mm high). Solder its leads flat onto the old pads.
+   - **C17** (100 µF 50 V, next to the regulator): replace it with the **100 µF 16 V**, laid flat. If its + pad
+     beeps to the VCC pin, you can leave it off instead, because VCC isn't used on battery power.
+   - **Glue both bodies to the board** with hot glue or silicone, so they can't lever the pads off.
+   - Lay them on bare board or small resistors and capacitors, **not** on the modem chip or the regulator.
+     Nothing on that side may stand more than 8 mm off the board, because the back's standoffs are 9 mm.
+3. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + pad of C11, and
+   **not** to VCC. Then connect the cell (through the modem power switch, if it's built) as in
    [wiring.md](wiring.md), section 2.
-3. Repeat `AT` → `OK` and one test call, now on battery power.
+4. Repeat `AT` → `OK` and one test call, now on battery power.
 
 ### Serial terminal on the Mac
 
