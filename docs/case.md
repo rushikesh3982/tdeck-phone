@@ -73,8 +73,9 @@ Full details are in [case/README.md](../case/README.md).
   T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
   recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
-- **Unused slide-switch mount (filled):** the GPS version's switch window and two screw holes on the left side are
-  filled flush. The Reset Button opening below them stays.
+- **Unused slide-switch mount (filled):** the GPS version's switch window, two screw holes and the switch-body
+  recess on the inside are filled. The wall is copied from its normal shape just beside the mount. The Reset Button
+  opening below them stays.
 
 ## Back changes
 

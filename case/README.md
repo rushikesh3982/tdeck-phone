@@ -43,9 +43,11 @@ that points toward your mouth when the phone is at your right ear.
   before the inside surface of the wall.
 
 **Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
-countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled flush with
-the outside through the 2.6 mm wall. The shallow recess behind it on the inside stays, and so does the Reset Button
-opening just below it.
+countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled
+completely, including the recess for the switch body on the inside. The fill copies the wall's normal shape from
+just beside the mount, so inside and out the wall now matches the rest of the side, where the T-Deck already fits.
+The Reset Button opening just below stays, with its small inside recess for the button's flange. So does a small
+original bump on the inside wall below the old switch, up to 0.8 mm high.
 
 **Second SMA antenna cut-out (top-right corner).** The Grove socket is desoldered from the T-Deck and the modem
 wires are soldered to its pads, so the Grove plug slot in that corner is no longer needed. It is filled in, and the

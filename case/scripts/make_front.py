@@ -49,11 +49,15 @@ LIP_NOTCH_Z_TOP = 8.0         # above the top of the lip (7.3)
 MIRROR_X = -88.0
 SMA_BLOCK = [[-26.5, 99.0, -10.5], [-11.5, 109.0, 5.6]]   # around the top-left cut-out
 
-# The GPS version's slide-switch mount on the left side (window + two countersunk screw holes) is not
-# used: the modem follows the T-Deck's power switch. Fill it flush with the outside (x = -6.0) through
-# the 2.6 mm wall. The shallow recess behind it on the inside stays, and so does the Reset Button
-# opening just below it (its surround tops out at z = -4.3).
-SWITCH_MOUNT_FILL = [[-8.65, 52.8, -3.4], [-6.0, 74.2, 3.4]]
+# The GPS version's slide-switch mount on the left side (window, two countersunk screw holes, and the
+# recess for the switch body on the inside) is not used: the modem follows the T-Deck's power switch.
+# It is filled by copying the wall's normal cross-section, taken just beside the mount (y = 77, where
+# the wall is untouched and the T-Deck already fits), across y = 51.0..75.6. Kept clear: the Reset
+# Button opening below it and the small recess around it for the button's flange (z below -3.4).
+SWITCH_WALL_SLICE_Y = 77.0
+SWITCH_FILL_Y = (51.0, 75.6)
+SWITCH_FILL_CLIP = (-10.6, -4.15, -5.9, 4.3)        # x0, z0, x1, z1 of the wall slice used
+RESET_KEEP_OUT = [[-12.0, 65.0, -10.0], [-5.0, 72.0, -3.4]]
 
 
 def prism_y(poly_xz, y0, y1):
@@ -97,11 +101,24 @@ def mirror_sma_cutout(front):
     return trimesh.boolean.union([rest, piece], engine="manifold")
 
 
+def fill_switch_mount(front):
+    """Copy the wall's normal cross-section over the unused slide-switch mount."""
+    from shapely.geometry import box as sbox
+    from shapely.ops import polygonize, unary_union
+    segs = trimesh.intersections.mesh_plane(front, [0, 1, 0], [0, SWITCH_WALL_SLICE_Y, 0])
+    lines = [LineString([(round(a[0], 6), round(a[2], 6)), (round(b[0], 6), round(b[2], 6))]) for a, b in segs]
+    section = unary_union(list(polygonize(unary_union(lines))))
+    wall = section.intersection(sbox(*SWITCH_FILL_CLIP))
+    fill = prism_y(wall, *SWITCH_FILL_Y)
+    fill = trimesh.boolean.difference([fill, trimesh.creation.box(bounds=RESET_KEEP_OUT)], engine="manifold")
+    return trimesh.boolean.union([front, fill], engine="manifold")
+
+
 def main(src, dst):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
     front = mirror_sma_cutout(front)
-    front = trimesh.boolean.union([front, trimesh.creation.box(bounds=SWITCH_MOUNT_FILL)], engine="manifold")
+    front = fill_switch_mount(front)
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2
