@@ -63,7 +63,8 @@ RESET_KEEP_OUT = [[-12.0, 65.0, -10.0], [-5.0, 72.0, -3.4]]
 # Top-edge badge: Alley Cat's raised badge with the cat + GPS-pin art is removed (the top wall under it is
 # restored from its plain profile, sampled beside the badge), and a fresh badge with the rushiWorks logo
 # engraved in it takes its place. The badge is a 1 mm raised pad with 45-degree bevels; its flat face is a
-# rounded rectangle at y = 109.0. Viewed from outside the top edge, the logo reads normally.
+# rounded rectangle at y = 109.0. The logo reads normally when you look at the top edge with the screen side
+# at the top of your view (phone lying screen-up, or tipped back toward you): there, right = +x and up = -z.
 BADGE_CUT_X = (-55.75, -32.25)       # old badge lies within this (the wall is plain at both ends)
 BADGE_CUT_Z = (-11.6, 4.2)
 BADGE_FACE = (-52.4, -35.6, -8.8, 1.7)   # x0, x1, z0, z1 of the flat face
@@ -175,12 +176,12 @@ def replace_badge_with_logo(front, logo_path):
     pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT, z) for x, z in base.exterior.coords]
     pts += [(x, BADGE_FACE_Y - BADGE_HEIGHT - 0.4, z) for x, z in base.exterior.coords]
     front = trimesh.boolean.union([front, trimesh.convex.convex_hull(np.array(pts))], engine="manifold")
-    # 3. engrave the logo, reading normally from outside the top edge (right = -x, up = +z)
+    # 3. engrave the logo, reading normally with the screen side at the top of the view (right = +x, up = -z)
     logo = trace_logo(logo_path)
     lx0, ly0, lx1, ly1 = logo.bounds
     s = LOGO_HEIGHT / (ly1 - ly0)
     cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
-    logo_xz = affine_transform(logo, [-s, 0, 0, s, cx + s * (lx0 + lx1) / 2, cz - s * (ly0 + ly1) / 2])
+    logo_xz = affine_transform(logo, [s, 0, 0, -s, cx - s * (lx0 + lx1) / 2, cz + s * (ly0 + ly1) / 2])
     parts = [prism_y(g, BADGE_FACE_Y - LOGO_DEPTH, BADGE_FACE_Y + 1.0) for g in getattr(logo_xz, "geoms", [logo_xz])]
     return trimesh.boolean.difference([front] + parts, engine="manifold")
 

@@ -48,7 +48,8 @@ the top wall under it is restored to its plain shape, copied from beside the bad
 - **Badge:** a 1 mm raised pad with 45° bevels and a 16.8 × 10.5 mm flat face.
 - **Logo:** engraved 0.45 mm deep, 10 mm tall (about 14.3 mm wide). Traced from
   [logo/rushi-logo.jpg](logo/rushi-logo.jpg). The letter strokes are about 0.5 mm wide.
-- **Orientation:** it reads normally when you look down at the top edge with the screen toward you.
+- **Orientation:** it reads normally when the phone lies screen-up, or is tipped back toward you, so that
+  the screen side is at the top of your view.
 - **Optional:** fill the engraving with paint for contrast.
 
 The badge is a vertical wall in the print orientation, so the engraving prints cleanly. If the small letters come
