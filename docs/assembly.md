@@ -53,7 +53,7 @@ like a book while you work.
 | From | To | Wire |
 |---|---|---|
 | T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: RX, TX, VDD, GND (back ⑤, red pads) | thin, about 10 cm. TX goes to RX, RX to TX |
-| Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥) | thin, either way round |
+| Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 10 cm, either way round |
 | Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M− | thin, about 12 cm (from the bottom of the phone) |
 | Battery +, through the MOSFET board | KTRON C11 + pad or MIC29302 pin 4 | 24 AWG, short |
 | Battery − | KTRON GND (regulator tab) | 24 AWG, short |

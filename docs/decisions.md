@@ -128,6 +128,10 @@ third speaker is needed.
 **Why:** the modem's earpiece output (EAR_P/EAR_N on S+/S−) is a 37 mW driver made for a 32 Ω receiver, with no
 amplifier on the board. The Micromax earpiece is the right part and already owned.
 
+**Wired through two 47 µF capacitors** (added 4 Nov 2026), one in each wire. SIMCom's A7672S Hardware Design
+(figure 28) and KTRON's speaker/mic circuit both show them. They block any steady current through the earpiece's
+coil, and with 32 Ω they still pass everything down to about 200 Hz, which covers voice.
+
 **Fallbacks:** PUI AR01532MS (DigiKey India, ₹344 + ₹1,200 delivery), any 25–32 Ω phone ear speaker, or a wired
 earphone driver for bench tests.
 

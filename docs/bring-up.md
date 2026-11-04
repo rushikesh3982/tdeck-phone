@@ -27,11 +27,15 @@ the T-Deck's, so there are no settings to change.
 - SIM: a fresh Jio SIM, or Airtel/Vi (see the SIM warning below). The holder takes **micro-SIM**.
 - Multimeter
 - Earpiece (the Micromax receiver) and a Sunrom mic
+- **2 × 47 µF electrolytic capacitors, 10 V or more,** about 4–5 mm across, plus heat-shrink tubing. One goes in
+  each earpiece wire (see the table). A 100 µF one works too.
 
 If something hasn't arrived yet, skip the step that needs it and come back to it. But don't run the network steps
 without the LTE antenna.
 
 ### Phase A: the 10 holes to solder
+
+![Bench wiring: KTRON board, CP2102, 5 V supply, earpiece, mic and antennas](images/bench-wiring.png)
 
 ```
 left row:   STA  NET  DTR  RI  [VDD] [GND] [RX] [TX]  RST  1V8
@@ -49,10 +53,24 @@ Solder only the holes in brackets, and leave the rest empty.
 | — | CP2102 5V | **Leave unconnected** |
 | VCC (right) | 5 V supply + | **Bench only**, removed in phase B. Check the supply's polarity with the multimeter first |
 | GND (right) | 5 V supply − | Bench only, removed in phase B |
-| S+ and S− | Earpiece | Either way round. Nothing to ground. Can be soldered straight in, because this is the final wiring |
-| M+ and M− | Mic | The mic pin connected to its metal can → M−. Find it with the multimeter's continuity mode |
+| S+ and S− | Earpiece, through a **47 µF capacitor in each wire** | Each capacitor's **+ leg goes to the board** (the + leg is the longer one; the − side has a stripe). The earpiece itself goes either way round. Nothing goes to ground. This is the final wiring, so it can be soldered in for good (see below) |
+| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can |
 | U.FL1 (top edge) | LTE antenna cable | Press straight down until it clicks |
 | U.FL2 (beside L2) | GPS patch | |
+
+**Earpiece capacitors:** SIMCom's and KTRON's reference circuits both put a 47 µF capacitor in series with each
+earpiece wire, so that no steady current can flow through the earpiece's coil. Solder each capacitor straight onto
+its earpiece wire, + leg toward the KTRON, and cover the joints with heat-shrink. In the phone they lie flat in the
+gap under the board.
+
+**Wire lengths** (so the same wires do for the finished phone):
+
+| Wires | Length |
+|---|---|
+| VDD, GND, RX, TX (to the CP2102 now, to the T-Deck later) | about 15 cm |
+| Earpiece (S+, S−) | about 10 cm |
+| Mic (M+, M−) | about 12 cm |
+| VCC and the GND beside it (bench only) | any |
 
 **Soldering tips:**
 
@@ -78,6 +96,15 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    the modem to start, then type `AT`. You should get `OK`. If nothing comes back, swap TX and RX at the adapter.
    Then check that VDD is on 3V3, and that the terminal is set to 115200 baud with a carriage return. Type `ATI` and
    **write down the firmware build**. It matters if the Jio problem shows up.
+
+   **Before the SIM arrives: earpiece, mic and GPS.** These need no SIM. If a command answers `ERROR`, this
+   firmware doesn't have it: skip it, and that part gets tested with the first call instead.
+   - **Earpiece:** send `AT+CSDVC=1` (sound to the earpiece), then `AT+SIMTONE=1,1000,200,200,3000`. You should
+     hear 3 seconds of beeps. Other ways: `AT+CLDTMF=2,"1,2,3"` plays keypad tones, and `AT+CTTS=2,"hello"` speaks.
+   - **Mic:** send `AT+CREC=1,"c:/t.amr"`, talk at the mic for a few seconds, and send `AT+CREC=0`. Then
+     `AT+CCMXPLAY="c:/t.amr",0,0` plays your voice back on the earpiece.
+   - **GPS:** step 6 works without a SIM.
+
 3. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
    antenna is connected. Power on and wait about 30 seconds.
 
@@ -91,11 +118,12 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    | `AT*IMSRCFG="switch"` | `"switch","on"` (VoLTE path on) |
 
    The network LED also changes its blink pattern once the modem is registered.
-4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+CLVL=1`, `AT+CMICGAIN=3` and `AT+CLIP=1`.
+4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+COUTGAIN=4`, `AT+CMICGAIN=4` and
+   `AT+CLIP=1`.
    - Call your other phone with `ATD+91XXXXXXXXXX;` and answer it. The modem prints `VOICE CALL: BEGIN`.
    - During the call, send `AT+CPSI?`. `LTE` means **VoLTE works**. `GSM` means it fell back to 2G.
-   - Listen on the earpiece and talk into the mic. Raise `AT+CLVL` a step at a time if it's too quiet. If the other
-     side hears you faintly, send `AT+CMICGAIN=5`.
+   - Listen on the earpiece and talk into the mic. Change the earpiece volume with `AT+COUTGAIN` (0–7) a step at a
+     time. If the other side hears you faintly, raise `AT+CMICGAIN` (0–7) a step at a time.
    - Hang up with `AT+CHUP`.
    - Then call the module from your phone. `RING` and `+CLIP: "<number>"` appear. Answer with `ATA`.
 5. **SMS (receive).** Send `AT+CMGF=1` and `AT+CNMI=2,1,0,0,0`. Send an SMS to the module from your phone.
@@ -151,8 +179,8 @@ KTRON's own note and an open LilyGO GitHub issue
 **Jio SIM that has ever been used in a 5G phone** may not register on the A7672S ("PLMN not allowed"). A SIMCom fix
 is pending. Test with a fresh Jio SIM or an Airtel/Vi SIM.
 
-There is no SIM-free audio loop test on SIMCom modules (`AT+QAUDLOOP` does not exist on them). Test audio with a
-real call.
+There is no audio loopback command on SIMCom modules (`AT+QAUDLOOP` is Quectel's). But the earpiece and mic can be
+checked without a SIM by playing a tone and recording yourself (step 2). A real call is still the final test.
 
 ## T-Deck side (firmware)
 
@@ -172,8 +200,8 @@ and wakes on serial data on GPIO44, so an incoming `RING` / `+CLIP:` wakes the p
 | `AT+CPMVT=1,3300,4300` | Clean power-off below 3.3 V |
 | `AT+CSCLK=2` | Modem sleeps; any byte wakes it |
 | `AT+CSDVC=1` | Call audio to the earpiece pins (S+/S−) |
-| `AT+CLVL=1` | Earpiece volume, start quiet |
-| `AT+CMICGAIN=3` | Mic gain (raise if the other person hears you faintly) |
+| `AT+COUTGAIN=4` | Earpiece volume, 0–7 (4 is the default) |
+| `AT+CMICGAIN=4` | Mic gain, 0–7 (4 is the default). Raise it if the other person hears you faintly |
 | `AT+CGNSSPWR=1` | GNSS on. Then `AT+CGNSSINFO` for a position, or `AT+CGNSSINFO=10` for repeated reports |
 | `AT+CLIP=1` | Caller number shown with each `RING` |
 | `AT+CMGF=1` | SMS in text mode |
@@ -184,7 +212,9 @@ and wakes on serial data on GPIO44, so an incoming `RING` / `+CLIP:` wakes the p
 | `AT+CHUP` | Hang up |
 | `AT+CPSI?` | During a call: `LTE` = VoLTE, `GSM` = 2G fallback |
 
-Other audio commands: `AT+COUTGAIN` (output gain), `AT+CMUT` (mute the mic).
+Other audio commands: `AT+CMUT` (mute the mic). No-SIM sound checks: `AT+SIMTONE` (tone), `AT+CLDTMF` (keypad
+tones), `AT+CTTS` (speech), `AT+CREC` / `AT+CCMXPLAY` (record and play back). Some firmware builds don't have all
+of them. `AT+CLVL` isn't in SIMCom's A76XX manual, so use `AT+COUTGAIN` for volume.
 
 Messages the modem sends by itself: `RING`, `+CLIP:` (caller number), `VOICE CALL: BEGIN`, `VOICE CALL: END`.
 

@@ -149,9 +149,11 @@ switch mount could have held it. It is now filled in.)
 The earpiece receiver from the Micromax Canvas A1: the **32 Ω** part from the top of the phone, under the
 earpiece slot. Not the 8 Ω rear loudspeaker.
 
-- Solder two wires at the base of its spring contacts.
-- Connect straight across **S+ and S−**. Polarity does not matter. **Nothing goes to ground.**
-- Keep its foam ring.
+- Fold its two spring contacts flat over its back, and solder a thin wire to each.
+- Connect it across **S+ and S−** through a **47 µF capacitor in each wire** (10 V or more, + leg toward the
+  KTRON). This is SIMCom's and KTRON's reference circuit: the capacitors stop any steady current through the coil.
+  The earpiece's own polarity doesn't matter. **Nothing goes to ground.**
+- The capacitors sit on the wires near the KTRON, covered in heat-shrink, lying flat in the gap under the board.
 
 S+/S− are the module's EAR_P/EAR_N outputs, a 37 mW driver made for a 32 Ω receiver. There is no amplifier on the
 board. **Never connect an 8 Ω speaker directly to S+/S−.**
