@@ -53,8 +53,8 @@ fallback and GNSS.
 1. Order the KTRON board, GPS patch, antenna cable and mics. Buy a multimeter. Choose the LTE antenna.
 2. When the parts arrive, run the bench checks in [docs/bring-up.md](docs/bring-up.md) from the Mac through the
    USB-serial adapter, including a VoLTE test call inside the seller's return window.
-3. Case: the front (earpiece grille, mic pocket) and the back (modem standoffs, SIM slit, GPS patch cradle) are done
-   in [case/](case/). Print both and dry-fit. The KTRON's two tall capacitors get swapped for flat ones first.
+3. Case: the front (earpiece grille, mic pocket), the earpiece holder and the back (modem standoffs, SIM slit,
+   GPS patch cradle) are done in [case/](case/). Print both and dry-fit. The KTRON's two tall capacitors get swapped for flat ones first.
 4. Firmware: a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call,
    and a low-battery guard.
 

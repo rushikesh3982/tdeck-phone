@@ -25,8 +25,8 @@ This is the plan before the first dry fit. Expect small changes after it.
 
 ## Before you start
 
-- **Printed parts:** [front](../case/front-earpiece-mic.stl), [back](../case/back-modem-gps.stl), and the original
-  Switch and Reset Button parts from Printables.
+- **Printed parts:** [front](../case/front-earpiece-mic.stl), [back](../case/back-modem-gps.stl),
+  [earpiece holder](../case/earpiece-holder.stl), and the original Switch and Reset Button parts from Printables.
 - **Fasteners:**
   - 6 × M3 × 5 heat-set inserts: 2 for the front, 4 for the back.
   - 2 × M3 × 8 screws for closing the case.
@@ -63,9 +63,13 @@ Details and checks are in [wiring.md](wiring.md).
 
 ### 3. Front panel
 
-1. **Earpiece** (front inside ①): put the foam ring on the floor of the pocket, then the receiver, sound side
-   down toward the slot. Add foam behind it so it stays pressed down. Its wires leave through the open back of the
-   pocket.
+1. **Earpiece** (front inside ①):
+   - Solder its two wires first.
+   - Lay the receiver in the pocket, gasket side down, centred over the slot.
+   - Lead the wires up the earpiece holder's groove, then push the holder down over the receiver until it sits on
+     the pocket floor. The groove faces the T-Deck side.
+   - When the case is shut, the back's solid block between its two screw holes (back ⑭) closes over the holder,
+     so it can't lift.
 2. **Mic** (front inside ②): push it into its pocket from inside until it touches the skin, and glue it. Lay its
    two wires in the groove (③) and through the notch in the lip. **This must happen before the T-Deck goes in.**
 3. **Antenna connectors** (front outside ② and ③):
@@ -113,4 +117,5 @@ Details and checks are in [wiring.md](wiring.md).
 - **SIM:** the card lines up with the slit and clicks into the holder.
 - **Battery:** it sits flat over the board with about 1 mm to spare under the T-Deck.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
-- **Earpiece:** the receiver fits the 16.4 × 7.3 mm pocket.
+- **Earpiece:** the receiver fits the holder's 13.4 × 5.4 mm cup. With the holder in, there's no rattle and the case
+  still closes fully.

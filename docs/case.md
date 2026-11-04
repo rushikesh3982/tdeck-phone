@@ -55,9 +55,10 @@ The earpiece and mic cuts are done (3 Nov 2026): [case/front-earpiece-mic.stl](.
 Full details are in [case/README.md](../case/README.md).
 
 - **Earpiece (done):** a 1 × 6 mm slot through the 3.6 mm face above the screen, centred under the GPS pocket.
-  - The receiver lies on the pocket floor facing the slot, with its foam ring in between and foam behind it.
-  - The receiver has to fit inside 16.4 × 7.3 mm.
-  - Its wires leave through the open back of the pocket.
+  - The receiver (12–13 × 5 × 2 mm with its rubber gasket) lies on the pocket floor facing the slot.
+  - **Earpiece holder (done, 4 Nov 2026):** [case/earpiece-holder.stl](../case/earpiece-holder.stl). It is a printed
+    block that fills the pocket, holds the receiver in a 1.7 mm cup over the slot, and runs its wires up a groove
+    toward the T-Deck. The back closes 0.1 mm above it.
 - **Microphone (done):** bottom edge, 15 mm left of the USB-C opening as you look at the screen. That corner points
   toward the mouth when the phone is at the right ear.
   - A 6.3 mm pocket opens on the inside, with a 1.2 mm skin and a 1.5 mm sound hole.
@@ -110,6 +111,8 @@ nearest the VDD/RX/TX header.
   - A 27 mm square opening with a 7 mm fence, for the measured 26 × 26 mm patch with its 25 × 25 × 4 mm ceramic.
   - The ceramic faces down onto four 0.5 mm pads.
   - There is a cable notch in every side, and the patch is fixed with glue.
+- **Old GPS-module slot filled:** its back half (16.4 × 6.1 × 10 mm, between the two case-screw holes) is filled
+  solid. The earpiece holder only fills the front's part, and the filled block caps it.
 - **Network LED window**: a printed light tube under the KTRON's NETLIGHT LED, and a 1.6 mm hole through the
   back cover (in a decorative groove). There is no window for the power LED.
 - **Battery** (65 × 55 × 9 mm) lies over the board, its long side top to bottom, with its connector end over the

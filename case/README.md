@@ -10,7 +10,8 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 |---|---|---|
 | [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, Alley Cat's cat-head logo on the top-edge badge, and "rushiworks" along the right bezel | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
-| [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
+| [earpiece-holder.stl](earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
+| [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
 The other parts (Switch, Antenna Plug, Reset Button) are unchanged, so print those from the Printables download.
 
@@ -24,9 +25,9 @@ Only these changes were made. The outer size and everything else are exactly as 
 **Earpiece grille.** A 1 × 6 mm slot with rounded ends goes through the 3.6 mm face above the screen. It is
 centred under the GPS pocket, which measures 16.4 × 7.3 mm inside.
 
-- The receiver lies on the pocket floor, facing the slot.
-- Its foam ring goes between it and the floor, and foam behind it keeps it pressed down.
-- **The receiver has to fit inside 16.4 × 7.3 mm.** Measure the Micromax receiver before printing.
+- The receiver (the Micromax one: 12–13 × 5 × 2 mm with its rubber gasket) lies on the pocket floor, facing the
+  slot, with the gasket against the floor.
+- The [earpiece holder](#earpiece-holder) goes in on top of it and keeps it pressed down.
 
 **Microphone.** In the bottom edge, 15 mm left of the USB-C opening as you look at the screen. This is the corner
 that points toward your mouth when the phone is at your right ear.
@@ -100,6 +101,27 @@ which covers the board with only about 1 mm to spare (about 11 cm, so use the 15
 
 ![Close-ups from inside: mic pocket with sound hole and wire groove (left), earpiece slot in the GPS pocket (right)](images/front-cuts-inside.png)
 
+## Earpiece holder
+
+[earpiece-holder.stl](earpiece-holder.stl) is a new printed part, 16.0 × 6.9 × 16.5 mm. It fills the front's old
+GPS-module pocket and keeps the earpiece pressed onto the grille slot. In the GPS version of the case, the
+module's slot ran from the front up into the back. The back's half is now filled solid (see the back changes
+below), so the holder only fills the front's part.
+
+![Earpiece holder: views, and a cut through the closed case](images/earpiece-holder.png)
+
+- **Cup:** the earpiece sits in a 13.4 × 5.4 mm cup on the holder's underside, centred over the slot. The cup is
+  1.7 mm deep, so the 2 mm earpiece's rubber gasket is squeezed 0.3 mm onto the pocket floor. That seals the sound
+  path to the slot.
+- **Held by the back:** the holder stands on the pocket floor, and its top ends 0.1 mm under the back's filled block.
+  Once the case is closed, it can't lift.
+- **Wires:** a 2.5 mm channel along the cup's ceiling gives room for the solder joints on the earpiece's back. The
+  wires then go up a 3 × 2.4 mm groove on the face toward the T-Deck, and over the T-Deck to the modem.
+- **Fit:** 0.2 mm clearance all round in the pocket. The script checks that it touches neither case half.
+- **If your earpiece is shorter:** at 12 mm it can slide about 1.4 mm along the cup, but it still covers the 6 mm
+  slot. A scrap of tape at one end of the cup centres it.
+- **Printing:** lay it on the face with the wire groove (the face toward the T-Deck). Then no supports are needed.
+
 ## Back: what changed
 
 **Outside.** Made from Alley Cat's *Outside Cat* edition of the X back. It has the same vertical grooves, with the
@@ -118,7 +140,12 @@ it. The cat is filled flush, and the **rushiWorks logo** is engraved in its plac
 
 ![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
 
-![Back from inside, coloured by height, and a tilted view](images/back-preview.png)
+![Back from inside and from outside](images/back-preview.png)
+
+**Old GPS-module slot filled.** The GPS version's module slot continued from the front's pocket up into the back:
+16.4 × 6.1 mm, 10 mm tall, in the thick block between the two case-screw holes. Only the earpiece uses the
+front's part of it now, so the back's part is filled solid. The fill copies the block's cross-section from just beside
+the slot, so the block now runs unbroken between the screw holes and caps the earpiece holder.
 
 **Modem standoffs.** Four columns at the KTRON board's holes.
 
@@ -175,6 +202,7 @@ to bottom, with its connector end toward the bottom, over the patch.
   supports. The earpiece slot is vertical, the mic pocket has a 45° roof, and the back's standoffs and cradle grow
   straight up.
 - PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill.
+- The earpiece holder is the exception: lay it on its wire-groove face (see [Earpiece holder](#earpiece-holder)).
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
 - **Print `test-mic-coupon.stl` first** (a few minutes). Check that the mic slides in and sits against the skin. If
   it's too tight or too loose, the pocket size can be changed in the script.
@@ -187,6 +215,7 @@ script. It needs Python with numpy, trimesh, shapely and manifold3d:
 ```
 python scripts/make_front.py "Alley Chat TD1 Standard Front GPS Inserts.stl" front-earpiece-mic.stl
 python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" back-modem-gps.stl images/back-layout.png
+python scripts/make_earpiece_holder.py earpiece-holder.stl images/earpiece-holder.png front-earpiece-mic.stl back-modem-gps.stl
 python scripts/make_diagrams.py front-earpiece-mic.stl back-modem-gps.stl images
 ```
 

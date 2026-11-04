@@ -1,5 +1,6 @@
 """Add KTRON modem standoffs, a SIM slit, a GPS patch cradle and a network-LED window to the Alley Cat
-TD1 X back, and replace the cat on its outside with the rushiWorks logo.
+TD1 X back, fill the back's half of the old GPS-module slot, and replace the cat on its outside with the
+rushiWorks logo.
 
 Usage:
     python make_back.py "<Alley Chat TD1 X Back Outside Cat Edition.stl>" <output.stl> [layout.png] [logo image]
@@ -29,7 +30,7 @@ import sys
 
 import numpy as np
 import trimesh
-from shapely.geometry import Point, Polygon, box
+from shapely.geometry import LineString, Point, Polygon, box
 
 FLOOR_Z = -25.0            # inside floor surface
 WALL_IN_X, WALL_OUT_X = -2.0, -4.0   # left side wall, inside and outside faces
@@ -65,6 +66,16 @@ LED_TUBE_ID, LED_TUBE_OD = 3.6, 5.6
 LED_TUBE_TOP = 7.4         # above the floor
 LED_HOLE_D = 1.6
 LED_HOLE_X = 53.9
+
+
+# ---- Old GPS-module slot, back half ---------------------------------------------------
+# The GPS version's module slot runs from the front's earpiece pocket up into the back: x 25.8-42.2,
+# y 100-106.1, from the block's underside (z -10.2) to its roof (z -20.2). The earpiece holder only fills
+# the front's part, so the back's part is filled solid by copying the block's cross-section from just
+# beside the slot (x 24, between the slot and the left case-screw boss).
+GPS_SLOT_SLICE_X = 24.0
+GPS_SLOT_FILL_X = (24.8, 43.2)               # 1 mm into each side wall, past the slot's edge chamfers
+GPS_SLOT_CLIP = (99.0, -21.0, 107.0, -9.0)   # y0, z0, y1, z1 of the part of the cross-section that is copied
 
 
 # ---- Outside: cat head replaced by the rushiWorks logo -----------------------------------
@@ -112,6 +123,23 @@ def prism_z(poly, z0, z1):
     m = trimesh.creation.extrude_polygon(poly, height=z1 - z0)
     m.apply_translation([0, 0, z0])
     return m
+
+
+def prism_x(poly_yz, x0, x1):
+    """Extrude a polygon drawn in (y, z) along x, from x0 to x1."""
+    m = trimesh.creation.extrude_polygon(poly_yz, height=x1 - x0)
+    m.apply_transform(np.array([[0, 0, 1, x0], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=float))
+    return m
+
+
+def fill_gps_slot(back):
+    """Solid block over the back's half of the old GPS-module slot, copied from the cross-section beside it."""
+    from shapely.ops import polygonize, unary_union
+    segs = trimesh.intersections.mesh_plane(back, [1, 0, 0], [GPS_SLOT_SLICE_X, 0, 0])
+    lines = [LineString([(round(a[1], 6), round(a[2], 6)), (round(b[1], 6), round(b[2], 6))]) for a, b in segs]
+    section = unary_union(list(polygonize(unary_union(lines))))
+    block = section.intersection(box(*GPS_SLOT_CLIP))
+    return [prism_x(g, *GPS_SLOT_FILL_X) for g in getattr(block, "geoms", [block]) if g.area > 0.01]
 
 
 def standoffs():
@@ -230,7 +258,8 @@ def main(src, dst, picture=None, logo_path=None):
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
     a4, c4 = led_window()
-    out = trimesh.boolean.union([back] + a1 + a2 + a4, engine="manifold")
+    a5 = fill_gps_slot(back)
+    out = trimesh.boolean.union([back] + a1 + a2 + a4 + a5, engine="manifold")
     out = trimesh.boolean.difference([out, trimesh.boolean.union(c0 + c1 + c2 + c3 + c4, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     out.export(dst)
