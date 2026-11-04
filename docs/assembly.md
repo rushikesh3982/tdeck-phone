@@ -71,8 +71,13 @@ Details and checks are in [wiring.md](wiring.md).
      sits on the pocket floor. The grooves face the T-Deck side.
    - When the case is shut, the back's solid block between its two screw holes (back ⑭) closes over the holder,
      so it can't lift.
-2. **Mic** (front inside ②): push it into its pocket from inside until it touches the skin, and glue it. Lay its
-   two wires in the groove (③) and through the notch in the lip. **This must happen before the T-Deck goes in.**
+2. **Mic** (front inside ②):
+   - Trim its pins to about 1.5 mm and solder a thin wire to each. The pin in the insulating ring is **+** (to M+).
+     The pin joined to the metal can is **−** (to M−).
+   - Turn it so the two pins sit side by side, level with each other and parallel to the screen. Push it into its
+     pocket from inside until it touches the skin, and glue it.
+   - Bend both wires up into the groove (③) and through the notch in the lip.
+   - **This must happen before the T-Deck goes in.**
 3. **Antenna connectors** (front outside ② and ③):
    - From inside, push the SMA thread out through the hole, so the hex collar sits in the hex pocket (front inside
      ④ and ⑤).

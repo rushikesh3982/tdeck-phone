@@ -33,16 +33,24 @@ centred under the GPS pocket, which measures 16.4 × 7.3 mm inside.
 **Microphone.** In the bottom edge, 15 mm left of the USB-C opening as you look at the screen. This is the corner
 that points toward your mouth when the phone is at your right ear.
 
-- **Pocket:** 6.3 mm round, opening on the inside of the case. Its top is pointed (a "teardrop") so it prints
-  without supports.
+- **The mic:** Sunrom 6027 ([sunrom.com/m/5522](https://www.sunrom.com/m/5522)). Its datasheet gives:
+  - **Body:** Ø6.0 ± 0.2 mm, 2.7 ± 0.2 mm tall.
+  - **Pins:** two, 2.8 mm long, 0.4 mm thick, 1.9 mm apart.
+- **Pocket:** 6.3 mm round, opening on the inside of the case. That leaves 0.1–0.5 mm of play around the mic. Its top
+  is pointed (a "teardrop") so it prints without supports.
 - **Skin and sound hole:** 1.2 mm of plastic is left at the outside, with a 1.5 mm sound hole through it.
 - **Fitting the mic, before the T-Deck goes in:** the pocket opens on the inside face of the bottom wall, which
   the T-Deck covers once it's in. Push the Sunrom 6027 (6 × 2.7 mm) in from inside until it touches the skin. Hold
   it with a dab of glue, lay its wires in the groove, then fit the T-Deck.
 - **Wire groove:** a 2.4 mm groove runs from the pocket up the inside wall and through the mating lip, so the
   two mic wires reach the back half without the T-Deck pinching them.
-- **Before soldering:** trim the mic's pins short and bend the wires flat. There are 1.5–3.7 mm behind the mic
-  before the inside surface of the wall.
+- **Pins and wires:**
+  - **Space behind the mic:** the pocket stays open behind the mic body all the way into the case. The only thing
+    nearby is the T-Deck's back edge, which reaches 1.3 mm up the pocket's lower (screen-side) edge.
+  - **Turn the mic so its two pins sit side by side,** both at the mic's centre height, level with each other and
+    parallel to the screen. Then both solder joints are 1.7 mm clear of the T-Deck, and in line with the groove.
+  - **Trim the pins to about 1.5 mm,** solder a thin wire to each, and bend the wires up into the groove. Don't let a
+    joint hang toward the screen side.
 
 **Alley Cat's cat-head logo on the top-edge badge.** It's a visible credit to the case's designer.
 

@@ -160,10 +160,15 @@ board. **Never connect an 8 Ω speaker directly to S+/S−.**
 
 A 2-wire electret mic (Sunrom 6027) across **M+ and M−**. The module provides the mic bias on M+.
 
-- The mic's pin or pad that connects to its metal can → **M−**.
-- The other pin → **M+**.
+- The mic's pin that connects to its metal can (Sunrom's "term 2") → **M−**.
+- The other pin, the one in the insulating ring ("term 1") → **M+**.
+- The mic's datasheet powers it through a 2.2 kΩ resistor. Here the modem provides that bias on M+ (as above), so
+  nothing extra should be needed. If the bench test call is silent, measure the voltage between M+ and M− with the
+  multimeter while a call is up. It should be about 1–2.5 V.
 
-If the person you call hears you faintly, raise the gain with `AT+CMICGAIN=5` or higher.
+If the person you call hears you faintly, raise the gain with `AT+CMICGAIN=5` or higher. Sunrom lists this mic at
+−60 dB sensitivity, which would be quieter than a typical phone mic (about −42 dB). So more gain may well be needed:
+check it in the bench test call.
 
 ## 5. Ringtone
 
