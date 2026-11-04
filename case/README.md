@@ -26,7 +26,7 @@ Only these changes were made. The outer size and everything else are exactly as 
 centred under the GPS pocket, which measures 16.4 × 7.3 mm inside.
 
 - The receiver (the Micromax one) lies on the pocket floor, facing the slot, with its rubber gasket against the floor.
-  It is about 13 × 5 mm and 2 mm thick with the gasket. Its two spring contacts, folded over its back at the short
+  It is 12 × 6 mm and 2 mm thick with the gasket. Its two spring contacts, folded over its back at the short
   ends, make it 3 mm.
 - The [earpiece holder](#earpiece-holder) goes in on top of it and keeps it pressed down.
 
@@ -111,19 +111,22 @@ below), so the holder only fills the front's part.
 
 ![Earpiece holder: views, and a cut through the closed case](images/earpiece-holder.png)
 
-- **Cup:** the earpiece sits in a 13.4 × 5.4 mm cup on the holder's underside, centred over the slot.
+- **Cup:** the earpiece sits in a 12.4 mm long cup on the holder's underside, over the slot.
+  - **Sides:** the holder is only 6.9 mm wide, too narrow for a wall on both sides of a 6 mm earpiece. So the cup
+    has a 0.7 mm wall on the T-Deck side only, and is open on the far side. There the pocket's own wall holds the
+    earpiece, with 6.4 mm of room between the two walls.
   - **Middle:** the cup is 1.7 mm deep here, and the holder presses on the middle of the earpiece's back. That squeezes
     the 2 mm body and gasket 0.3 mm onto the pocket floor, sealing the sound path to the slot.
   - **Ends:** over the last 3 mm at each end the cup is 3.5 mm deep. That leaves room for the folded contacts (1 mm)
     and their solder joints.
 - **Held by the back:** the holder stands on the pocket floor, and its top ends 0.1 mm under the back's filled block.
   Once the case is closed, it can't lift.
-- **Wires:** from the solder joints at both ends, the wires run to the middle along a 2 mm path on the T-Deck side of
-  the cup. They then go up a 3 × 2.4 mm groove on the face toward the T-Deck, and over the T-Deck to the modem.
+- **Wires:** each end pocket has its own 2 mm groove up the face toward the T-Deck. Each wire goes straight up from
+  its solder joint, then over the T-Deck to the modem.
 - **Fit:** 0.2 mm clearance all round in the pocket. The script checks that it touches neither case half.
-- **If your earpiece is shorter:** at 12 mm it can slide about 1.4 mm along the cup, but it still covers the 6 mm
-  slot. A scrap of tape at one end of the cup centres it.
-- **Printing:** lay it on the face with the wire groove (the face toward the T-Deck). Then no supports are needed.
+- **If your earpiece measures differently:** the length and width are set at the top of
+  `scripts/make_earpiece_holder.py` (`EAR_L`, `EAR_W`). Change them and run it again.
+- **Printing:** lay it on the face with the wire grooves (the face toward the T-Deck). Then no supports are needed.
 
 ## Back: what changed
 

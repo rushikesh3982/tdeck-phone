@@ -65,9 +65,10 @@ Details and checks are in [wiring.md](wiring.md).
 
 1. **Earpiece** (front inside ①):
    - Fold its two spring contacts flat over its back, and solder a thin wire to each. Keep the joints small.
-   - Lay the receiver in the pocket, gasket side down, centred over the slot.
-   - Lay both wires along the holder's T-Deck side to the middle and up its groove. Then push the holder down over
-     the receiver until it sits on the pocket floor. The groove faces the T-Deck side.
+   - Lay the receiver in the pocket, gasket side down, over the slot, with one long side against the pocket's far
+     wall (the outer wall of the case).
+   - Put each wire into the groove at its end of the holder. Then push the holder down over the receiver until it
+     sits on the pocket floor. The grooves face the T-Deck side.
    - When the case is shut, the back's solid block between its two screw holes (back ⑭) closes over the holder,
      so it can't lift.
 2. **Mic** (front inside ②): push it into its pocket from inside until it touches the skin, and glue it. Lay its
@@ -117,5 +118,5 @@ Details and checks are in [wiring.md](wiring.md).
 - **SIM:** the card lines up with the slit and clicks into the holder.
 - **Battery:** it sits flat over the board with about 1 mm to spare under the T-Deck.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
-- **Earpiece:** the receiver fits the holder's 13.4 × 5.4 mm cup. With the holder in, there's no rattle and the case
+- **Earpiece:** the receiver fits the holder's 12.4 mm cup, between the holder's wall and the pocket's far wall. With the holder in, there's no rattle and the case
   still closes fully.

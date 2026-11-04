@@ -55,12 +55,12 @@ The earpiece and mic cuts are done (3 Nov 2026): [case/front-earpiece-mic.stl](.
 Full details are in [case/README.md](../case/README.md).
 
 - **Earpiece (done):** a 1 × 6 mm slot through the 3.6 mm face above the screen, centred under the GPS pocket.
-  - The receiver lies on the pocket floor facing the slot. It is about 13 × 5 mm. It is 2 mm thick with its rubber
+  - The receiver lies on the pocket floor facing the slot. It is 12 × 6 mm. It is 2 mm thick with its rubber
     gasket, and 3 mm with its two contacts folded over its back.
   - **Earpiece holder (done, 4 Nov 2026):** [case/earpiece-holder.stl](../case/earpiece-holder.stl). It is a printed
     block that fills the pocket and presses on the middle of the receiver's back (a 1.7 mm cup, 3.5 mm deep at
-    both ends for the folded contacts). It runs the wires up a groove toward the T-Deck, and the back closes 0.1 mm
-    above it.
+    both ends for the folded contacts). The cup is open on its far side, where the pocket wall holds the 6 mm
+    receiver. Each wire goes up its own groove toward the T-Deck, and the back closes 0.1 mm above the holder.
 - **Microphone (done):** bottom edge, 15 mm left of the USB-C opening as you look at the screen. That corner points
   toward the mouth when the phone is at the right ear.
   - A 6.3 mm pocket opens on the inside, with a 1.2 mm skin and a 1.5 mm sound hole.

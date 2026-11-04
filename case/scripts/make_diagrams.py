@@ -229,7 +229,7 @@ def front_inside(front, path):
     ax.text(*P((-80, 112, 0)), "← phone RIGHT", ha="left", fontsize=8, color="0.3")
     ax_key = fig.add_axes([0.56, 0.05, 0.42, 0.88])
     key(ax_key, [
-        (1, "Earpiece pocket (16.4 × 7.3 mm). The receiver\n(13 × 5 × 3 mm) lies on its floor, facing the slot.\nThe printed earpiece holder goes in on top and\nholds it down; the wires go up its groove."),
+        (1, "Earpiece pocket (16.4 × 7.3 mm). The receiver\n(12 × 6 × 3 mm) lies on its floor, facing the slot.\nThe printed earpiece holder goes in on top and\nholds it down; the wires go up its two grooves."),
         (2, "Mic pocket, entered from inside. Push the mic\nin until it touches the 1.2 mm skin, and glue it.\nDo this BEFORE the T-Deck goes in."),
         (3, "Wire groove: the mic's two wires go up here\nand through the notch in the lip, to the back."),
         (4, "Hex pocket of the top-left SMA cut-out\n(T-Deck's LoRa connector)."),
