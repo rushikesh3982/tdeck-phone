@@ -22,8 +22,12 @@ instead of the downloaded front.
 
 Fasteners: 2× M3×5 heat-set inserts (4.5 mm hole) + 2× M3×8 screws.
 
-Printing: PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill, no supports. Tolerances are tight, so print a
-test piece first.
+Printing: PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
+
+**Fit first:** the T-Deck's fit is deliberately tight. The inside is exactly the T-Deck's 68 mm, with a snap ridge.
+Print the 9 mm fit-test ring ([case/test-fit-ring-100.stl](../case/test-fit-ring-100.stl)) before the case, and
+only go to 101 % if it's too tight. Don't scale the finished files in the slicer: that would move the modem
+standoffs off the board's holes. See "Fit and scale" in [case/README.md](../case/README.md).
 
 ## Why these variants
 
@@ -134,6 +138,7 @@ Measured from the inside floor of the back. The T-Deck (11 mm thick, LilyGO's fi
 
 ## Order of work
 
-1. Print the mic test coupon, then the front and back.
+1. Print the fit-test ring (100 %; 101 % only if it's too tight) and the mic test coupon. Then print the front, the back
+   and the earpiece holder.
 2. Swap the KTRON's two tall capacitors after the 5 V bench tests ([bring-up.md](bring-up.md), phase B).
 3. Dry-fit the T-Deck, modem board, battery, patch and antennas, and check that a SIM goes in through the slit.

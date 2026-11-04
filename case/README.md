@@ -10,6 +10,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 |---|---|---|
 | [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, Alley Cat's cat-head logo on the top-edge badge, and "rushiworks" along the right bezel | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
+| [test-fit-ring-100.stl](test-fit-ring-100.stl), [test-fit-ring-101.stl](test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
 | [earpiece-holder.stl](earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
 | [back-modem-gps.stl](back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
@@ -210,6 +211,37 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
 holder + 1 foam + 9 battery = 22.1 mm. The battery (65 × 55 × 9 mm) lies over the board, its long side running top
 to bottom, with its connector end toward the bottom, over the patch.
 
+## Fit and scale: print the test ring first
+
+**The T-Deck's fit is tight on purpose.** For the first 5 mm above the screen face, the front's inside is exactly
+68.00 mm wide. That's LilyGO's width for the T-Deck, with no clearance. Above that, a 1.5 mm tall ridge narrows it to
+67.4–67.5 mm. The ridge snaps over the T-Deck's sides and holds it without screws, and the case is meant to flex as
+the T-Deck goes in. So whether it fits depends on how your printer and filament come out, to a few tenths of a
+millimetre.
+
+**What other builders report** (Printables comments, 2024–2026):
+- Most printed at 100 % in PETG, PLA, PLA+ or ABS and say it "fits like a glove". The designer uses PETG.
+- Those printing ASA needed 0.5–1 % larger. ASA shrinks more as it cools.
+- One printed at 102 % and needed a shim to stop the T-Deck shifting, so 102 % was too big for them.
+- The designer's own advice: "if it's too tight, print it slightly larger".
+- It does **not** fit the T-Deck Plus, which is a different, larger device (115 × 72 × 20 mm). This case is for the
+  original T-Deck (100 × 68 × 11 mm).
+
+**What to do:**
+1. **Print the test ring at 100 %:** `test-fit-ring-100.stl`, screen side down, in the filament you'll use for the
+   case. It takes about an hour.
+2. **Try the fit:** clean the inside edges, then press the T-Deck in screen first, without forcing it.
+   - **Right:** it needs a firm push, the ring flexes slightly, it clicks in, and it doesn't rattle.
+   - **Too tight:** it won't go in without a lot of force.
+   - **Too loose:** it drops in or wobbles.
+3. **If it's too tight:** print `test-fit-ring-101.stl` and try again.
+4. **If it's right at 100 %:** print the case files as they are.
+
+**Don't scale the finished case files in the slicer.** Scaling the whole file also moves the parts we added: at
+101 %, the modem standoffs would be 0.5 mm further apart than the board's holes. The M3 screws have only 0.2 mm of
+play in those holes, so they wouldn't line up. If the test says 101 %, the scripts will be changed to enlarge only
+Alley Cat's shell and keep our parts true to size.
+
 ## Printing
 
 - Print the files as they are oriented, outer face down on the bed (the screen side for the front), with no
@@ -218,7 +250,8 @@ to bottom, with its connector end toward the bottom, over the patch.
 - PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill.
 - The earpiece holder is the exception: lay it on its wire-groove face (see [Earpiece holder](#earpiece-holder)).
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
-- **Print `test-mic-coupon.stl` first** (a few minutes). Check that the mic slides in and sits against the skin. If
+- **Print the fit-test ring first** (see [Fit and scale](#fit-and-scale-print-the-test-ring-first)).
+- **Print `test-mic-coupon.stl` before the front** (a few minutes). Check that the mic slides in and sits against the skin. If
   it's too tight or too loose, the pocket size can be changed in the script.
 
 ## Making the front again
@@ -230,6 +263,7 @@ script. It needs Python with numpy, trimesh, shapely and manifold3d:
 python scripts/make_front.py "Alley Chat TD1 Standard Front GPS Inserts.stl" front-earpiece-mic.stl
 python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" back-modem-gps.stl images/back-layout.png
 python scripts/make_earpiece_holder.py earpiece-holder.stl images/earpiece-holder.png front-earpiece-mic.stl back-modem-gps.stl
+python scripts/make_fit_test.py front-earpiece-mic.stl .
 python scripts/make_diagrams.py front-earpiece-mic.stl back-modem-gps.stl images
 ```
 
