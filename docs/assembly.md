@@ -64,10 +64,10 @@ Details and checks are in [wiring.md](wiring.md).
 ### 3. Front panel
 
 1. **Earpiece** (front inside ①):
-   - Solder its two wires first.
+   - Fold its two spring contacts flat over its back, and solder a thin wire to each. Keep the joints small.
    - Lay the receiver in the pocket, gasket side down, centred over the slot.
-   - Lead the wires up the earpiece holder's groove, then push the holder down over the receiver until it sits on
-     the pocket floor. The groove faces the T-Deck side.
+   - Lay both wires along the holder's T-Deck side to the middle and up its groove. Then push the holder down over
+     the receiver until it sits on the pocket floor. The groove faces the T-Deck side.
    - When the case is shut, the back's solid block between its two screw holes (back ⑭) closes over the holder,
      so it can't lift.
 2. **Mic** (front inside ②): push it into its pocket from inside until it touches the skin, and glue it. Lay its

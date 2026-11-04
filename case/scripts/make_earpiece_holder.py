@@ -15,6 +15,11 @@ The front's pocket is x -52.2..-35.8, y 100.2..107.5, floor z -11.1. It is open 
 toward the back (+z). Its walls end 1 mm above the mating face (z 4.3), at z 5.3, where the back's block
 closes over it (z 5.5). From z 4.3 up, the back's top wall comes in to y 106.09. The back's half of the old
 slot is filled solid (make_back.py), so the holder only has the front's part to fill.
+
+The earpiece (owner's photos, 4 Nov 2026) has a rubber gasket on its sound face and two spring contacts on its
+back, one at each short end. The contacts are folded over the back, which adds 1 mm. The holder presses on the
+middle of the back, has deeper pockets at both ends for the folded contacts and their solder joints, and a wire
+path along the T-Deck side of the cup to the groove.
 """
 import sys
 
@@ -33,9 +38,13 @@ SLOT_CENTRE = (-44.0, 103.85)     # the grille slot through the floor (x, y)
 TDECK_BACK_Z = -2.7               # back of the T-Deck (11 mm thick, screen side at -13.7)
 
 # ---- Earpiece: Micromax receiver, measured by the owner ------------------------------------------
-EAR_L, EAR_W, EAR_H = 13.0, 5.0, 2.0      # length (along x), width, height including the rubber gasket
+EAR_L, EAR_W = 13.0, 5.0                  # length (along x, including the small end tabs) and width
+EAR_BODY_H = 2.0                          # body with its rubber gasket
+EAR_PIN_H = 1.0                           # the two spring contacts, folded over the back at the short ends
+PIN_ZONE = 3.0                            # how far in from each end the folded contacts and solder joints reach
 CUP_SPARE = 0.4                           # added to the length and width
 SQUEEZE = 0.3                             # the gasket is pressed this much onto the floor
+PIN_SPARE = 0.5                           # room above the folded contacts for solder and wire
 
 # ---- Holder -------------------------------------------------------------------------------------
 SIDE_CLEAR = 0.2
@@ -44,9 +53,9 @@ HOLDER_Y = (POCKET_Y[0] + 0.2, POCKET_Y[1] - 0.2)                 # 6.9 mm
 BODY_TOP = MATING_Z - 0.2                 # full-width part stops under the back's top wall
 TONGUE_Y1 = BACK_WALL_Y - 0.25            # narrower top, beside the back's top wall
 TONGUE_TOP = BACK_BLOCK_Z - 0.1           # the back holds it down when the case is closed
-CHANNEL_W, CHANNEL_D = 2.5, 1.2           # wire channel in the cup's ceiling, for the solder joints
+SIDE_CHANNEL_W = 2.0                      # wire path along the T-Deck side of the cup, from both ends to the groove
 GROOVE_W = 3.0                            # wire groove up the T-Deck-side face
-GROOVE_DEPTH = 2.4                        # from that face, reaching the ceiling channel
+GROOVE_DEPTH = 2.4                        # from that face, reaching the wire path
 
 
 def prism_x(poly_yz, x0, x1):
@@ -91,12 +100,15 @@ def build_holder():
 
     cx, cy = SLOT_CENTRE
     cl, cw = EAR_L + CUP_SPARE, EAR_W + CUP_SPARE
-    cup_top = FLOOR_Z + EAR_H - SQUEEZE
-    cup = cuboid(cx - cl / 2, cx + cl / 2, cy - cw / 2, cy + cw / 2, z0 - 1, cup_top)
-    channel = cuboid(cx - cl / 2, cx + cl / 2, cy - CHANNEL_W / 2, cy + CHANNEL_W / 2, z0, cup_top + CHANNEL_D)
-    groove = cuboid(cx - GROOVE_W / 2, cx + GROOVE_W / 2, y0 - 1, y0 + GROOVE_DEPTH, cup_top, TONGUE_TOP + 1)
-    holder = trimesh.boolean.difference([body, trimesh.boolean.union([cup, channel, groove], engine="manifold")],
-                                        engine="manifold")
+    xa, xb, ya, yb = cx - cl / 2, cx + cl / 2, cy - cw / 2, cy + cw / 2
+    press_z = FLOOR_Z + EAR_BODY_H - SQUEEZE           # presses on the middle of the earpiece's back
+    pin_z = FLOOR_Z + EAR_BODY_H + EAR_PIN_H + PIN_SPARE
+    cuts = [cuboid(xa, xb, ya, yb, z0 - 1, press_z),                    # the earpiece body
+            cuboid(xa, xa + PIN_ZONE, ya, yb, z0, pin_z),               # folded contacts, one end
+            cuboid(xb - PIN_ZONE, xb, ya, yb, z0, pin_z),               # and the other
+            cuboid(xa, xb, ya, ya + SIDE_CHANNEL_W, z0, pin_z),         # wires from both ends to the groove
+            cuboid(cx - GROOVE_W / 2, cx + GROOVE_W / 2, y0 - 1, y0 + GROOVE_DEPTH, press_z, TONGUE_TOP + 1)]
+    holder = trimesh.boolean.difference([body, trimesh.boolean.union(cuts, engine="manifold")], engine="manifold")
     assert holder.is_watertight
     return holder
 
@@ -145,46 +157,68 @@ def draw(holder, front, back_f, path):
         ax.imshow(img, origin="lower", extent=ext, cmap=cmap, vmin=0, vmax=1.35)
         ax.set_aspect("equal"); ax.axis("off"); ax.set_title(title, fontsize=10)
 
-    fig = plt.figure(figsize=(16, 6.8), dpi=120)
-    gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1.5])
-    view(fig.add_subplot(gs[0]), holder, (0.35, 0.55, 1.0), (0, 0, 1),
-         "Seen from below and from the T-Deck side:\nthe cup the earpiece sits in (wire channel\nalong its ceiling) and the wire groove")
-    view(fig.add_subplot(gs[1]), for_printing(holder), (0.45, 0.6, -1.0), (0, 1, 0),
+    def cut(ax, normal_axis, at, keep):
+        normal = np.eye(3)[normal_axis]
+        for mesh, col, lab in ((front, "#4a78b5", "front"), (back_f, "#d08a3a", "back (its slot now filled)"),
+                               (holder, "#3a9a4a", "earpiece holder")):
+            s = mesh.section(plane_origin=normal * at, plane_normal=normal)
+            if s is None:
+                continue
+            a, b = keep
+            to2d = np.zeros((4, 4)); to2d[0, a] = 1; to2d[1, b] = 1; to2d[2, normal_axis] = 1; to2d[3, 3] = 1
+            p2, _ = s.to_planar(to_2D=to2d, check=False)
+            for k, poly in enumerate(p2.polygons_full):
+                xs, ys = poly.exterior.xy
+                ax.fill(xs, ys, color=col, alpha=0.55, lw=0, label=lab if k == 0 else None)
+                for hole in poly.interiors:
+                    hx, hy = hole.xy
+                    ax.fill(hx, hy, color="white", lw=0)
+
+    cx, cy = SLOT_CENTRE
+    body_kw = dict(fc="#c0392b", ec="k", lw=0.6)
+    pin_kw = dict(fc="#e0b030", ec="k", lw=0.5)
+    fig = plt.figure(figsize=(15, 12.5), dpi=110)
+    gs = fig.add_gridspec(2, 2, height_ratios=[1, 1.25])
+    view(fig.add_subplot(gs[0, 0]), holder, (0.35, 0.55, 1.0), (0, 0, 1),
+         "Seen from below and from the T-Deck side: the cup, the deeper\npockets at both ends for the folded contacts, "
+         "and the wire path\nalong the T-Deck side to the groove")
+    view(fig.add_subplot(gs[0, 1]), for_printing(holder), (0.45, 0.6, -1.0), (0, 1, 0),
          "As printed: lying on the T-Deck-side face\n(the groove underneath), no supports")
 
-    ax = fig.add_subplot(gs[2])
-    xc = SLOT_CENTRE[0] + 2.3                  # through the slot and the cup, just beside the groove
-    for mesh, col, lab in ((front, "#4a78b5", "front"), (back_f, "#d08a3a", "back (its slot now filled)"),
-                           (holder, "#3a9a4a", "earpiece holder")):
-        s = mesh.section(plane_origin=[xc, 0, 0], plane_normal=[1, 0, 0])
-        if s is None:
-            continue
-        p2, _ = s.to_planar(to_2D=np.array([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, 0], [0, 0, 0, 1]], float),
-                            check=False)
-        for k, poly in enumerate(p2.polygons_full):
-            xs, ys = poly.exterior.xy
-            ax.fill(xs, ys, color=col, alpha=0.55, lw=0, label=lab if k == 0 else None)
-            for hole in poly.interiors:
-                hx, hy = hole.xy
-                ax.fill(hx, hy, color="white", lw=0)
-    cy = SLOT_CENTRE[1]
-    ax.add_patch(Rectangle((cy - EAR_W / 2, FLOOR_Z), EAR_W, EAR_H, fc="#c0392b", ec="k", lw=0.6,
-                           label="earpiece (5 x 2 mm)"))
-    ax.add_patch(Rectangle((90.0, -13.7), POCKET_Y[0] - 90.0, 11.0, fc="#bbbbbb", ec="#777", lw=0.6,
-                           label="T-Deck"))
+    ax = fig.add_subplot(gs[1, 0])
+    xc = cx + 2.3                                   # through the slot and the middle of the cup, beside the groove
+    cut(ax, 0, xc, (1, 2))
+    ax.add_patch(Rectangle((cy - EAR_W / 2, FLOOR_Z), EAR_W, EAR_BODY_H, label="earpiece body + gasket", **body_kw))
+    ax.add_patch(Rectangle((90.0, -13.7), POCKET_Y[0] - 90.0, 11.0, fc="#bbbbbb", ec="#777", lw=0.6, label="T-Deck"))
     gy0 = HOLDER_Y[0]
-    ax.add_patch(Rectangle((gy0, FLOOR_Z + EAR_H - SQUEEZE), GROOVE_DEPTH, TONGUE_TOP - (FLOOR_Z + EAR_H - SQUEEZE),
-                           fill=False, ec="k", ls="--", lw=0.8, label="wire groove (middle 3 mm)"))
+    press_z = FLOOR_Z + EAR_BODY_H - SQUEEZE
+    ax.add_patch(Rectangle((gy0, press_z), GROOVE_DEPTH, TONGUE_TOP - press_z, fill=False, ec="k", ls="--", lw=0.8,
+                           label="wire groove (middle 3 mm)"))
     ax.annotate("grille slot", (cy, -14.7), (cy + 3.5, -17.2), fontsize=8, arrowprops=dict(arrowstyle="->", lw=0.7))
-    ax.annotate("wires: up the groove, then\nover the T-Deck to the modem", (gy0 + 1.0, 0.5), (89.6, 2.2), fontsize=8,
-                arrowprops=dict(arrowstyle="->", lw=0.7))
+    ax.annotate("wires: along the T-Deck side,\nup the groove, then over the\nT-Deck to the modem", (gy0 + 1.0, 0.5),
+                (89.4, 1.5), fontsize=8, arrowprops=dict(arrowstyle="->", lw=0.7))
     ax.set_xlim(89, 111); ax.set_ylim(-18, 23); ax.set_aspect("equal"); ax.grid(alpha=0.25)
     ax.set_xlabel("mm, toward the top edge of the phone"); ax.set_ylabel("mm, screen face at -14.7")
-    ax.set_title("Cut through the closed case, through the slot and cup", fontsize=10)
-    ax.legend(loc="upper left", bbox_to_anchor=(1.02, 1.0), fontsize=8, framealpha=0.95)
+    ax.set_title("Cut across, through the slot and the middle of the earpiece", fontsize=10)
+    ax.legend(loc="upper left", fontsize=8, framealpha=0.95)
+
+    ax = fig.add_subplot(gs[1, 1])
+    cut(ax, 1, cy + 0.15, (0, 2))                   # along the earpiece, through the slot
+    ax.add_patch(Rectangle((cx - EAR_L / 2, FLOOR_Z), EAR_L, EAR_BODY_H, label="earpiece body + gasket", **body_kw))
+    for x_end in (cx - EAR_L / 2, cx + EAR_L / 2 - 1.5):
+        ax.add_patch(Rectangle((x_end, FLOOR_Z + EAR_BODY_H), 1.5, EAR_PIN_H,
+                               label="folded contacts" if x_end < cx else None, **pin_kw))
+    ax.annotate("grille slot (6 mm long)", (cx, -14.7), (cx + 2.0, -17.3), fontsize=8,
+                arrowprops=dict(arrowstyle="->", lw=0.7))
+    ax.annotate("holder presses here\n(middle of the back)", (cx + 1.5, press_z + 0.1), (cx + 1.0, -3.0), fontsize=8,
+                ha="center", arrowprops=dict(arrowstyle="->", lw=0.7))
+    ax.set_xlim(-57, -31); ax.set_ylim(-18, 9); ax.set_aspect("equal"); ax.grid(alpha=0.25)
+    ax.set_xlabel("mm, across the phone"); ax.set_ylabel("mm, screen face at -14.7")
+    ax.set_title("Cut along the earpiece, through the slot", fontsize=10)
+    ax.legend(loc="upper left", fontsize=8, framealpha=0.95)
     fig.suptitle("Earpiece holder: fills the front's old GPS-module pocket and presses the earpiece onto the slot",
                  fontsize=11)
-    fig.tight_layout(rect=[0, 0, 1, 0.94])
+    fig.tight_layout(rect=[0, 0, 1, 0.965])
     fig.savefig(path)
 
 
@@ -192,7 +226,8 @@ def main(dst, picture=None, front_path=None, back_path=None):
     holder = build_holder()
     lo, hi = holder.bounds
     print(f"holder {hi[0] - lo[0]:.1f} x {hi[1] - lo[1]:.1f} x {hi[2] - lo[2]:.1f} mm, {holder.volume:.0f} mm^3; "
-          f"cup {EAR_L + CUP_SPARE:.1f} x {EAR_W + CUP_SPARE:.1f} x {EAR_H - SQUEEZE:.1f} mm")
+          f"cup {EAR_L + CUP_SPARE:.1f} x {EAR_W + CUP_SPARE:.1f} mm, {EAR_BODY_H - SQUEEZE:.1f} deep in the middle, "
+          f"{EAR_BODY_H + EAR_PIN_H + PIN_SPARE:.1f} deep over {PIN_ZONE:.1f} mm at each end")
     if front_path and back_path:
         front = trimesh.load(front_path, force="mesh")
         back_f = back_in_front_coords(trimesh.load(back_path, force="mesh"))
