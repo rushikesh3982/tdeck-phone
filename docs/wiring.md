@@ -177,8 +177,8 @@ A 2-wire electret mic (Sunrom 6027) across **M+ and M−**. The module provides 
   multimeter while a call is up. It should be about 1–2.5 V.
 
 If the person you call hears you faintly, raise the gain with `AT+CMICGAIN=5` or higher. Sunrom lists this mic at
-−60 dB sensitivity, which would be quieter than a typical phone mic (about −42 dB). So more gain may well be needed:
-check it in the bench test call.
+−60 dB sensitivity without saying what that's measured against, so it can't be compared with other mics' figures.
+Check the level in the bench test call.
 
 ## 5. Ringtone
 

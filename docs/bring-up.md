@@ -118,7 +118,8 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    - **Earpiece:** send `AT+CSDVC=1` (sound to the earpiece), then `AT+SIMTONE=1,1000,200,200,3000`. You should
      hear 3 seconds of beeps. Other ways: `AT+CLDTMF=2,"1,2,3"` plays keypad tones, and `AT+CTTS=2,"hello"` speaks.
    - **Mic:** send `AT+CREC=1,"c:/t.amr"`, talk at the mic for a few seconds, and send `AT+CREC=0`. Then
-     `AT+CCMXPLAY="c:/t.amr",0,0` plays your voice back on the earpiece.
+     `AT+CCMXPLAY="c:/t.amr",0,0` plays it back on the earpiece. **A silent result doesn't prove a fault.** On this
+     firmware the mic got no power during a recording (see the results below), so the first real call is the real test.
    - **GPS:** step 6 works without a SIM.
 
 3. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
@@ -149,7 +150,8 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    module needs Ctrl-Z to finish the message, which works in Terminal's `screen` but not in the Arduino Serial
    Monitor.)
 6. **GNSS.** Take the patch outdoors with the ceramic side facing the sky, and send `AT+CGNSSPWR=1`. Wait for
-   `+CGNSSPWR: READY!`, because `AT+CGNSSINFO` answers `ERROR` until then. Then send `AT+CGNSSINFO` every minute or so. Empty commas = no fix yet. Latitude and longitude = fix. The first fix can take
+   `+CGNSSPWR: READY!`, because `AT+CGNSSINFO` answers `ERROR` until then. If it hasn't appeared after a minute, send
+   `AT+CGNSSPWR=0`, then `AT+CGNSSPWR=1` again. Then send `AT+CGNSSINFO` every minute or so. Empty commas = no fix yet. Latitude and longitude = fix. The first fix can take
    a few minutes. If there is still no fix after about 15 minutes outdoors, check the antenna power: the centre pin
    of U.FL2 should read about 1.8–3.3 V DC. Probe it carefully, because a slipped probe shorts it.
 7. **Decide.** If everything passed, keep the board and go to phase B. If something failed, contact KTRON before
@@ -162,11 +164,13 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 |---|---|
 | `AT` | `OK`, once TX and RX went straight across |
 | `ATI` | A7672S-FASE, firmware **A7672M7_V1.11.1** (`AT+CSUB`: B07V04) |
-| `AT+CFUN?` | `4` (flight mode) at first. `AT+CFUN=1` worked and stayed on |
+| `AT+CFUN?` | `4` (flight mode) at every power-up tested without a SIM. `AT+CFUN=1` worked and stayed on until power-off |
 | `AT+CSQ` | 20 with the radio on and only the SMA cable fitted, so it hears towers |
 | `AT+CPIN?` | `SIM not inserted`, as expected |
 | `AT+CPMUTEMP` | 28 °C |
 | `AT+CBC` | About 0.01 V, which can't be right for a running modem. Measure the real voltage with the multimeter |
+| Earpiece | Works. Tones (`AT+SIMTONE`), speech (`AT+CTTS`) and file playback (`AT+CCMXPLAY`) were all heard. `AT+COUTGAIN=7` was set after it sounded low, and survives a restart |
+| Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call |
 
 ### Phase B: after deciding to keep the board
 
