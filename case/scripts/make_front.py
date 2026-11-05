@@ -4,6 +4,10 @@ and fill the unused slide-switch mount on its left side. The top-edge badge carr
 
 Usage:
     python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl> [cat logo json]
+    python make_front.py --scale 1.01 "<...Front GPS Inserts.stl>" <output.stl>
+
+--scale builds a larger front for a tight T-Deck fit (see case/README.md, "Fit and scale"). The whole finished front
+is scaled: nothing in it has to stay true to size within 1 % (the mic pocket goes from 6.30 to 6.36 mm).
 
 Needs: numpy, trimesh, shapely, manifold3d.
 
@@ -173,7 +177,7 @@ def replace_badge_with_cat(front, cat_json):
     return trimesh.boolean.difference([front] + cuts, engine="manifold")
 
 
-def main(src, dst, cat_json=None):
+def main(src, dst, cat_json=None, scale=1.0):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
     front = mirror_sma_cutout(front)
@@ -202,10 +206,17 @@ def main(src, dst, cat_json=None):
                                     engine="manifold")
     out = trimesh.boolean.difference([front, cutters], engine="manifold")
     assert out.is_watertight, "result is not watertight"
+    removed = front.volume - out.volume
+    if scale != 1.0:
+        out.apply_scale(scale)
     out.export(dst)
-    print(f"removed {front.volume - out.volume:.1f} mm^3, faces {len(out.faces)}, "
+    print(f"removed {removed:.1f} mm^3 (before scaling), scale {scale}, faces {len(out.faces)}, "
           f"watertight {out.is_watertight}, bodies {len(out.split(only_watertight=False))}")
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:4])
+    args = sys.argv[1:]
+    scale = 1.0
+    if args and args[0] == "--scale":
+        scale = float(args[1]); args = args[2:]
+    main(*args[:3], scale=scale)

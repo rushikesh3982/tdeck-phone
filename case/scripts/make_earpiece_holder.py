@@ -3,6 +3,10 @@ pressed onto the pocket floor, over the 1 x 6 mm grille slot.
 
 Usage:
     python make_earpiece_holder.py <output.stl> [picture.png front.stl back.stl]
+    python make_earpiece_holder.py --scale 1.01 <output.stl> [picture.png front.stl back.stl]
+
+--scale makes the holder for a larger case: the pocket and the parts around it grow with the case, but the earpiece,
+its cup and the clearances stay true to size. Give it the front and back built at the same scale.
 
 With the optional picture and the two case files, it also checks that the holder clears both case halves
 and draws how it fits. Needs: numpy, trimesh, shapely, manifold3d (and matplotlib for the picture).
@@ -59,6 +63,24 @@ TONGUE_TOP = BACK_BLOCK_Z - 0.1           # the back holds it down when the case
 NEAR_WALL = 0.7                           # cup wall on the T-Deck side; the far side is the pocket's own wall
 GROOVE_W = 2.0                            # a wire groove up the T-Deck-side face from each end pocket
 GROOVE_DEPTH = 1.6                        # from that face, through the cup wall into the end pocket
+ASSEMBLY = (-10.0, -4.7)                  # back -> front: x_f = -x_b - 10, z_f = -4.7 - z_b
+
+
+def use_scale(s):
+    """A larger case: the pocket and its neighbours grow; the earpiece, its cup and the clearances stay true."""
+    global POCKET_X, POCKET_Y, FLOOR_Z, MATING_Z, BACK_WALL_Y, BACK_BLOCK_Z, SLOT_CENTRE, TDECK_BACK_Z, ASSEMBLY
+    global HOLDER_X, HOLDER_Y, BODY_TOP, TONGUE_Y1, TONGUE_TOP
+    POCKET_X = tuple(v * s for v in POCKET_X)
+    POCKET_Y = tuple(v * s for v in POCKET_Y)
+    SLOT_CENTRE = tuple(v * s for v in SLOT_CENTRE)
+    ASSEMBLY = tuple(v * s for v in ASSEMBLY)
+    FLOOR_Z, MATING_Z, BACK_WALL_Y, BACK_BLOCK_Z, TDECK_BACK_Z = (
+        v * s for v in (FLOOR_Z, MATING_Z, BACK_WALL_Y, BACK_BLOCK_Z, TDECK_BACK_Z))
+    HOLDER_X = (POCKET_X[0] + SIDE_CLEAR, POCKET_X[1] - SIDE_CLEAR)
+    HOLDER_Y = (POCKET_Y[0] + 0.2, POCKET_Y[1] - 0.2)
+    BODY_TOP = MATING_Z - 0.2
+    TONGUE_Y1 = BACK_WALL_Y - 0.25
+    TONGUE_TOP = BACK_BLOCK_Z - 0.1
 
 
 def prism_x(poly_yz, x0, x1):
@@ -129,7 +151,7 @@ def for_printing(holder):
 
 def back_in_front_coords(back):
     b = back.copy()
-    b.apply_transform(np.array([[-1, 0, 0, -10], [0, 1, 0, 0], [0, 0, -1, -4.7], [0, 0, 0, 1]], dtype=float))
+    b.apply_transform(np.array([[-1, 0, 0, ASSEMBLY[0]], [0, 1, 0, 0], [0, 0, -1, ASSEMBLY[1]], [0, 0, 0, 1]], dtype=float))
     b.fix_normals()
     return b
 
@@ -229,7 +251,9 @@ def draw(holder, front, back_f, path):
     fig.savefig(path)
 
 
-def main(dst, picture=None, front_path=None, back_path=None):
+def main(dst, picture=None, front_path=None, back_path=None, scale=1.0):
+    if scale != 1.0:
+        use_scale(scale)
     holder = build_holder()
     lo, hi = holder.bounds
     print(f"holder {hi[0] - lo[0]:.1f} x {hi[1] - lo[1]:.1f} x {hi[2] - lo[2]:.1f} mm, {holder.volume:.0f} mm^3; "
@@ -246,4 +270,8 @@ def main(dst, picture=None, front_path=None, back_path=None):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:])
+    args = sys.argv[1:]
+    scale = 1.0
+    if args and args[0] == "--scale":
+        scale = float(args[1]); args = args[2:]
+    main(*args, scale=scale)

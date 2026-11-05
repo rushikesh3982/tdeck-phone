@@ -4,6 +4,11 @@ rushiWorks logo.
 
 Usage:
     python make_back.py "<Alley Chat TD1 X Back Outside Cat Edition.stl>" <output.stl> [layout.png] [logo image]
+    python make_back.py --scale 1.01 "<...Outside Cat Edition.stl>" <output.stl>
+
+--scale builds a larger cover for a tight T-Deck fit (see case/README.md, "Fit and scale"). Everything grows
+with Alley Cat's shell except the four modem standoffs: they keep the KTRON board's exact 47.90 x 50.70 mm hole
+spacing and their 4.5 mm insert holes, so the board still screws on. Their group sits where the larger cover puts it.
 
 Needs: numpy, trimesh, shapely, manifold3d, pillow, matplotlib. The logo image defaults to
 ../logo/rushi-logo.jpg. (The Outside Cat and Inside Cat editions are identical except for the outer 1 mm of
@@ -142,22 +147,28 @@ def fill_gps_slot(back):
     return [prism_x(g, *GPS_SLOT_FILL_X) for g in getattr(block, "geoms", [block]) if g.area > 0.01]
 
 
-def standoffs():
+def standoffs(scale=1.0):
+    """Standoffs at the board's true hole spacing. With scale != 1 the cover is larger: the group of four moves with
+    it (its centre is scaled), and the floor, wall and heights follow the larger cover, but the spacing and the
+    insert holes stay true."""
     adds, cuts = [], []
-    base_z = FLOOR_Z - 0.6                     # sink into the 2 mm floor (outer grooves start at -26)
-    top_z = FLOOR_Z + STANDOFF_H
+    floor_z, wall_in_x, height = FLOOR_Z * scale, WALL_IN_X * scale, STANDOFF_H * scale
+    base_z = floor_z - 0.6                     # sink into the 2 mm floor (outer grooves start at -26)
+    top_z = floor_z + height
     k = FLARE_D / (FLARE_D - STANDOFF_D)
-    for u, v in HOLES_UV:
-        x, y = board_to_back(u, v)
+    pts = [board_to_back(u, v) for u, v in HOLES_UV]
+    gx, gy = np.mean(pts, axis=0)
+    for x, y in pts:
+        x, y = gx * scale + (x - gx), gy * scale + (y - gy)
         adds.append(prism_z(Point(x, y).buffer(STANDOFF_D / 2, quad_segs=24), base_z, top_z))
         foot = trimesh.creation.cone(radius=FLARE_D / 2, height=FLARE_H * k, sections=48)
         foot = trimesh.boolean.intersection([foot, trimesh.creation.box(bounds=[[-6, -6, 0], [6, 6, FLARE_H]])],
                                             engine="manifold")
-        foot.apply_translation([x, y, FLOOR_Z - 0.01])
+        foot.apply_translation([x, y, floor_z - 0.01])
         adds.append(foot)
-        adds.append(prism_z(Point(x, y).buffer(FLARE_D / 2, quad_segs=24), base_z, FLOOR_Z))
+        adds.append(prism_z(Point(x, y).buffer(FLARE_D / 2, quad_segs=24), base_z, floor_z))
         if x < 10:   # columns next to the left wall: join them to it, no thin crevice
-            adds.append(prism_z(box(WALL_IN_X - 0.5, y - STANDOFF_D / 2, x, y + STANDOFF_D / 2), base_z, top_z))
+            adds.append(prism_z(box(wall_in_x - 0.5, y - STANDOFF_D / 2, x, y + STANDOFF_D / 2), base_z, top_z))
         cuts.append(prism_z(Point(x, y).buffer(INSERT_D / 2, quad_segs=24), top_z - INSERT_DEPTH, top_z + 1))
     return adds, cuts
 
@@ -246,7 +257,7 @@ def patch_cradle():
     return adds, cuts
 
 
-def main(src, dst, picture=None, logo_path=None):
+def main(src, dst, picture=None, logo_path=None, scale=1.0):
     back = trimesh.load(src, force="mesh")
     assert back.is_watertight
     if logo_path is None:
@@ -254,7 +265,7 @@ def main(src, dst, picture=None, logo_path=None):
         logo_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "rushi-logo.jpg")
     a0, c0 = back_logo(logo_path)
     back = trimesh.boolean.union([back] + a0, engine="manifold")          # fill both cats first
-    a1, c1 = standoffs()
+    a1, c1 = standoffs(scale)
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
     a4, c4 = led_window()
@@ -262,6 +273,17 @@ def main(src, dst, picture=None, logo_path=None):
     # Nothing added may stick out of the cover. Its outer edges are rounded, so near the floor the outside face curves in
     # (at the left wall: x = -2.9 at mid-height, -1.3 at the floor), and the left standoffs' 10 mm feet would poke through.
     # Trim every addition to the original cover's outer shape (its convex hull; the cover's outline is convex).
+    # With --scale, everything except the standoffs is built at true size and then scaled about the origin with the
+    # shell; the standoffs (a1, c1) are made directly in the scaled cover, at the board's true spacing.
+    def grow(meshes):
+        if scale == 1.0:
+            return meshes
+        out = []
+        for m in meshes:
+            m = m.copy(); m.apply_scale(scale); out.append(m)
+        return out
+    back, = grow([back])
+    a2, a4, a5, c0, c2, c3, c4 = (grow(x) for x in (a2, a4, a5, c0, c2, c3, c4))
     envelope = back.convex_hull
     adds = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in a1 + a2 + a4 + a5]
     out = trimesh.boolean.union([back] + [m for m in adds if len(m.faces)], engine="manifold")
@@ -270,8 +292,8 @@ def main(src, dst, picture=None, logo_path=None):
     out.export(dst)
     print(f"added {out.volume - back.volume:.1f} mm^3, watertight {out.is_watertight}, "
           f"bodies {len(out.split(only_watertight=False))}; SIM slit centre y {slit_y:.2f}, z {slit_z:.2f} "
-          f"({slit_z - FLOOR_Z:.2f} mm above the floor, {-9.0 - slit_z:.2f} mm below the rim)")
-    if picture:
+          f"({slit_z - FLOOR_Z:.2f} mm above the floor, {-9.0 - slit_z:.2f} mm below the rim, before scaling); scale {scale}")
+    if picture and scale == 1.0:
         draw_layout(out, picture)
 
 
@@ -325,4 +347,8 @@ def draw_layout(mesh, path):
 
 
 if __name__ == "__main__":
-    main(*sys.argv[1:5])
+    args = sys.argv[1:]
+    scale = 1.0
+    if args and args[0] == "--scale":
+        scale = float(args[1]); args = args[2:]
+    main(*args, scale=scale)
