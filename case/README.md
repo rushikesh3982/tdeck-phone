@@ -96,10 +96,6 @@ From the top-right, the 4G cable drops straight into the empty strip beside the 
 that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
 
-![Screen side](images/front-screen-side.png)
-
-![Close-ups from inside: mic pocket with sound hole and wire groove (left), earpiece slot in the GPS pocket (right)](images/front-cuts-inside.png)
-
 ## Earpiece holder
 
 [earpiece-holder.stl](earpiece-holder.stl) is a new printed part, 16.0 × 6.9 × 16.5 mm. It fills the front's old
@@ -144,8 +140,6 @@ it. The cat is filled flush, and the **rushiWorks logo** is engraved in its plac
 
 ![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
 
-![Back from inside and from outside](images/back-preview.png)
-
 **Old GPS-module slot filled.** The GPS version's module slot continued from the front's pocket up into the back:
 16.4 × 6.1 mm, 10 mm tall, in the thick block between the two case-screw holes. Only the earpiece uses the
 front's part of it now, so the back's part is filled solid. The fill copies the block's cross-section from just beside
@@ -180,7 +174,7 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
 - **SIM size:** a nano-SIM in a micro adapter can catch in push-push holders. A fresh multi-cut SIM, popped out at
   micro size, is safer.
 
-![Left side of the back from outside, showing the SIM slit](images/back-sim-slit.png)
+The SIM slit is shown from outside in the "after" half of the picture under *Modem standoffs* above.
 
 **GPS patch cradle.** A fence with a 27 mm square opening near the bottom. It is sized for the measured patch:
 26 × 26 mm board and a 25 × 25 × 4 mm ceramic that sits slightly crooked.
