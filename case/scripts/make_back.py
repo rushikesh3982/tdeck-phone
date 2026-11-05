@@ -259,7 +259,12 @@ def main(src, dst, picture=None, logo_path=None):
     c3, (slit_y, slit_z) = sim_slit()
     a4, c4 = led_window()
     a5 = fill_gps_slot(back)
-    out = trimesh.boolean.union([back] + a1 + a2 + a4 + a5, engine="manifold")
+    # Nothing added may stick out of the cover. Its outer edges are rounded, so near the floor the outside face curves in
+    # (at the left wall: x = -2.9 at mid-height, -1.3 at the floor), and the left standoffs' 10 mm feet would poke through.
+    # Trim every addition to the original cover's outer shape (its convex hull; the cover's outline is convex).
+    envelope = back.convex_hull
+    adds = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in a1 + a2 + a4 + a5]
+    out = trimesh.boolean.union([back] + [m for m in adds if len(m.faces)], engine="manifold")
     out = trimesh.boolean.difference([out, trimesh.boolean.union(c0 + c1 + c2 + c3 + c4, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     out.export(dst)

@@ -167,6 +167,11 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
 - **Board:** the KTRON is 54.33 × 57.23 mm, with its holes on a 47.90 × 50.70 mm rectangle.
 - **Columns:** 7 mm wide, with a 10 mm foot, and their tops 9 mm above the inside floor. The two next to the left
   wall are joined to it.
+- **Trimmed to the case's shape:** the cover's bottom edge is rounded, so near the floor its outside face curves in.
+  The two left columns' feet used to poke up to 1.5 mm out through that curve. Everything added to the back is now
+  trimmed to the original cover's outer shape, so nothing shows outside (fixed 6 Nov 2026).
+
+  ![Left side of the back from outside, before and after the fix](images/back-left-edge-fix.png)
 - **Inserts:** each column has a 4.5 mm hole, 6 mm deep, for an M3 × 5 heat-set insert. The board is held with
   M3 × 6 screws from its solder side.
 - **Board orientation:** component side down toward the back cover. The SIM edge faces the phone's left side,
