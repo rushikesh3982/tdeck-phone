@@ -91,18 +91,6 @@ def show_badge_art(img, ext, zbuf, r, w, res=RES):
     return img
 
 
-def show_face_text(img, ext, zbuf, res=RES):
-    """Shade the engraved text on the screen side (view from -z: depth = -z, face at 14.7)."""
-    ny, nx = img.shape
-    u = ext[0] + (np.arange(nx) + 0.5) * res
-    v = ext[2] + (np.arange(ny) + 0.5) * res
-    U, V = np.meshgrid(u, v)
-    depth = 14.7 - zbuf
-    m = (depth > 0.2) & (depth < 0.45) & (U > 72) & (U < 79) & (V > 55) & (V < 99)
-    img = img.copy(); img[m] *= 0.35
-    return img
-
-
 def show(ax, img, ext):
     ax.imshow(img, origin="lower", extent=ext, cmap="gray", vmin=0, vmax=1.05, interpolation="bilinear")
     ax.set_xticks([]); ax.set_yticks([])
@@ -149,9 +137,7 @@ def front_outside(front, path):
         "left": ((-1, 0, 0), (0, 1, 0)),    # phone's left side, screen side toward the face view
         "right": ((1, 0, 0), (0, 1, 0)),    # phone's right side
     }
-    R = {k: render(front, *v) for k, v in views.items() if k not in ("top", "face")}
-    fi, fe, fr, fw, fz = render(front, *views["face"], depth=True)
-    R["face"] = (show_face_text(fi, fe, fz), fe, fr, fw)
+    R = {k: render(front, *v) for k, v in views.items() if k != "top"}
     ti, te, tr, tw, tz = render(front, *views["top"], depth=True)
     R["top"] = (show_badge_art(ti, te, tz, tr, tw), te, tr, tw)
     fig = plt.figure(figsize=(15, 11.5), dpi=110)
@@ -185,7 +171,6 @@ def front_outside(front, path):
     marker(ax_left, *P("left", (-6, 68.6, -5.7)), 8, dx=-8, dy=-5)
     marker(ax_right, *P("right", (-82, 47.5, -4.75)), 9, dx=8)
     marker(ax_right, *P("right", (-82, 80.5, -5.7)), 10, dx=8)
-    marker(ax_face, *P("face", (-75.5, 77.0, -14.7)), 11, dx=-9)
     for ax, t in ((ax_top, "TOP EDGE"), (ax_bot, "BOTTOM EDGE"), (ax_face, "SCREEN SIDE")):
         ax.set_title(t, fontsize=8, color="0.3", pad=2)
     ax_left.set_title("LEFT SIDE", fontsize=8, color="0.3", pad=2)
@@ -203,7 +188,6 @@ def front_outside(front, path):
         (8, "Opening for the printed Reset Button part."),
         (9, "T-Deck power switch: the printed Switch\npart slides here. It turns the modem on\nand off too."),
         (10, "microSD card slot."),
-        (11, "\"rushiworks\" along the right bezel, reading\nbottom-to-top (DejaVu Sans Mono Bold, 4.2 mm,\nengraved 0.3 mm into the 1 mm bezel lip)."),
         ("", "The SIM slit is on the back panel's\nleft side (see the back diagram)."),
     ], title="Front panel, outside (unfolded)")
     fig.savefig(path); plt.close(fig)
@@ -393,16 +377,6 @@ def stack(front, back, path, layout):
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 
-def front_side_text(front, path):
-    img, ext, r, w, z = render(front, (0, 0, 1), (0, 1, 0), 0.03, depth=True)
-    img = show_face_text(img, ext, z, 0.03)
-    fig, ax = plt.subplots(figsize=(5.2, 8.5), dpi=110)
-    show(ax, img, ext)
-    ax.set_xlim(44, 84); ax.set_ylim(40, 110)
-    ax.set_title("Screen side, right half: \"rushiworks\" along the right bezel", fontsize=9)
-    fig.tight_layout(); fig.savefig(path); plt.close(fig)
-
-
 def top_edge(front, path):
     # looking at the top edge with the phone screen-up: screen side at the top of the view
     img, ext, r, w, z = render(front, (0, -1, 0), (0, 0, -1), 0.04, depth=True)
@@ -428,7 +402,6 @@ def main(front_path, back_path, out_dir):
     back_inside(back, os.path.join(out_dir, "assembly-back-inside.png"), layout)
     stack(front, back, os.path.join(out_dir, "assembly-stack.png"), layout)
     top_edge(front, os.path.join(out_dir, "front-top-edge.png"))
-    front_side_text(front, os.path.join(out_dir, "front-side-text.png"))
     print("done")
 
 

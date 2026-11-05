@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, Alley Cat's cat-head logo on the top-edge badge, and "rushiworks" along the right bezel | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [front-earpiece-mic.stl](front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [test-mic-coupon.stl](test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [test-fit-ring-100.stl](test-fit-ring-100.stl), [test-fit-ring-101.stl](test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
 | [earpiece-holder.stl](earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
@@ -63,17 +63,6 @@ that points toward your mouth when the phone is at your right ear.
 - **Orientation:** it reads upright when the phone lies screen-up, with the ears toward the screen side.
 
 ![Top edge with the phone screen-up: 4G SMA cut-out, Alley Cat's cat-head badge, LoRa SMA cut-out](images/front-top-edge.png)
-
-**"rushiworks" along the right bezel.** Engraved on the screen side, beside the screen, reading bottom-to-top with
-the tops of the letters toward the screen.
-
-- **Font and size:** DejaVu Sans Mono Bold (a coding font, free licence), 4.2 mm tall and 29 mm long, with strokes
-  about 0.7 mm.
-- **Depth:** that part of the face is a 1 mm lip lying on the T-Deck's front, so the engraving is 0.3 mm deep and
-  0.7 mm of plastic stays behind it.
-- **Optional:** fill it with paint for contrast.
-
-![Screen side, right half: rushiworks along the right bezel](images/front-side-text.png)
 
 **Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
 countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled

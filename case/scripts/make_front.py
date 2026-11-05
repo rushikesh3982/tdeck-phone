@@ -1,12 +1,11 @@
 """Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front,
 and fill the unused slide-switch mount on its left side. The top-edge badge carries Alley Cat's cat-head logo
-(from ../logo/alley-cat-head.json, taken from her TD1 files) as a visible credit to the case's designer, and
-"rushiworks" is engraved on the screen side, along the right bezel beside the screen.
+(from ../logo/alley-cat-head.json, taken from her TD1 files) as a visible credit to the case's designer.
 
 Usage:
     python make_front.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl> [cat logo json]
 
-Needs: numpy, trimesh, shapely, manifold3d, matplotlib (for the DejaVu Sans Mono Bold font it ships with).
+Needs: numpy, trimesh, shapely, manifold3d.
 
 Coordinates are the original STL's own (mm). The front is modelled face-down:
 the screen face is at z = -14.7 and the inside faces +z. Looking at the screen,
@@ -75,20 +74,6 @@ BADGE_HEIGHT = 1.0                   # above the plain wall (y = 108.0)
 CAT_HEIGHT = 9.4                     # cat head, ears to chin
 CAT_HEAD_DEPTH = 0.35
 CAT_FEATURE_DEPTH = 0.70             # eyes and nose (0.8 mm of wall stays behind them)
-
-# "rushiworks" on the screen side, along the right bezel beside the screen (u = -x is left-to-right as you look
-# at the screen). There the face is a 1 mm lip lying on the T-Deck's front (u 72.5-78.5, straight from y ~56 to
-# 98), so the engraving is shallow and 0.7 mm of plastic stays behind it. The text runs bottom-to-top, tops of the
-# letters toward the screen. Font: DejaVu Sans Mono Bold, a coding font (bundled with matplotlib, free licence).
-# Engraved, because the screen side prints face-down on the bed.
-FRONT_TEXT = "rushiworks"
-FRONT_TEXT_HEIGHT = 4.2              # letter height incl. the h/k ascenders, measured across the bezel
-FRONT_TEXT_CENTRE = (75.5, 77.0)     # u, y: middle of the bezel, beside the screen
-FRONT_TEXT_ANGLE = 90.0              # degrees counter-clockwise in the screen view: reads bottom-to-top
-FRONT_TEXT_DEPTH = 0.30
-FACE_Z = -14.7
-
-
 
 def prism_y(poly_xz, y0, y1):
     """Extrude a polygon drawn in (x, z) along model y, from y0 to y1."""
@@ -188,33 +173,6 @@ def replace_badge_with_cat(front, cat_json):
     return trimesh.boolean.difference([front] + cuts, engine="manifold")
 
 
-def engrave_front_text(front):
-    from matplotlib import font_manager
-    from matplotlib.font_manager import FontProperties
-    from matplotlib.textpath import TextPath
-    from shapely.affinity import affine_transform
-    from shapely.ops import unary_union
-    font = font_manager.findfont(FontProperties(family="DejaVu Sans Mono", weight="bold"), fallback_to_default=False)
-    path = TextPath((0, 0), FRONT_TEXT, size=10, prop=FontProperties(fname=font))
-    rings = [Polygon(r).buffer(0) for r in path.to_polygons(closed_only=True) if len(r) > 3]
-    text = None
-    for r in sorted(rings, key=lambda q: -q.area):       # rings inside others (counters of o, etc.) are holes
-        text = r if text is None else (text.difference(r) if text.contains(r) else text.union(r))
-    text = unary_union(text)
-    gx0, gy0, gx1, gy1 = text.bounds
-    k = FRONT_TEXT_HEIGHT / (gy1 - gy0)
-    a = np.radians(FRONT_TEXT_ANGLE)
-    uc, yc = FRONT_TEXT_CENTRE
-    gcx, gcy = (gx0 + gx1) / 2, (gy0 + gy1) / 2
-    # glyph -> scaled, rotated in the screen view (u right, y up) -> model (x = -u, y)
-    cu, su = k * np.cos(a), k * np.sin(a)
-    u_tf = [cu, -su, su, cu, uc - (cu * gcx - su * gcy), yc - (su * gcx + cu * gcy)]
-    text = affine_transform(affine_transform(text, u_tf), [-1, 0, 0, 1, 0, 0])
-    cuts = [prism_z(g, FACE_Z - 1.0, FACE_Z + FRONT_TEXT_DEPTH) for g in getattr(text, "geoms", [text])]
-    print(f"  text: {FRONT_TEXT!r}, {(gx1-gx0)*k:.1f} mm long, {(gy1-gy0)*k:.2f} mm tall, bounds {np.round(text.bounds, 2)}")
-    return trimesh.boolean.difference([front] + cuts, engine="manifold")
-
-
 def main(src, dst, cat_json=None):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
@@ -224,7 +182,6 @@ def main(src, dst, cat_json=None):
         import os
         cat_json = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "alley-cat-head.json")
     front = replace_badge_with_cat(front, cat_json)
-    front = engrave_front_text(front)
 
     cx, cy = SLOT_CENTRE
     half = (SLOT_LENGTH - SLOT_WIDTH) / 2

@@ -83,8 +83,6 @@ Full details are in [case/README.md](../case/README.md).
 - **Top-edge badge:** Alley Cat's cat-head logo, from her TD1 files (the same cat as on her HT Pocket case), on a
   fresh badge of the original footprint. It's a visible credit to the case's designer. The head is recessed and the
   eyes and nose are cut deeper. It reads upright with the phone screen-up.
-- **"rushiworks" along the right bezel (done):** engraved 0.3 mm into the 1 mm bezel lip beside the screen, in
-  DejaVu Sans Mono Bold, 4.2 mm tall, reading bottom-to-top.
 - **Unused slide-switch mount (filled):** the GPS version's switch window, two screw holes and the switch-body
   recess on the inside are filled. The wall is copied from its normal shape just beside the mount. The Reset Button
   opening below them stays.
