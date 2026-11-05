@@ -25,8 +25,9 @@ This is the plan before the first dry fit. Expect small changes after it.
 
 ## Before you start
 
-- **Printed parts:** [front](../case/front-earpiece-mic.stl), [back](../case/back-modem-gps.stl),
-  [earpiece holder](../case/earpiece-holder.stl), and the original Switch and Reset Button parts from Printables.
+- **Printed parts:** all in [case/stl/](../case/stl/): the [front](../case/stl/front-earpiece-mic.stl), the
+  [back](../case/stl/back-modem-gps.stl), the [earpiece holder](../case/stl/earpiece-holder.stl), and Alley Cat's
+  [Switch](../case/stl/alley-chat-td1-switch.stl) and [Reset Button](../case/stl/alley-chat-td1-reset-button.stl).
 - **Fasteners:**
   - 6 × M3 × 5 heat-set inserts: 2 for the front, 4 for the back.
   - 2 × M3 × 8 screws for closing the case.

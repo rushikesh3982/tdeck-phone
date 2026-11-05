@@ -46,7 +46,7 @@ fallback and GNSS.
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
-| [case/](case/) | Modified case files to print (CC BY-SA 4.0), starting with the front |
+| [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/](case/stl/), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
 
 ## Next steps
 
