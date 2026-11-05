@@ -168,7 +168,8 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | `AT+CSQ` | 20 with the radio on and only the SMA cable fitted, so it hears towers |
 | `AT+CPIN?` | `SIM not inserted`, as expected |
 | `AT+CPMUTEMP` | 28 °C |
-| `AT+CBC` | About 0.01 V, which can't be right for a running modem. Measure the real voltage with the multimeter |
+| `AT+CBC` | About 0.01 V, which is wrong: the multimeter reads **3.86 V** on C11. So don't trust this reading, and check it again on battery before using `AT+CPMVT` |
+| Capacitors | Swapped before these tests (470 µF for C11, 100 µF for C17), and both are the right way round. C11's + leg reads 3.86 V to GND. C17's + leg reads 4.97 V, so C17 is on the VCC input |
 | Earpiece | Works. Tones (`AT+SIMTONE`), speech (`AT+CTTS`) and file playback (`AT+CCMXPLAY`) were all heard. `AT+COUTGAIN=7` was set after it sounded low, and survives a restart |
 | Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call |
 

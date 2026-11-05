@@ -77,7 +77,7 @@ C17 100 µF 50 V) are 11 mm tall and hang below the board, so with them the stac
 
 - **C11 → 470 µF 16 V** (6–7 × 12 mm). It sits on the modem's battery rail, which never exceeds 4.2 V, and the
   extra capacitance helps with transmit bursts.
-- **C17 → 100 µF 16 V** (4–5 × 8 mm), or left off. It is probably the regulator's input on VCC, which is unused on
+- **C17 → 100 µF 16 V** (4–5 × 8 mm), or left off. Its + leg read 4.97 V with 5 V on VCC (5 Nov 2026), which fits it being the regulator's input on VCC, which is unused on
   battery power. 16 V also covers a 12 V supply if VCC is ever used again.
 
 The standoffs drop to 9 mm and the SIM slit ends up fully inside the back's wall.
