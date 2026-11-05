@@ -59,8 +59,8 @@ Solder only the holes in brackets, and leave the rest empty.
 
 | KTRON hole | Wire goes to | Notes |
 |---|---|---|
-| RX (left) | CP2102 TXD | Leave the four data wires long. They move to the T-Deck's Grove pins later |
-| TX (left) | CP2102 RXD | The modem's replies arrive on this wire |
+| TX (left) | CP2102 TXD | **Straight across, not crossed** (tested: the modem doesn't answer when they're crossed). Leave the four data wires long. They move to the T-Deck's Grove pins later |
+| RX (left) | CP2102 RXD | The modem's replies arrive on this wire |
 | VDD (left) | CP2102 3V3 | Sets the signal level to 3.3 V. Draws only microamps |
 | GND (left) | CP2102 GND | |
 | — | CP2102 5V | **Leave unconnected** |
@@ -109,8 +109,8 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    it before going on. Look closely at every joint for bridges to the neighbouring holes.
 2. **Power and serial, no SIM yet.** Connect the CP2102 and the 5 V supply. The power LED should light. If it
    doesn't, unplug at once and recheck the polarity. Open the serial terminal (see below), wait about 20 seconds for
-   the modem to start, then type `AT`. You should get `OK`. If nothing comes back, swap TX and RX at the adapter.
-   Then check that VDD is on 3V3, and that the terminal is set to 115200 baud with a carriage return. Type `ATI` and
+   the modem to start, then type `AT`. You should get `OK`. If nothing comes back, check that the wires go straight
+   across (TX to TXD, RX to RXD). Then check that VDD is on 3V3, and that the terminal is set to 115200 baud with a carriage return. Type `ATI` and
    **write down the firmware build**. It matters if the Jio problem shows up.
 
    **Before the SIM arrives: earpiece, mic and GPS.** These need no SIM. If a command answers `ERROR`, this
@@ -122,7 +122,9 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    - **GPS:** step 6 works without a SIM.
 
 3. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
-   antenna is connected. Power on and wait about 30 seconds.
+   antenna is connected. Power on and wait about 30 seconds. Then send `AT+CFUN?`. If it answers `4`, the radio is off
+   (flight mode), so send `AT+CFUN=1`. This board was in flight mode when tested without a SIM, even with its blue
+   LED on.
 
    | Command | Good answer |
    |---|---|
@@ -146,13 +148,25 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    `+CMTI:` appears with a number at the end. `AT+CMGR=<that number>` shows the message. (Sending an SMS from the
    module needs Ctrl-Z to finish the message, which works in Terminal's `screen` but not in the Arduino Serial
    Monitor.)
-6. **GNSS.** Take the patch outdoors with the ceramic side facing the sky, and send `AT+CGNSSPWR=1`. Then send
-   `AT+CGNSSINFO` every minute or so. Empty commas = no fix yet. Latitude and longitude = fix. The first fix can take
+6. **GNSS.** Take the patch outdoors with the ceramic side facing the sky, and send `AT+CGNSSPWR=1`. Wait for
+   `+CGNSSPWR: READY!`, because `AT+CGNSSINFO` answers `ERROR` until then. Then send `AT+CGNSSINFO` every minute or so. Empty commas = no fix yet. Latitude and longitude = fix. The first fix can take
    a few minutes. If there is still no fix after about 15 minutes outdoors, check the antenna power: the centre pin
    of U.FL2 should read about 1.8–3.3 V DC. Probe it carefully, because a slipped probe shorts it.
 7. **Decide.** If everything passed, keep the board and go to phase B. If something failed, contact KTRON before
    the return deadline. If only Jio fails but Airtel/Vi works, that is the known Jio problem. Decide whether you can
    live with Airtel/Vi until SIMCom fixes it.
+
+### Bench results so far (5 Nov 2026, no SIM, no antenna, 5 V on VCC)
+
+| Check | Result |
+|---|---|
+| `AT` | `OK`, once TX and RX went straight across |
+| `ATI` | A7672S-FASE, firmware **A7672M7_V1.11.1** (`AT+CSUB`: B07V04) |
+| `AT+CFUN?` | `4` (flight mode) at first. `AT+CFUN=1` worked and stayed on |
+| `AT+CSQ` | 20 with the radio on and only the SMA cable fitted, so it hears towers |
+| `AT+CPIN?` | `SIM not inserted`, as expected |
+| `AT+CPMUTEMP` | 28 °C |
+| `AT+CBC` | About 0.01 V, which can't be right for a running modem. Measure the real voltage with the multimeter |
 
 ### Phase B: after deciding to keep the board
 
@@ -213,7 +227,8 @@ and wakes on serial data on GPIO44, so an incoming `RING` / `+CLIP:` wakes the p
 | Command | What it does |
 |---|---|
 | `ATI` | Shows the modem firmware build |
-| `AT+CPMVT=1,3300,4300` | Clean power-off below 3.3 V |
+| `AT+CFUN=1` | Radio on (leaves flight mode). Not saved, so it's needed after each power-on if the board starts in flight mode |
+| `AT+CPMVT=1,3300,4300` | Clean power-off below 3.3 V. **Check `AT+CBC` on battery first:** on the bench it read about 0.01 V, and this command acts on the modem's own voltage reading |
 | `AT+CSCLK=2` | Modem sleeps; any byte wakes it |
 | `AT+CSDVC=1` | Call audio to the earpiece pins (S+/S−) |
 | `AT+COUTGAIN=4` | Earpiece volume, 0–7 (4 is the default) |

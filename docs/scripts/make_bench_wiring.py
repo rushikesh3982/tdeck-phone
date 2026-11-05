@@ -82,17 +82,17 @@ def main(path):
     ax.text(cx0 + 10, cy_top - 33, "USB → Mac (serial terminal, 115200 baud).\nIts pins may be in another order:\n"
                                    "go by the labels.", ha="center", va="top", fontsize=8, color="#1f4e8c")
     cp = {}
-    for i, name in enumerate(["5V", "3V3", "GND", "TXD", "RXD"]):
+    for i, name in enumerate(["5V", "3V3", "GND", "RXD", "TXD"]):
         x, y = cx0 + 20, cy_top - 4 - i * 5.5
         ax.add_patch(Circle((x, y), 0.9, fc="#1f4e8c" if name != "5V" else "white", ec="#1f4e8c"))
         ax.text(x - 1.8, y, name, ha="right", va="center", fontsize=9, weight="bold")
         cp[name] = (x, y)
     ax.text(cp["5V"][0] + 2.0, cp["5V"][1], "✕ leave empty", va="center", fontsize=8.5, color="#c0392b")
     for name, target, col, xt in (("3V3", "VDD", COL["vdd"], -6), ("GND", "GND", COL["gnd"], -10),
-                                  ("TXD", "RX", COL["tx"], -14), ("RXD", "TX", COL["rx"], -18)):
+                                  ("RXD", "RX", COL["rx"], -14), ("TXD", "TX", COL["tx"], -18)):
         src, dst = cp[name], pins[("L", target)]
         wire(src, dst, col, via=[(xt, src[1]), (xt, dst[1])])
-    ax.text(-31, -44, "TXD → RX and RXD → TX (crossed).\nIf AT gets no reply, swap these two.",
+    ax.text(-31, -44, "TXD → TX and RXD → RX: straight across.\nTested: crossed, the modem doesn't answer.",
             fontsize=8, color="#444", va="top")
 
     # ---- mic (top right). The upper hole goes to the upper pin, so the wires don't cross.

@@ -23,10 +23,15 @@ also frees that corner of the case for a second SMA antenna cut-out.
 
 | T-Deck Grove pin | ESP32-S3 pin | Direction | KTRON pad | Notes |
 |---|---|---|---|---|
-| TX | GPIO43 | → | RX | |
-| RX | GPIO44 | ← | TX | Incoming calls (`RING`) arrive on this wire |
+| TX | GPIO43 | → | TX | |
+| RX | GPIO44 | ← | RX | Incoming calls (`RING`) arrive on this wire |
 | VCC (switched 3.3 V) | switched by GPIO10 | → | VDD | Reference for the board's level shifters (microamps). Also tells the modem power switch to turn on (section 2). Does **not** power the modem |
 | GND | — | — | GND | |
+
+**TX and RX go straight across: TX to TX, RX to RX.** This was found on the bench on 5 Nov 2026. With a CP2102 the
+modem stayed silent when the wires were crossed, and answered as soon as they went straight. So the KTRON's labels
+seem to name the signal on the connected device's side, not the modem's own. If the T-Deck gets no reply, check this
+first.
 
 Serial settings: 115200 baud, 8N1.
 
@@ -64,6 +69,9 @@ The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protec
 - The T-Deck's own charger charges the cell over USB-C and stops at 4.2 V, which suits this cell.
 - The modem runs from 3.4 V to 4.2 V. The firmware turns the modem off cleanly below 3.3 V
   (`AT+CPMVT=1,3300,4300`). The screen treats a battery reading under 3.5 V (BAT_ADC, GPIO4) as "modem off".
+  **Check before using that command:** on the bench, on 5 V, this board reports its supply as about 0.01 V
+  (`AT+CBC`). If it reads that low on battery too, the command could turn the modem off straight away. Read `AT+CBC` on
+  battery power first (phase B).
 
 ### Modem power switch: the modem follows the T-Deck's own switch
 
