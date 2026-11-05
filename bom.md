@@ -26,8 +26,8 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 - SOT-23 adapter board (optional, makes the MOSFET easier to solder) and heat-shrink tubing
 - 2 × 47 µF electrolytic capacitors, 10 V or more, about 4–5 mm across: one in series with each earpiece wire
   (SIMCom's and KTRON's reference circuit)
-- For the bench tests: about 10 female-to-female jumper wires (cut in half; the cut end is soldered to the KTRON
-  board, the plug end goes on the CP2102), and a 5 V ≥2 A phone charger with a USB
+- For the bench tests: 10 female-to-female jumper wires, 20 cm long, one per hole (one plug cut off and soldered to
+  the KTRON board, the other plug on the CP2102 or the supply), and a 5 V ≥2 A phone charger with a USB
   breakout board or a cut-open USB cable
 
 ## Already owned

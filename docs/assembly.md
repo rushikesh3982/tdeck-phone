@@ -52,9 +52,9 @@ like a book while you work.
 
 | From | To | Wire |
 |---|---|---|
-| T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: RX, TX, VDD, GND (back ⑤, red pads) | thin, about 10 cm. TX goes to RX, RX to TX |
-| Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 10 cm, either way round |
-| Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M− | thin, about 12 cm (from the bottom of the phone) |
+| T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: RX, TX, VDD, GND (back ⑤, red pads) | thin, about 12 cm: from the KTRON's holes, under the board to the free strip (⑫), then up the strip to the old Grove corner. TX goes to RX, RX to TX |
+| Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 12 cm, either way round |
+| Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M− | thin, about 18 cm: it runs from the bottom of the phone to the top of the board, and the case must still open. Tuck spare wire under the board |
 | Battery +, through the MOSFET board | KTRON C11 + pad or MIC29302 pin 4 | 24 AWG, short |
 | Battery − | KTRON GND (regulator tab) | 24 AWG, short |
 | KTRON VDD pad (Grove 3.3 V) and GND | MOSFET board (gate wire and ground) | thin |
@@ -122,6 +122,8 @@ Details and checks are in [wiring.md](wiring.md).
   T-Deck's top edge).
 - **SIM:** the card lines up with the slit and clicks into the holder.
 - **Battery:** it sits flat over the board with about 1 mm to spare under the T-Deck.
+- **Earpiece wires:** they pass between the battery's top edge and the back's solid block. Centred on the board, the
+  battery leaves only 0.5 mm there, so slide it about 2 mm toward the bottom of the phone.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
 - **Earpiece:** the receiver fits the holder's 12.4 mm cup, between the holder's wall and the pocket's far wall. With the holder in, there's no rattle and the case
   still closes fully.

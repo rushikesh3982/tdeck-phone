@@ -17,8 +17,9 @@ the T-Deck's, so there are no settings to change.
 ### What you need for phase A
 
 - Soldering iron, solder, thin wire (24 AWG for the two power wires)
-- KTRON board, CP2102 adapter, about 10 female-to-female jumper wires. Cut each in half. The cut end is soldered into
-  the KTRON board, and the plug end goes onto the CP2102 or the 5 V supply.
+- KTRON board, CP2102 adapter, and 10 female-to-female jumper wires, 20 cm long: one for each hole. Don't cut them in
+  half, because half a jumper is too short for the phone. Cut one plug off and solder that end into the KTRON. The
+  other plug goes onto the CP2102 or the 5 V supply. For the earpiece and mic, cut off both plugs.
 - **5 V supply, at least 2 A:** a phone charger with a USB breakout board or a cut-open USB cable. KTRON's page gives
   the VCC input as 5–12 V DC. Use 5 V, because the board's regulator then runs coolest. Do **not** use the CP2102's
   5V pin: a Mac USB port can't reliably supply the modem's current bursts.
@@ -79,14 +80,17 @@ gap under the board.
 
 | Wires | Length |
 |---|---|
-| VDD, GND, RX, TX (to the CP2102 now, to the T-Deck later) | about 15 cm |
-| Earpiece (S+, S−) | about 10 cm |
-| Mic (M+, M−) | about 12 cm |
+| VDD, GND, RX, TX (to the CP2102 now, to the T-Deck later) | a whole jumper with one plug cut off, about 18 cm. When moving them to the T-Deck, cut off the other plug and trim to about 12 cm |
+| Earpiece (S+, S−) | about 12 cm |
+| Mic (M+, M−) | about 18 cm. Spare wire tucks into the gap under the board |
 | VCC and the GND beside it (bench only) | any |
 
 **Soldering tips:**
 
-- Strip about 2 mm, twist and tin the wire, push it through the hole, solder, and trim what sticks out.
+- Strip about 2 mm, and twist and tin the wire.
+- **Push it in from the side with the antenna sockets.** Solder on the other side and trim what sticks out. In the
+  phone, the wires then leave into the 9 mm gap under the board. The soldered side faces the battery, with only about
+  1.5 mm to spare.
 - The holes are 2.54 mm apart and the wanted ones sit side by side. Watch for solder bridges between neighbours.
 - Keep the iron on each joint only for a couple of seconds.
 
