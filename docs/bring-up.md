@@ -33,6 +33,18 @@ the T-Deck's, so there are no settings to change.
 If something hasn't arrived yet, skip the step that needs it and come back to it. But don't run the network steps
 without the LTE antenna.
 
+**When the LTE antenna matters:**
+- **No SIM in:** the modem only listens for the network and never transmits. So all the no-SIM checks are safe with
+  just the IPX → SMA cable, or even nothing, on U.FL1.
+- **With a SIM:** it transmits to register and to make calls, up to 2 W in 2G bursts. SIMCom asks for an antenna that
+  wastes little of that, and an open cable end reflects most of it back into the modem. Signal would also be weak, so
+  registration or VoLTE could fail and make a good board look faulty. Fit a real 4G antenna before inserting the
+  SIM: SMA **male** (with a centre pin), rated 700–2700 MHz.
+- **Avoid Wi-Fi router antennas:** most are RP-SMA (no centre pin, so they won't connect) and tuned only for
+  2.4 GHz.
+- **U.FL sockets wear out:** they're made for only about 30 plug-ins. Plug the cable into U.FL1 once and leave it
+  there.
+
 ### Phase A: the 10 holes to solder
 
 ![Bench wiring: KTRON board, CP2102, 5 V supply, earpiece, mic and antennas](images/bench-wiring.png)
