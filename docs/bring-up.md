@@ -200,6 +200,37 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
      can't switch it off. To save power but keep it visible through the back's window, replace R1 with a 1 kΩ
      0805, which uses about a fifth of the current. Or remove R1 to turn it off completely.
 
+### Temporary battery hook-up, before the MOSFET switch is built
+
+For bench tests when the soldering tools won't be available for a while and the MOSFET parts aren't here yet. The
+5 V wires stay soldered in place with their plugs taped up, so the charger remains a fallback. Remove them after the
+first good call.
+
+**Rules:**
+- **Never connect the 5 V and the battery at the same time.** The regulator could push uncontrolled current into the
+  cell.
+- **Battery + goes to the 470 µF (C11) + leg, never the 100 µF (C17).** C17 is on the VCC input.
+- **Pull the plug in the + wire whenever you're not testing, and while charging.** There's no switch yet, so the modem
+  would otherwise stay on and drain the cell.
+
+**Steps:**
+1. Unplug the 5 V and the battery from everything. Charge the cell in the T-Deck first, and check it reads above about
+   3.7 V.
+2. With the meter, find the cell's + and − where its JST wires join it. The modem has no protection against a
+   reversed battery.
+3. Solder a new 24 AWG wire to each of those two points, one at a time, as quickly as you can. Insulate each joint
+   before starting the next. A short across the cell can start a fire.
+4. Solder the − wire to the regulator's metal tab. First check that the tab beeps to GND.
+5. Solder the + wire to the 470 µF's + leg, with a plug in the wire (a 2-pin jumper plug is fine on the bench). Keep each
+   wire to 10 cm or shorter.
+6. With the plug still out, check that the 470 µF's + leg does **not** give a steady beep to VCC or to GND.
+7. Measure across the open plug and the regulator's tab: + on the battery side, − on the tab. It should read the
+   cell's voltage, with no minus sign. Only then close the plug.
+8. Run `AT`, check that the 470 µF's + leg reads the cell's voltage, and read `AT+CBC`.
+9. Once everything works, add glue to hold the wires, but keep it off the regulator, which gets warm on 5 V.
+
+The finished phone still needs the MOSFET switch, and a JST lead that doesn't pass through this plug.
+
 ### Serial terminal on the Mac
 
 - **Arduino IDE Serial Monitor:** pick the adapter's port, set **115200 baud**, set line ending to
