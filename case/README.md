@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [stl/100/front-earpiece-mic.stl](stl/100/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, the unused switch mount filled, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [stl/100/front-earpiece-mic.stl](stl/100/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, Alley Cat's left-side switch mount kept for the modem's SS-12F15 switch, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [stl/test-prints/test-mic-coupon.stl](stl/test-prints/test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [stl/test-prints/test-fit-ring-100.stl](stl/test-prints/test-fit-ring-100.stl), [test-fit-ring-101.stl](stl/test-prints/test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
 | [stl/100/earpiece-holder.stl](stl/100/earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
@@ -77,12 +77,16 @@ that points toward your mouth when the phone is at your right ear.
 
 ![Top edge with the phone screen-up: 4G SMA cut-out, Alley Cat's cat-head badge, LoRa SMA cut-out](images/front-top-edge.png)
 
-**Unused switch mount filled.** The GPS version's slide-switch mount on the left side (a window and two
-countersunk screw holes) isn't used, because the modem follows the T-Deck's power switch. It is filled
-completely, including the recess for the switch body on the inside. The fill copies the wall's normal shape from
-just beside the mount, so inside and out the wall now matches the rest of the side, where the T-Deck already fits.
-The Reset Button opening just below stays, with its small inside recess for the button's flange. So does a small
-original bump on the inside wall below the old switch, up to 0.8 mm high.
+**Modem switch mount (Alley Cat's original, kept).** The GPS version's slide-switch mount on the left side holds
+the modem's on/off switch, an **SS-12F15**. That's the switch the mount was drawn for, with the same 15 mm screw
+spacing and 2.2 mm holes.
+- **Fitting:** the 19.7 × 5.6 mm plate sits in the 21.6 × 8.4 mm recess inside the wall, held by two M2 countersunk
+  screws from outside with nuts inside. The 4 mm knob comes out through the 6.9 × 3.4 mm slot and stands 1 mm proud.
+- **Checked against the case files:** the switch, with its knob over its full travel, touches neither half. It sits
+  0.5 mm above the T-Deck's back, and its pins point into the case.
+- **Battery:** it moves about 9 mm toward the phone's right to clear the switch's body and pins (2.5 mm gap).
+- **History:** this mount was filled in an earlier version, when the modem was to follow the T-Deck's own switch. It
+  is now exactly as in Alley Cat's file. The Reset Button opening just below is unchanged too.
 
 **Second SMA antenna cut-out (top-right corner).** The Grove socket is desoldered from the T-Deck and the modem
 wires are soldered to its pads, so the Grove plug slot in that corner is no longer needed. It is filled in, and the

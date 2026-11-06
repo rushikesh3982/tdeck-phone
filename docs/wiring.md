@@ -25,7 +25,7 @@ also frees that corner of the case for a second SMA antenna cut-out.
 |---|---|---|---|---|
 | TX | GPIO43 | → | TX | |
 | RX | GPIO44 | ← | RX | Incoming calls (`RING`) arrive on this wire |
-| VCC (switched 3.3 V) | switched by GPIO10 | → | VDD | Reference for the board's level shifters (microamps). Also tells the modem power switch to turn on (section 2). Does **not** power the modem |
+| VCC (switched 3.3 V) | switched by GPIO10 | → | VDD | Reference for the board's level shifters (microamps). Does **not** power the modem |
 | GND | — | — | GND | |
 
 **TX and RX go straight across: TX to TX, RX to RX.** This was found on the bench on 5 Nov 2026. With a CP2102 the
@@ -51,17 +51,20 @@ the modem's feed) connects to the board's output, P+ and P−, never straight to
 circuit, overcharge and overdischarge (about 2.4–2.5 V). It sits at the cell's tab end, toward the bottom of the phone.
 
 ```
- Cell + ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (+)
-          │
-          └── modem power switch (AO3401A) ──────────► KTRON: MIC29302 pin 4 (OUTPUT)
-                                                        or the + pad of C11 (bulk capacitor)
- Cell − ──┬── JST PH2.0 plug ─────────────────────► T-Deck battery socket (−)
-          │
-          └──────────────────────────────────────► KTRON GND (the regulator's metal tab)
+ Cell tabs ──► protection board B+ / B−
+
+ P+ ──┬── JST PH2.0 plug ──────────────────────────────► T-Deck battery socket (+)
+      │
+      └── modem switch SS-12F15: middle pin → outer pin ─► KTRON: + leg of C11 (470 µF bulk capacitor)
+                                                           (or MIC29302 pin 4, the same rail)
+ P− ──┬── JST PH2.0 plug ──────────────────────────────► T-Deck battery socket (−)
+      │
+      └────────────────────────────────────────────────► KTRON GND (the regulator's metal tab)
 ```
 
-- The modem pair is joined at the battery terminals, not run through the Grove wires.
-  Use 24 AWG wire, 10 cm or shorter.
+- The modem's pair is joined at the protection board's P+ / P−, not run through the Grove wires. Use 24 AWG wire
+  (22 AWG if you have it). The + side goes out to the switch in the left wall and back to C11, about 15 cm in total.
+  At the modem's 2 A bursts that loses only about 0.03 V.
 - **Never feed the KTRON VCC pad while the cell is connected.**
 - The board's MIC29302 regulator (K1) stays on the board but does nothing. Its datasheet allows the output to sit
   above the input with no reverse current, and its enable pin is low when nothing is on VCC.
@@ -77,7 +80,49 @@ circuit, overcharge and overdischarge (about 2.4–2.5 V). It sits at the cell's
   (`AT+CBC`). If it reads that low on battery too, the command could turn the modem off straight away. Read `AT+CBC` on
   battery power first (phase B).
 
-### Modem power switch: the modem follows the T-Deck's own switch
+### Modem power switch: an SS-12F15 slide switch on the left side (decided 6 Nov 2026)
+
+The modem has its own on/off switch, a small **SS-12F15** slide switch (owned) in the battery + wire to the modem. It
+sits in Alley Cat's original slide-switch mount on the case's left side, which was drawn for exactly this switch.
+
+**The switch (from its drawing):**
+- **Plate:** 19.7 × 5.6 × 0.5 mm, with two Ø2.2 mm holes 15 mm apart.
+- **Knob:** 3 × 3 mm, **4 mm tall** (yours), with 3 mm of travel.
+- **Body:** 11.5 × 4.6 × 5 mm under the plate. With the pins it stands about 8 mm into the case.
+- **Pins:** 3 at a 3 mm pitch.
+- **Rating:** usually sold as 0.5 A at 50 V DC (not on the drawing).
+
+**The mount (front, left wall, about 52–75 mm up from the bottom edge):**
+- **Plate:** sits in the 21.6 × 8.4 mm recess on the inside.
+- **Knob:** comes out through a 6.9 × 3.4 mm slot and stands about **1 mm proud** of the side.
+- **Fixing:** two **M2 countersunk screws (6–8 mm)** from outside, with M2 nuts inside. A dab of glue also works.
+- **Clearances** (checked against the case files): it touches neither case half, its lowest point is **0.5 mm above
+  the T-Deck's back**, and its pins point into the case.
+
+**Wiring:** P+ from the protection board goes to the **middle pin**, and **one outer pin** goes to C11's + leg. Leave
+the other outer pin free. The switch replaces the plug used on the bench.
+
+**Battery position:** the switch's body and pins take the space where the battery's left edge was. So the battery
+sits about **9 mm further toward the phone's right** (and about 2 mm toward the bottom, for the earpiece wires). It
+still fits both halves, with 2.5 mm between the switch's pins and the battery's edge.
+
+**Using it:**
+- The T-Deck's own switch (right side) turns the T-Deck on and off, and this switch does the same for the modem.
+- **T-Deck on, modem off:** the firmware just sees a silent modem and shows it as off.
+- **T-Deck off, modem on:** the modem drains the battery (about 17 mA idle, so roughly 10 days on 5000 mAh), so
+  switch both off together.
+- **Frozen modem:** switch it off and on.
+
+**Current:** the modem's average current is well under the switch's 0.5 A. Its short transmit bursts (up to about
+2 A on 2G, less on 4G) pass through it too.
+- Typical contact resistance makes that a dip of about 0.1 V per burst, and C11's 470 µF right after the switch
+  smooths it.
+- That's fine with a reasonably charged battery. A modem that restarts during 2G calls on a nearly flat battery would
+  point to the switch: then use the middle way below.
+
+**Check after wiring:** with the switch off, C11's + leg reads about 0 V. With it on, it reads the battery's voltage.
+
+### Alternative (not used now): the modem follows the T-Deck's own switch
 
 **Why it's needed:** the modem's battery wires join at the battery, so without help the T-Deck's own power switch
 would not turn the modem off. The modem would stay on whenever the battery is connected, and a frozen modem could
@@ -153,8 +198,9 @@ case.
 5. **If the modem never comes on,** check the AO3400A's orientation, and that the Grove 3.3 V is really there
    (GPIO10 high).
 
-**Earlier plan (not used):** a separate slide switch pulling the AO3401A's gate to ground. (The front's left-side
-switch mount could have held it. It is now filled in.)
+**Middle way, if the slide switch ever gives trouble:** keep the SS-12F15 but let it drive only an AO3401A's gate
+(switch between the gate and ground, 100 kΩ from gate to source). The switch then carries microamps, and the
+MOSFET carries the modem's current. That's one SOT-23 part and one resistor.
 
 ## 3. Earpiece (call audio out)
 
@@ -211,5 +257,6 @@ in [../bom.md](../bom.md).
 ## Never do
 
 - Feed the KTRON VCC pad while the cell is connected.
+- Connect anything straight to the cell's tabs. Everything goes through the protection board's P+ / P−.
 - Connect an 8 Ω speaker directly to S+/S−.
 - Send `AT+BTPOWER=1`. The module has Bluetooth inside, and it stays off.

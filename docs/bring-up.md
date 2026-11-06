@@ -188,7 +188,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    - Lay them on bare board or small resistors and capacitors, **not** on the modem chip or the regulator.
      Nothing on that side may stand more than 8 mm off the board, because the back's standoffs are 9 mm.
 3. **Battery pad check** with the multimeter: the pad you will feed must show continuity to the + pad of C11, and
-   **not** to VCC. Then connect the cell (through the modem power switch, if it's built) as in
+   **not** to VCC. Then connect the cell (through the protection board and the modem switch) as in
    [wiring.md](wiring.md), section 2.
 4. Repeat `AT` → `OK` and one test call, now on battery power.
 5. **LEDs:**
@@ -200,9 +200,10 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
      can't switch it off. To save power but keep it visible through the back's window, replace R1 with a 1 kΩ
      0805, which uses about a fifth of the current. Or remove R1 to turn it off completely.
 
-### Temporary battery hook-up, before the MOSFET switch is built
+### Battery hook-up on the bench (with a plug until the slide switch is fitted)
 
-For bench tests when the soldering tools won't be available for a while and the MOSFET parts aren't here yet. The
+For bench tests before the case and the SS-12F15 modem switch are fitted. In the phone the switch takes the plug's
+place (see [wiring.md](wiring.md), section 2), and the protection board goes on the cell's tabs first. The
 5 V wires stay soldered in place with their plugs taped up, so the charger remains a fallback. Remove them after the
 first good call.
 
@@ -229,7 +230,8 @@ first good call.
 8. Run `AT`, check that the 470 µF's + leg reads the cell's voltage, and read `AT+CBC`.
 9. Once everything works, add glue to hold the wires, but keep it off the regulator, which gets warm on 5 V.
 
-The finished phone still needs the MOSFET switch, and a JST lead that doesn't pass through this plug.
+In the finished phone, the SS-12F15 switch replaces the plug, and both the modem and the T-Deck's JST lead take
+power from the protection board's P+ / P−.
 
 ### Serial terminal on the Mac
 

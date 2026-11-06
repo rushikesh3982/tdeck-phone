@@ -168,7 +168,8 @@ def front_outside(front, path):
     marker(ax_bot, *P("bottom", (-44, -2, -5)), 5, dy=-8)
     marker(ax_bot, *P("bottom", (-29, -1.66, -1.0)), 6, dy=-8)
     marker(ax_left, *P("left", (-6, 39, -0.5)), 7, dx=-8)
-    marker(ax_left, *P("left", (-6, 68.6, -5.7)), 8, dx=-8, dy=-5)
+    marker(ax_left, *P("left", (-6, 68.6, -5.7)), 8, dx=-6, dy=7)
+    marker(ax_left, *P("left", (-6, 63.4, 0.1)), 11, dx=-7, dy=-7)
     marker(ax_right, *P("right", (-82, 47.5, -4.75)), 9, dx=8)
     marker(ax_right, *P("right", (-82, 80.5, -5.7)), 10, dx=8)
     for ax, t in ((ax_top, "TOP EDGE"), (ax_bot, "BOTTOM EDGE"), (ax_face, "SCREEN SIDE")):
@@ -186,8 +187,9 @@ def front_outside(front, path):
         (6, "Mic sound hole (1.5 mm). The mic sits in a\npocket right behind it."),
         (7, "Speaker grille: the T-Deck's own speaker,\nwhich plays the ringtone."),
         (8, "Opening for the printed Reset Button part."),
-        (9, "T-Deck power switch: the printed Switch\npart slides here. It turns the modem on\nand off too."),
+        (9, "T-Deck power switch: the printed Switch\npart slides here. It turns the T-Deck on\nand off (the modem has its own switch, 11)."),
         (10, "microSD card slot."),
+        (11, "Modem power switch (SS-12F15) in Alley Cat's\nmount: slide it to turn the modem on and\noff. Two M2 screws hold it; the knob stands\n1 mm proud."),
         ("", "The SIM slit is on the back panel's\nleft side (see the back diagram)."),
     ], title="Front panel, outside (unfolded)")
     fig.savefig(path); plt.close(fig)
@@ -209,6 +211,7 @@ def front_inside(front, path):
     marker(ax, *P((-69, 101.7, -2.85)), 5, dx=-6, dy=-12)
     marker(ax, *P((-29.5, 102.9, 5)), 6, dx=4, dy=-12)
     marker(ax, *P((-58.5, 102.9, 5)), 6, dx=-4, dy=-12)
+    marker(ax, *P((-8.0, 63.4, 5)), 7, dx=9, dy=0)
     ax.text(*P((-8, 112, 0)), "phone LEFT →", ha="right", fontsize=8, color="0.3")
     ax.text(*P((-80, 112, 0)), "← phone RIGHT", ha="left", fontsize=8, color="0.3")
     ax_key = fig.add_axes([0.56, 0.05, 0.42, 0.88])
@@ -219,6 +222,7 @@ def front_inside(front, path):
         (4, "Hex pocket of the top-left SMA cut-out\n(T-Deck's LoRa connector)."),
         (5, "Hex pocket of the top-right SMA cut-out\n(4G connector's hex collar sits here)."),
         (6, "M3 × 5 heat-set inserts (2). The two M3 × 8\ncase screws come in from the back panel."),
+        (7, "Modem switch (SS-12F15): its plate sits in the\nrecess inside the left wall, held by two M2\nscrews and nuts; its pins point into the case.\nFit and wire it before the T-Deck goes in."),
     ], title="Front panel, inside")
     fig.savefig(path); plt.close(fig)
 
@@ -264,8 +268,9 @@ def back_inside(back, path, layout):
     cx, cy = layout["PATCH_CENTRE"]; hp = layout["PATCH_PCB"] / 2
     ax.add_patch(Rectangle((cx - hp, cy - hp), 2 * hp, 2 * hp, fc=COL["patch"], alpha=0.25, ec=COL["patch"], lw=1.5))
     # battery (dashed, over the board)
-    ax.add_patch(Rectangle((0.4, 34.5), 55, 65, fill=False, ec=COL["battery"], lw=2.2, ls="--"))
-    ax.text(28, 37.2, "battery 65 × 55 × 9 (lies over the board)", ha="center", fontsize=7.5, color=COL["battery"])
+    ax.add_patch(Rectangle((9.5, 32.5), 55, 65, fill=False, ec=COL["battery"], lw=2.2, ls="--"))
+    ax.text(37, 35.2, "battery 65 × 55 × 9.5 (over the board, shifted right)", ha="center", fontsize=7.5,
+            color=COL["battery"])
     # 4G cable route
     x1, y1 = btb(24.8, 3.6)
     ax.plot([x1, 61, 61, 59], [y1, y1 + 3, 98, 104], color=COL["cable"], lw=2.2)
@@ -275,8 +280,9 @@ def back_inside(back, path, layout):
     ax.plot(lx, ly, "*", color="#00a651", ms=9, mec="0.2", mew=0.4)
     px, py = btb(50.58, 7.63)
     ax.add_patch(Rectangle((px - 1.0, py - 0.6), 2.0, 1.2, fc="0.75", ec="0.3", lw=0.6))
-    # MOSFET board in the strip
-    ax.add_patch(FancyBboxPatch((58.5, 52), 7, 9, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
+    # protection board on the battery's tabs (bottom end) and the modem switch (front half, left wall)
+    ax.add_patch(FancyBboxPatch((20.5, 24.5), 33, 7, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
+    ax.add_patch(FancyBboxPatch((-1.5, 53.6), 2.2, 19.7, boxstyle="round,pad=0.2", fc="0.25", ec="0.1"))
     # callouts
     marker(ax, *btb(51.115, 53.965), 1, dx=-9, dy=-6)
     for u, v in ((3.215, 3.265), (51.115, 3.265), (3.215, 53.965)):
@@ -293,7 +299,8 @@ def back_inside(back, path, layout):
     marker(ax, *btb(42.85, 48.1), 10, dy=5)
     marker(ax, 50, 37.5, 11)
     marker(ax, 64, 82, 12)
-    marker(ax, 62, 56.5, 13)
+    marker(ax, 37, 28, 13)
+    marker(ax, -0.4, 63.4, 18, dx=6, dy=4)
     marker(ax, 19.6, 102.85, 14, dy=6)
     marker(ax, 48.5, 102.85, 14, dy=6)
     marker(ax, 19.0, 6.5, 15, dx=-9, dy=6)
@@ -311,13 +318,14 @@ def back_inside(back, path, layout):
         (8, "U.FL2 (GPS) → GPS patch cable (95 mm; coil the extra)."),
         (9, "GPS patch cradle: patch ceramic side DOWN on the four pads,\ncable through any notch, a dab of hot glue."),
         (10, "C11: 470 µF 16 V laid flat and glued (C17: 100 µF, or left off),\nunder the board. Nothing there taller than 8 mm."),
-        (11, "Battery outline (orange, dashed): lies over the board with\n1 mm foam between, connector end toward the bottom."),
-        (12, "Free strip (green): 4G cable, MOSFET switch board, battery feed\nwires. The battery doesn't cover it, so the full depth is free."),
-        (13, "MOSFET switch board (AO3401A + AO3400A), in the battery +\nline to the modem."),
+        (11, "Battery outline (orange, dashed): over the board with 1 mm foam\nbetween, tab end toward the bottom. Moved about 9 mm toward the\nphone's right and 2 mm down, clear of the modem switch (18)."),
+        (12, "Free strip (green): 4G cable. The battery now covers part of it\nabove board level, so keep cables low here."),
+        (13, "Protection board (1S, 3 A, 2 MOSFETs) on the battery's tabs.\nThe T-Deck lead and the modem's feed both take power from\nits P+ / P−, never straight from the cell."),
         (14, "Case screw holes (2): M3 × 8 from outside into the front's inserts."),
         (15, "Mic wires arrive here from the front's groove; run them under\nthe board to J3."),
         (16, "Network LED (NETLIGHT) and its window: a light tube up to just\nunder the LED, and a 1.6 mm hole through the back cover."),
         (17, "Power LED (PWR): no window. Probably dark on battery power."),
+        (18, "Modem switch (SS-12F15): in the front half's left wall, below this\nedge. Battery + (from P+) to its middle pin; an outer pin to\nC11's + leg."),
     ], title="Back panel, inside")
     fig.savefig(path); plt.close(fig)
 
@@ -343,7 +351,8 @@ def stack(front, back, path, layout):
     X0 = layout["X0"]
     layers = [
         ("T-Deck (11 mm)", 10, 78, -13.7, -2.7, "#bbbbbb"),
-        ("battery (9 mm)", -xf(0.4), -xf(55.4), zf(-11.9), zf(-2.9), COL["battery"]),
+        ("battery (9 mm)", -xf(9.5), -xf(64.5), zf(-11.9), zf(-2.9), COL["battery"]),
+        ("modem switch", 9.0, 17.0, -2.2, 2.4, "0.3"),
         ("foam (1 mm)", -xf(15.0), -xf(55.4), zf(-12.9), zf(-11.9), "#f3d19c"),
         ("SIM holder", -xf(-1.4), -xf(14.8), zf(-14.4), zf(-12.9), COL["sim"]),
         ("KTRON board (1.6 mm)", -xf(-1.4), -xf(X0), zf(-16.0), zf(-14.4), COL["board"]),
@@ -358,7 +367,9 @@ def stack(front, back, path, layout):
     ax.text(12, zf(-13.65), "SIM holder", ha="center", va="center", fontsize=7)
     ax.text(40, zf(-15.2), "KTRON board, component side down", ha="center", va="center", fontsize=7.5, color="white")
     ax.text(40, zf(-20.5), "9 mm gap: flat capacitors, U.FL plugs, wires", ha="center", va="center", fontsize=8, color="0.25")
-    ax.text(70.5, zf(-14), "free strip:\n4G cable,\nMOSFET\nboard", ha="center", va="center", fontsize=7.5, color="0.25")
+    ax.text(70.5, zf(-14), "free strip:\n4G cable", ha="center", va="center", fontsize=7.5, color="0.25")
+    ax.annotate("modem switch (SS-12F15)", (13, 0.1), (-1, -11.5), fontsize=7.5, color="0.15", ha="right",
+                arrowprops=dict(arrowstyle="->", lw=0.6))
     ax.annotate("", (88.5, -14.7), (88.5, zf(-27)), arrowprops=dict(arrowstyle="<->", color="0.3"))
     ax.text(89.2, (zf(-27) - 14.7) / 2, "≈37 mm overall", rotation=90, va="center", fontsize=8, color="0.3")
     ax.annotate("", (84, -2.7), (84, zf(-25)), arrowprops=dict(arrowstyle="<->", color=NAVY))

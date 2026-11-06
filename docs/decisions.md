@@ -99,7 +99,26 @@ battery rail, its resistor R6 comes off.
 average. The A76XX AT command manual has no command to turn it off. Replacing R1 with 1 kΩ is the suggested
 compromise.
 
-## Modem power switch: follows the T-Deck's own switch (decided 3 Nov 2026)
+## Modem power switch: SS-12F15 slide switch on the left side (decided 6 Nov 2026)
+
+**What:** a small SS-12F15 slide switch (owned, 4 mm knob) in the modem's battery + wire. It sits in Alley Cat's
+original slide-switch mount on the front's left side, which was drawn for exactly this switch: 15 mm screw spacing,
+2.2 mm holes, a 6.9 × 3.4 mm slot for its 3 × 3 mm knob. The mount is restored; it had been filled. Circuit in
+[wiring.md](wiring.md), section 2.
+
+**Why:** simpler and cheaper than the MOSFET pair: one part already owned, two solder joints, no SOT-23 soldering.
+And the mount already exists.
+
+**Accepted trade-offs:**
+- **Two switches:** the T-Deck and the modem are switched separately, so switch both off together. A modem left on
+  drains the 5000 mAh cell in about 10 days.
+- **Current rating:** about 0.5 A, against the modem's 2 A transmit bursts. The average stays far below 0.5 A, and
+  C11's 470 µF right after the switch smooths the bursts. If 2G calls ever reset the modem on a low battery, the switch
+  can instead drive one AO3401A's gate.
+- **Battery position:** the battery moves about 9 mm toward the phone's right to clear the switch's body and pins.
+  This was checked against the case files.
+
+## Earlier plan (replaced 6 Nov 2026): modem follows the T-Deck's own switch (decided 3 Nov 2026)
 
 **Why a switch at all:** the modem is wired straight to the battery, so on its own it would stay on whenever the
 battery is connected. The T-Deck's power switch wouldn't reach it, and a frozen modem could only be restarted by
@@ -111,7 +130,8 @@ So the T-Deck's own power switch turns the modem on and off as well. The MOSFET 
 modem's current. Circuit in [wiring.md](wiring.md), section 2.
 
 **Not chosen:** a separate slide switch driving the MOSFET, which was the handoff's plan. It would have used the
-front's left-side switch mount (now filled in), and it's one more control to remember.
+front's left-side switch mount (filled in at the time; restored on 6 Nov 2026 for the SS-12F15), and it's
+one more control to remember.
 
 **Trade-off:** the modem can't be switched off on its own while the T-Deck stays on.
 

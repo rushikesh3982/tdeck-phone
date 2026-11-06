@@ -41,9 +41,8 @@ the front adds a module pocket at the top centre above the screen. It measures 1
 The GPS front also has a **slide-switch mount on its left side**. It is a slider window between two screw holes
 15 mm apart, about 52–75 mm up from the bottom edge, and was meant for the GPS module's power switch. (The
 "Switch" file is something else: the slider for the T-Deck's own power switch on the right side.) This project
-doesn't need the mount, because the modem follows the T-Deck's own power switch (see [wiring.md](wiring.md),
-section 2). Its window and screw holes are **filled in**, flush with the outside, so the left side is plain apart from
-the speaker grille and the Reset Button opening.
+uses the mount for the **modem's own on/off switch**, an SS-12F15, the switch it was drawn for (see
+[wiring.md](wiring.md), section 2). It is kept exactly as in Alley Cat's file.
 
 The **X back** gives 23 mm of depth behind the T-Deck, enough for the modem board and battery.
 
@@ -82,13 +81,11 @@ Full details are in [case/README.md](../case/README.md).
   The KTRON IPX → SMA-female cable fits it. Before printing, check that the connector's tail (3–8 mm past the
   T-Deck's top edge) clears the T-Deck in that corner. Either antenna can go in either corner. 4G top-right is
   recommended (see [case/README.md](../case/README.md)).
-- **Modem power switch:** none needed. The modem follows the T-Deck's own switch.
+- **Modem power switch:** an SS-12F15 slide switch in Alley Cat's original left-side mount (kept, not filled). The
+  battery sits about 9 mm toward the phone's right to clear it.
 - **Top-edge badge:** Alley Cat's cat-head logo, from her TD1 files (the same cat as on her HT Pocket case), on a
   fresh badge of the original footprint. It's a visible credit to the case's designer. The head is recessed and the
   eyes and nose are cut deeper. It reads upright with the phone screen-up.
-- **Unused slide-switch mount (filled):** the GPS version's switch window, two screw holes and the switch-body
-  recess on the inside are filled. The wall is copied from its normal shape just beside the mount. The Reset Button
-  opening below them stays.
 
 ## Back changes
 

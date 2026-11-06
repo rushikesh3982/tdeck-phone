@@ -32,6 +32,9 @@ This is the plan before the first dry fit. Expect small changes after it.
   - 6 × M3 × 5 heat-set inserts: 2 for the front, 4 for the back.
   - 2 × M3 × 8 screws for closing the case.
   - 4 × M3 × 6 screws for the modem board.
+  - 2 × M2 countersunk screws (6–8 mm) and 2 × M2 nuts for the modem switch.
+- **Bought and owned parts:** the SS-12F15 modem switch (4 mm knob), and the 1S 3 A protection board soldered on the
+  battery's tabs.
 - **The modem board is past its bench tests:**
   - phase B is done ([bring-up.md](bring-up.md));
   - the 5 V bench wires are removed;
@@ -56,9 +59,10 @@ like a book while you work.
 | T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: TX, RX, VDD, GND (back ⑤, red pads) | thin, about 12 cm: from the KTRON's holes, under the board to the free strip (⑫), then up the strip to the old Grove corner. TX goes to TX, RX to RX (straight across, tested on the bench) |
 | Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 12 cm, either way round |
 | Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M− | thin, about 18 cm: it runs from the bottom of the phone to the top of the board, and the case must still open. Tuck spare wire under the board |
-| Battery +, through the MOSFET board | KTRON C11 + pad or MIC29302 pin 4 | 24 AWG, short |
-| Battery − | KTRON GND (regulator tab) | 24 AWG, short |
-| KTRON VDD pad (Grove 3.3 V) and GND | MOSFET board (gate wire and ground) | thin |
+| Protection board P+ | Modem switch, middle pin (front, left wall) | 24 AWG |
+| Modem switch, one outer pin | KTRON C11's + leg (470 µF) | 24 AWG. With the wire above, about 15 cm in total |
+| Protection board P− | KTRON GND (regulator tab) | 24 AWG, short |
+| Protection board P+ / P− | T-Deck battery socket, through the cell's JST lead | as it is |
 
 Details and checks are in [wiring.md](wiring.md).
 
@@ -84,9 +88,13 @@ Details and checks are in [wiring.md](wiring.md).
      ④ and ⑤).
    - Outside, put on the lock washer and nut in the round recess, and tighten.
    - Top-left is the T-Deck's own LoRa connector. Top-right is the 4G cable (recommended).
-4. **Printed Switch and Reset Button parts**: fit them into their openings (front outside ⑨ and ⑧).
-5. **T-Deck**: lower it in, screen down. Its power switch must line up with the Switch part on the right side.
-   Check the mic wires stay in their groove.
+4. **Modem switch** (front outside ⑪, front inside ⑦): put the SS-12F15 in from inside, with the plate in the recess
+   and the knob through the slot. Fix it with 2 × M2 countersunk screws from outside and nuts inside. Its pins point
+   into the case. Solder its two wires (middle pin and one outer pin) now, and lead them toward the back half along
+   the left wall.
+5. **Printed Switch and Reset Button parts**: fit them into their openings (front outside ⑨ and ⑧).
+6. **T-Deck**: lower it in, screen down. Its power switch must line up with the Switch part on the right side.
+   Check the mic wires stay in their groove and the modem switch's wires aren't trapped under it.
 
 ### 4. Back panel
 
@@ -97,10 +105,11 @@ Details and checks are in [wiring.md](wiring.md).
    - 4G cable to U.FL1 (back ⑦), running out into the free strip on the right (⑫), toward the top-right corner.
 3. **Modem board** (back ②): component side **down**, with the SIM edge toward the phone's left wall (the SIM slit,
    ④). Screw it to the standoffs with 4 × M3 × 6.
-4. **MOSFET board** (⑬): in the free strip, in the battery + line.
+4. **Protection board** (⑬): already on the battery's tabs, at its bottom end, insulated with tape.
 5. **Foam**: lay a 1 mm foam sheet over the board, with a cut-out for the SIM holder (③).
-6. **Battery** (⑪): lay it on the foam over the board, connector end toward the bottom of the phone. Plug its JST
-   lead into the T-Deck's battery socket.
+6. **Battery** (⑪): lay it on the foam over the board, tab end toward the bottom of the phone, about 9 mm toward the
+   phone's right and 2 mm toward the bottom. That keeps it clear of the modem switch (back ⑱) and leaves room for the
+   earpiece wires at the top. Plug its JST lead into the T-Deck's battery socket.
 
 ### 5. Close
 
@@ -115,7 +124,8 @@ Details and checks are in [wiring.md](wiring.md).
    out at micro size, works better than a nano in an adapter. Push again to release it.
 2. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
    top-right one.
-3. **Power**: switch on with the T-Deck's own power switch. The modem comes on with it.
+3. **Power**: switch on the T-Deck with its own switch (right side) and the modem with its switch (left side).
+   Switch both off together, because a modem left on drains the battery in about 10 days.
 
 ## Things to check at the first dry fit
 
@@ -126,5 +136,7 @@ Details and checks are in [wiring.md](wiring.md).
 - **Earpiece wires:** they pass between the battery's top edge and the back's solid block. Centred on the board, the
   battery leaves only 0.5 mm there, so slide it about 2 mm toward the bottom of the phone.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
+- **Modem switch:** it slides freely end to end, and the T-Deck sits flat under it (0.5 mm clearance by design). Its
+  pins and wires stay clear of the battery's left edge.
 - **Earpiece:** the receiver fits the holder's 12.4 mm cup, between the holder's wall and the pocket's far wall. With the holder in, there's no rattle and the case
   still closes fully.
