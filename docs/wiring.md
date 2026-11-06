@@ -43,8 +43,12 @@ The board's RI (ring indicator) pad is not wired in v1 because the T-Deck has no
 
 ## 2. Power: one battery for both boards
 
-The cell is the 5000 mAh pack, 65 × 55 × 9 mm. **Check that it has its own protection circuit**: a small board at the
-tab end, usually under tape. Don't use a bare cell without one. Use only its
+The cell is a 5000 mAh Li-ion pouch cell: Jiangxi Huahao **HH 955465**, 3.7 V, 18.5 Wh, BIS-registered
+(IS 16046-2 / IEC 62133-2). It's nominally 9.5 × 54 × 65 mm (measured 65 × 55 × 9). **It has no protection circuit:**
+its bare tabs come straight out of the cell, as on cells made for power banks. So it gets a **1S Li-ion protection
+board** (DW01A + 8205A type, rated 3 A or more), soldered on its two tabs. Everything else (the T-Deck's JST lead and
+the modem's feed) connects to the board's output, P+ and P−, never straight to the cell. The board cuts off a short
+circuit, overcharge and overdischarge (about 2.4–2.5 V). It sits at the cell's tab end, toward the bottom of the phone. Use only its
 + and − terminals and ignore the thermistor pin.
 
 ```
