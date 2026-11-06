@@ -137,6 +137,16 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    | `AT*IMSRCFG="switch"` | `"switch","on"` (VoLTE path on) |
 
    The network LED also changes its blink pattern once the modem is registered.
+
+   **Comparing antennas** (SMA vs the internal LTE sticker, [wiring.md](wiring.md) section 6):
+   - On 4G, `AT+CPSI?` answers like `+CPSI: LTE,Online,…,EUTRAN-BAND3,1650,5,0,21,67,255,19`. The last four numbers are
+     the signal quality (RSRQ), **signal strength (RSRP)**, RSSI and noise ratio.
+   - Compare **RSRP**, the third number from the end (67 here, which is −73 dBm: subtract 140). Higher is better, and
+     each step is 1 dB. Read it five times about
+     10 seconds apart, and average.
+   - Do both antennas in the same spot, with the board and battery in the printed case. Only compare readings taken on
+     the same band (the `EUTRAN-BAND…` field).
+   - If the sticker averages within about 5 dB of the SMA antenna, it's fine to keep inside.
 4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+COUTGAIN=4`, `AT+CMICGAIN=4` and
    `AT+CLIP=1`.
    - Call your other phone with `ATD+91XXXXXXXXXX;` and answer it. The modem prints `VOICE CALL: BEGIN`.

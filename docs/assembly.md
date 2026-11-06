@@ -103,6 +103,9 @@ Details and checks are in [wiring.md](wiring.md).
 2. **Plug in the antenna cables before the board goes down.** The U.FL sockets are on the board's underside.
    - GPS cable to U.FL2 (back ⑧). Coil the spare cable loosely in the gap under the board.
    - 4G cable to U.FL1 (back ⑦), running out into the free strip on the right (⑫), toward the top-right corner.
+   - **Or the internal LTE sticker** (back ⑲): press its U.FL plug onto U.FL1 and lay the strip along the right side,
+     about 7 mm on the floor and the rest up the wall, bending up at the bottom corner and over the top step. Tape it
+     until the signal test says it's good enough ([wiring.md](wiring.md), section 6).
 3. **Modem board** (back ②): component side **down**, with the SIM edge toward the phone's left wall (the SIM slit,
    ④). Screw it to the standoffs with 4 × M3 × 6.
 4. **Protection board** (⑬): already on the battery's tabs, at its bottom end, insulated with tape.
@@ -123,7 +126,7 @@ Details and checks are in [wiring.md](wiring.md).
 1. **SIM**: push a micro-SIM into the slit on the back's left side until it clicks. A fresh multi-cut SIM, popped
    out at micro size, works better than a nano in an adapter. Push again to release it.
 2. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
-   top-right one.
+   top-right one. With the internal LTE sticker, push the printed antenna plug into the top-right hole instead.
 3. **Power**: switch on the T-Deck with its own switch (right side) and the modem with its switch (left side).
    Switch both off together, because a modem left on drains the battery in about 10 days.
 
@@ -136,6 +139,8 @@ Details and checks are in [wiring.md](wiring.md).
 - **Earpiece wires:** they pass between the battery's top edge and the back's solid block. Centred on the board, the
   battery leaves only 0.5 mm there, so slide it about 2 mm toward the bottom of the phone.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
+- **Internal LTE sticker (if used):** compare its signal with an SMA antenna before sticking it down
+  ([bring-up.md](bring-up.md), "Comparing antennas").
 - **Modem switch:** it slides freely end to end, and the T-Deck sits flat under it (0.5 mm clearance by design). Its
   pins and wires stay clear of the battery's left edge.
 - **Earpiece:** the receiver fits the holder's 12.4 mm cup, between the holder's wall and the pocket's far wall. With the holder in, there's no rattle and the case

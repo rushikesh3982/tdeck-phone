@@ -18,7 +18,7 @@ originals the scripts start from, and where the unchanged small parts were copie
 | `Alley Chat TD1 X Back Outside Cat Edition.stl` | Back (gives 23 mm behind the T-Deck). The Outside Cat edition is the source for our back, with its cat replaced by the rushiWorks logo |
 | `Alley Chat TD1 Switch.stl` | Slider for the T-Deck's own power switch (right side). Copied unchanged to case/stl/ |
 | `Alley Chat TD1 Reset Button.stl` | Button for the T-Deck's reset (left side). Copied unchanged to case/stl/ |
-| `Alley Chat TD1 X Antenna Plug.stl` | Only for an SMA hole left empty. Not needed here: both holes carry a connector. Copied unchanged to case/stl/ |
+| `Alley Chat TD1 X Antenna Plug.stl` | Only for an SMA hole left empty. Needed only if the internal LTE sticker antenna replaces the 4G SMA antenna (top-right hole). Copied unchanged to case/stl/ |
 | `Alley Cat TDeck Back Cover Custom.step` | "S" back, used only for its mating edge when drawing the new back |
 
 Print the modified front and back from this repository ([case/stl/](../case/stl/)), not the downloaded ones.

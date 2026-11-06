@@ -239,6 +239,7 @@ The T-Deck's own speaker plays the ringtone when the modem sends `RING`. No extr
 | Antenna | Connects to | Part | Where it goes |
 |---|---|---|---|
 | LTE | KTRON U.FL1 (top edge) | SMA antenna rated 700–2700 MHz, through the KTRON IPX → SMA female cable | Recommended: the case's top-right SMA cut-out (old Grove corner), close to U.FL1. Away from the top centre, where the T-Deck's Wi-Fi/BT antenna is |
+| LTE, internal option | KTRON U.FL1 directly | The full-band LTE sticker antenna that came with the T-Deck (110 × 20 mm, U.FL, 11 cm) | Inside the back, along its right side, wrapped from the floor up the wall (see below). Antenna plug in the top-right hole |
 | GNSS | KTRON U.FL2 (beside L2; it powers an active antenna) | KTRON KSTA1417 active patch | Bottom half of the back, at least 60 mm from the LTE antenna, ceramic side toward the back cover |
 | LoRa | T-Deck's own u.FL | T-Deck's own u.FL-to-SMA cable | The case's top-left SMA cut-out, where it already sits (or the printed plug if the LoRa antenna stays inside) |
 
@@ -247,6 +248,47 @@ in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
 that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
+
+### Internal LTE sticker antenna (option to try, 6 Nov 2026)
+
+The **full-band LTE sticker antenna** that came with the T-Deck can serve the modem from inside the case.
+- **Antenna:** labelled "Full Band LTE Antenna, 698–960 / 1710–2690 MHz", which covers every Indian 4G band (B1, B3, B5, B8,
+  B40, B41) and 2G. **110 × 20 mm**, with an **11 cm** cable ending in a **U.FL plug**. It plugs straight into
+  **U.FL1**, so the IPX → SMA cable isn't needed.
+- **SMA option stays:** the case doesn't change. The SMA cut-outs stay, so an external antenna can go back on at any
+  time. With the sticker inside, fit the printed **antenna plug** in the top-right hole.
+- **LoRa:** if the sticker serves the modem, LoRa needs its own antenna in the top-left hole, for example a 50 mm
+  868 MHz SMA stubby. If LoRa isn't used, plug that hole too.
+
+**Where it goes:** along the **right side of the back**, in the band beside the modem board (back diagram ⑲). Measured
+from the case file, with distances counted from the inside of the right wall:
+- **Floor:** the right-hand standoffs' feet end about 12.5 mm from the wall. From there the floor is flat for
+  about **7.5 mm**, to 5 mm from the wall. It then curves up into the wall (1 mm up at 3 mm from the wall, 4 mm up
+  at 1 mm), and the wall is vertical, **16 mm** tall.
+- **Length:** about **91 mm**, from where the bottom corner starts to curve to a 5 mm-high step near the top.
+- **How it's wrapped:**
+  - **Across its width:** about 7 mm flat on the floor, about 4 mm around the curve, and about 9 mm up the wall.
+  - **Along its length:** about 91 mm along the side, plus about 10 mm up the bottom corner and about 9 mm over the
+    top step.
+- **Nothing in the way:** the LED tube, SIM slit, GPS cradle and switch are all elsewhere.
+- **Cable:** U.FL1 sits just beside the band, about two-thirds of the way up. It is about 35 mm from the strip's
+  top end and about 60 mm from its bottom end, so the 11 cm cable reaches from either end. Lay any spare cable on
+  the floor, not across the strip.
+
+**Why there:** it lies **beside** the KTRON board, not under it. An antenna under the board (9 mm below its copper
+layer) or under the battery's foil casing would lose a lot, most of all on 850/900 MHz.
+
+**What will cost some signal:**
+- **Battery:** its right edge, moved for the modem switch, is about 5 mm from the wall part of the strip, and it
+  overhangs the floor part 13 mm above.
+- **GPS:** the strip's bottom end is about 23 mm from the GPS patch, closer than the 60 mm aimed for. GPS only
+  suffers while the modem transmits.
+
+**Decide by measurement** (see [bring-up.md](bring-up.md), "Comparing antennas"):
+1. Tape the strip in place first; don't peel its backing yet.
+2. In the printed case, with the board and battery in place, compare its 4G signal (`AT+CPSI?`) with an SMA
+   antenna's.
+3. **Within about 5 dB:** stick it down. **Much worse:** use the SMA antenna.
 
 ## Version 2: speakerphone
 

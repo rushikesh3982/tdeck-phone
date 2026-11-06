@@ -21,7 +21,7 @@ credit), so everything to print is in [stl/](stl/):
 |---|---|---|
 | [stl/100/alley-chat-td1-switch.stl](stl/100/alley-chat-td1-switch.stl) | Slider for the T-Deck's own power switch (right side). Needed | `Alley Chat TD1 Switch.stl` |
 | [stl/100/alley-chat-td1-reset-button.stl](stl/100/alley-chat-td1-reset-button.stl) | Button for the T-Deck's reset (left side). Needed if you want to reach reset from outside | `Alley Chat TD1 Reset Button.stl` |
-| [stl/100/alley-chat-td1-x-antenna-plug.stl](stl/100/alley-chat-td1-x-antenna-plug.stl) | Blanks off an SMA hole that has no connector in it. **Not needed in this build:** both holes carry an SMA connector (LoRa top-left, 4G top-right) | `Alley Chat TD1 X Antenna Plug.stl` |
+| [stl/100/alley-chat-td1-x-antenna-plug.stl](stl/100/alley-chat-td1-x-antenna-plug.stl) | Blanks off an SMA hole that has no connector in it. **Needed only with the internal LTE sticker antenna**, which leaves the 4G (top-right) hole empty. With SMA antennas, both holes carry a connector (LoRa top-left, 4G top-right) | `Alley Chat TD1 X Antenna Plug.stl` |
 
 **Folders:** [stl/100/](stl/100/) has the six parts to print at normal size, and [stl/101/](stl/101/) the same six built
 1 % larger, for a T-Deck that's too tight (see [Fit and scale](#fit-and-scale-print-the-test-ring-first)). Print one
@@ -211,6 +211,11 @@ The SIM slit is shown from outside in the "after" half of the picture under *Mod
 - **Blink pattern** (SIMCom): lit steadily while searching for the network; 200 ms on / 200 ms off once
   registered.
 - **Optional:** a drop of clear glue or UV resin seals the hole and spreads the light.
+
+**Internal LTE antenna option.** The full-band LTE sticker antenna (110 × 20 mm) can go along the inside of the back's
+right side, wrapped from the floor up the wall. It needs no change to the case files. The band beside the modem board is
+about 7.5 mm of flat floor, a curve, and 16 mm of wall, about 91 mm long. Details, and how to decide by measuring, are
+in [../docs/wiring.md](../docs/wiring.md), section 6. With it, the top-right SMA hole takes the antenna plug.
 
 **Depth** (inside floor to the T-Deck's back, 23 mm with LilyGO's 11 mm T-Deck): 9 standoffs + 1.6 board + 1.5 SIM
 holder + 1 foam + 9 battery = 22.1 mm. The battery (65 × 55 × 9 mm) lies over the board, its long side running top

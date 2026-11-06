@@ -280,6 +280,8 @@ def back_inside(back, path, layout):
     ax.plot(lx, ly, "*", color="#00a651", ms=9, mec="0.2", mew=0.4)
     px, py = btb(50.58, 7.63)
     ax.add_patch(Rectangle((px - 1.0, py - 0.6), 2.0, 1.2, fc="0.75", ec="0.3", lw=0.6))
+    # internal LTE sticker option: the band along the right side (floor + wall), beside the board
+    ax.add_patch(Rectangle((57.6, 9.0), 70.0 - 57.6, 91.0, fill=False, ec="#c0392b", lw=1.6, ls=(0, (4, 2))))
     # protection board on the battery's tabs (bottom end) and the modem switch (front half, left wall)
     ax.add_patch(FancyBboxPatch((20.5, 24.5), 33, 7, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
     ax.add_patch(FancyBboxPatch((-1.5, 53.6), 2.2, 19.7, boxstyle="round,pad=0.2", fc="0.25", ec="0.1"))
@@ -301,6 +303,7 @@ def back_inside(back, path, layout):
     marker(ax, 64, 82, 12)
     marker(ax, 37, 28, 13)
     marker(ax, -0.4, 63.4, 18, dx=6, dy=4)
+    marker(ax, 63.8, 20.0, 19, dx=0, dy=0)
     marker(ax, 19.6, 102.85, 14, dy=6)
     marker(ax, 48.5, 102.85, 14, dy=6)
     marker(ax, 19.0, 6.5, 15, dx=-9, dy=6)
@@ -326,6 +329,7 @@ def back_inside(back, path, layout):
         (16, "Network LED (NETLIGHT) and its window: a light tube up to just\nunder the LED, and a 1.6 mm hole through the back cover."),
         (17, "Power LED (PWR): no window. Probably dark on battery power."),
         (18, "Modem switch (SS-12F15): in the front half's left wall, below this\nedge. Battery + (from P+) to its middle pin; an outer pin to\nC11's + leg."),
+        (19, "Option: internal LTE sticker antenna (red dashed band). 110 × 20 mm,\n~7 mm on the floor, the rest up the right wall, bent up at the\nbottom corner and over the top step; plug to U.FL1. Test first."),
     ], title="Back panel, inside")
     fig.savefig(path); plt.close(fig)
 

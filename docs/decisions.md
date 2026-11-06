@@ -190,6 +190,11 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 - **GNSS:** KTRON KSTA1417 active ceramic patch, ₹105, on U.FL2, which powers active antennas. At least 60 mm from
   the LTE antenna.
 - **LoRa:** unchanged, the T-Deck's own cable and the case's existing antenna hole.
+- **LTE, internal option (6 Nov 2026):** the full-band LTE sticker antenna that came with the T-Deck (698–960 /
+  1710–2690 MHz, 110 × 20 mm, U.FL) can go inside the back's right side. It sits beside the modem board, not under it
+  or the battery, wrapped from the floor up the wall. The SMA cut-outs stay, so the case doesn't change. Kept only if
+  its signal is within about 5 dB of an SMA antenna's in the closed case. Under the board, it would sit 9 mm below the
+  board's copper layer and lose too much.
 
 ## Case: Alley Cat TD1, Standard front (GPS inserts) + X back
 
