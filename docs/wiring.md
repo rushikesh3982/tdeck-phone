@@ -43,7 +43,8 @@ The board's RI (ring indicator) pad is not wired in v1 because the T-Deck has no
 
 ## 2. Power: one battery for both boards
 
-The cell is the 1700 mAh pack from the Micromax Canvas A1. It has its own protection circuit. Use only its
+The cell is the 5000 mAh pack, 65 × 55 × 9 mm. **Check that it has its own protection circuit**: a small board at the
+tab end, usually under tape. Don't use a bare cell without one. Use only its
 + and − terminals and ignore the thermistor pin.
 
 ```

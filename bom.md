@@ -36,7 +36,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 |---|---|
 | LilyGO T-Deck (base model, ESP32-S3FN16R8) | The phone itself |
 | CP2102 USB-serial adapter (with 3.3 V pin) | Bench tests from the Mac before the firmware exists ([docs/bring-up.md](docs/bring-up.md)) |
-| Micromax Canvas A1 (AQ4502), salvaged: 1700 mAh battery, 65 × 55 × 9 mm | Powers both boards |
+| Li-ion pouch battery, 5000 mAh, 65 × 55 × 9 mm (plus flexi tabs with a JST lead) | Powers both boards |
 | Radial electrolytics: 470 µF 16 V (6–7 × 12 mm) and 100 µF 16 V (4–5 × 8 mm) | Replace the KTRON's 11 mm tall C11 and C17, laid flat, so the board fits under the battery |
 | Micromax Canvas A1, salvaged: earpiece receiver (32 Ω, from the top of the phone) | Call earpiece |
 | Micromax Canvas A1, salvaged: rear loudspeaker (8 Ω) and coin vibration motor | Kept for version 2 |

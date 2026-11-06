@@ -55,9 +55,10 @@ headers, so the bench tests solder wires into just the 10 holes the phone needs.
 uses later. The board runs from 5 V on VCC until Jio, VoLTE and GNSS have been checked, so the battery wiring waits
 until the board is known to be good. The VCC wire comes out before the battery goes in.
 
-## Power: one salvaged cell for both boards
+## Power: one cell for both boards
 
-**Why:** the 1700 mAh Micromax pack is already owned (65 × 55 × 9 mm) and has its own protection circuit. The
+**Why:** the 5000 mAh pack is already owned (65 × 55 × 9 mm). (Earlier notes called it the 1700 mAh Micromax pack; the owner
+confirmed 5000 mAh on 6 Nov 2026.) Check that it has its own protection circuit. The
 T-Deck's charger stops at 4.2 V, which suits it.
 
 **Modem feed:** straight from the cell to the modem board's regulator output (MIC29302 pin 4, or the + pad of
