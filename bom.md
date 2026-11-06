@@ -20,7 +20,7 @@ Prices are in rupees and include GST unless noted. Status as of 2 Nov 2026.
 ### Small parts named in the plan
 
 - **1S Li-ion protection board, the 3 A two-MOSFET version:** "1S 3.7V 3A 2MOS BMS" (DW01A + two 8205A in parallel),
-  about 33 × 7 × 3 mm, e.g. [Robu](https://robu.in/?p=1165397). The 5000 mAh cell is bare and has no protection circuit
+  about 33 × 7 × 3 mm, e.g. [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/). The 5000 mAh cell is bare and has no protection circuit
   of its own (see [docs/wiring.md](docs/wiring.md), section 2). The two MOSFETs in parallel halve the resistance, so the
   modem's 2 A bursts drop less voltage and stay well below the overcurrent trip. The 1-MOSFET boards trip at about 3 A, and
   sooner when the battery is low. Thresholds: overcharge about 4.25 V, overdischarge about 2.3–2.5 V.
