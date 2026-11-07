@@ -113,7 +113,7 @@ nearest the VDD/RX/TX header.
   - **Capacitor swap:** the 9 mm height needs the KTRON's two 11 mm capacitors replaced by radial ones laid flat
     ([bring-up.md](bring-up.md), phase B).
 - **SIM slit** in the left wall, 15 × 1.8 mm, flared on the outside, in line with the SIM holder. It is fully in the
-  back panel, 4.65 mm below the rim. A small engraved picture under it shows which way the card goes in (added
+  back panel, 4.65 mm below the rim. An engraved picture beside it, toward the phone's top, shows which way the card goes in (added
   7 Nov 2026; see [case/README.md](../case/README.md)).
 - **GPS patch cradle** in the bottom half, about 90 mm from the 4G antenna corner.
   - A 27 mm square opening with a 7 mm fence, for the measured 26 × 26 mm patch with its 25 × 25 × 4 mm ceramic.

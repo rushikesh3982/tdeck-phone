@@ -438,8 +438,8 @@ def side_closeup(mesh, path, look_along_x, y_span, z_span, title, left_label, ri
 
 
 def sim_picture(back, path):
-    """The SIM-direction picture under the slit, on the back's left side (slit centre y 58.57, z -13.65)."""
-    side_closeup(back, path, +1, (48.0, 69.0), (-24.0, -9.0),
+    """The SIM-direction picture beside the slit, on the back's left side (slit centre y 58.57, z -13.65)."""
+    side_closeup(back, path, +1, (47.0, 79.0), (-21.0, -8.0),
                  "SIM slit and its picture: phone's LEFT side, screen up",
                  "phone's top", "USB end", "screen side")
 

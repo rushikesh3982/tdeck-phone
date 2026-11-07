@@ -130,7 +130,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    **Which way the SIM goes in:** gold contacts facing the board, and the **cut corner going in last**, on the same
    side as the holder's small latch window. Push until it clicks and stays. Turned end-to-end, it still clicks in, but
    the modem reports `+CPIN: SIM REMOVED`. The modem only reads the SIM when it starts, so after re-seating the card,
-   restart it (`AT+CRESET`, or power off and on). In the finished case this is the way shown by the picture under
+   restart it (`AT+CRESET`, or power off and on). In the finished case this is the way shown by the picture beside
    the SIM slit: phone screen-up, contacts down, cut corner last toward the USB end.
 
    | Command | Good answer |

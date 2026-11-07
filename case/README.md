@@ -190,17 +190,18 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
   pull it out.
 - **SIM size:** a nano-SIM in a micro adapter can catch in push-push holders. A fresh multi-cut SIM, popped out at
   micro size, is safer.
-- **Which way (picture under the slit, added 7 Nov 2026):** a micro-SIM outline, 4 × 5 mm and 0.7 mm deep, with
-  its cut corner and a raised arrow pointing up into the slit.
-  - **How to read it:** it's the card as it should look going in, with the phone screen-up. The top edge goes in
-    first. The face you see is the face that's up, so the gold contacts face down. The cut corner is on the outer
-    end, toward the phone's USB end.
+- **Which way (picture beside the slit, added 7 Nov 2026):** a micro-SIM outline, 6 × 7.5 mm and 0.8 mm deep,
+  with its cut corner and a raised arrow. It's on the flat wall just beside the slit, toward the phone's top, at
+  the slit's height.
+  - **How to read it:** it's the card as it should look going in, with the phone screen-up. The picture's top edge
+    goes in first. The face you see is the face that's up, so the gold contacts face down. The cut corner is on the
+    outer end, toward the phone's USB end.
   - **Why it's needed:** turned end-to-end, the card still clicks in but isn't read.
   - **How it was checked:** on the board and against KTRON's own photo.
-  - **Where it sits:** the wall below the slit is flat for only about 3 mm before it curves into the back's rounded
-    edge, so the picture's lower part is shallower (about 0.35 mm).
+  - **Why beside the slit:** a first version sat under the slit, but the wall there is flat for only about 3 mm
+    before it curves into the back's rounded edge, which spoiled it.
 
-  ![The SIM slit and the picture under it, on the phone's left side](images/sim-picture.png)
+  ![The SIM slit and the picture beside it, on the phone's left side](images/sim-picture.png)
 
 The SIM slit is also shown from outside in the "after" half of the picture under *Modem standoffs* above (drawn
 before the SIM picture was added).

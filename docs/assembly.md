@@ -125,7 +125,7 @@ Details and checks are in [wiring.md](wiring.md).
 
 1. **SIM**: push a micro-SIM into the slit on the back's left side until it clicks. A fresh multi-cut SIM, popped
    out at micro size, works better than a nano in an adapter. Push again to release it.
-   - **Which way:** follow the picture engraved under the slit, with the phone screen-up:
+   - **Which way:** follow the picture engraved beside the slit, with the phone screen-up:
      - the gold contacts face down;
      - the **cut corner goes in last**, toward the phone's USB end.
 

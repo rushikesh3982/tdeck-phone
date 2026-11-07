@@ -1,4 +1,4 @@
-"""Add KTRON modem standoffs, a SIM slit (with a SIM-direction picture under it), a GPS patch cradle and a
+"""Add KTRON modem standoffs, a SIM slit (with a SIM-direction picture beside it), a GPS patch cradle and a
 network-LED window to the Alley Cat TD1 X back, fill the back's half of the old GPS-module slot, and replace the
 cat on its outside with the rushiWorks logo.
 
@@ -60,17 +60,19 @@ CARD_ABOVE_BOARD = 0.75    # card mid-plane above the solder side, standard 1.5 
 SLIT_W, SLIT_H = 15.0, 1.8         # inside opening (card is 12 x 0.8 mm)
 SLIT_FLARE = 0.6                   # extra on every side at the outside face, as a lead-in
 
-# ---- SIM direction picture, engraved under the slit -------------------------------------------------------
-# A micro-SIM silhouette (12 x 15 mm card, drawn 4.0 x 5.0 mm) with its cut corner, and a raised arrow pointing
-# up into the slit. Read it as the card folded down out of the slit onto the wall: the top edge goes in first,
-# the face you see is the face that is UP with the phone screen-up (the printed side; the gold contacts face
-# down, toward the KTRON board under the card), and the cut corner is on the outside end, toward the phone's
-# bottom (bottom-right as you look at the left side). Checked on 7 Nov 2026: KTRON's photo, and the card read
-# only once its cut corner went in last, on the holder's latch side, which faces the phone's bottom here.
-SIM_ICON_W, SIM_ICON_H = 4.0, 5.0  # along y (the card's 12 mm leading edge) and z (its 15 mm length)
-SIM_ICON_GAP = 0.75                # wall left between the slit's outer flare and the picture
-SIM_ICON_CUT = 1.3                 # the cut corner (exaggerated: the real one would be 1 mm here)
-SIM_ICON_DEPTH = 0.7               # into the flat wall; about 0.35 at its bottom, where the wall starts to curve
+# ---- SIM direction picture, engraved beside the slit ------------------------------------------------------
+# A micro-SIM silhouette (12 x 15 mm card, drawn 6.0 x 7.5 mm) with its cut corner and a raised arrow pointing
+# up, on the flat left wall beside the slit, on the phone-top side, centred on the slit's height. (Under the slit
+# the wall is flat for only 3 mm before it curves into the back's rounded edge, which spoiled a first version.)
+# The picture is the card as it should look going in, with the phone screen-up: its top edge goes in first, the
+# face you see is the face that is UP (the printed side; the gold contacts face down, toward the KTRON board under
+# the card), and the cut corner is on the outer end, toward the phone's bottom (bottom-right as you look at the
+# left side). Checked on 7 Nov 2026: KTRON's photo, and the card read only once its cut corner went in last, on
+# the holder's latch side, which faces the phone's bottom here.
+SIM_ICON_W, SIM_ICON_H = 6.0, 7.5  # along y (the card's 12 mm leading edge) and z (its 15 mm length)
+SIM_ICON_GAP = 1.6                 # wall left between the slit's outer flare and the picture, along the wall
+SIM_ICON_CUT = 2.0                 # the cut corner (exaggerated: the real one would be 1.5 mm here)
+SIM_ICON_DEPTH = 0.8               # into the flat wall (2 mm thick)
 
 
 # ---- Network LED window --------------------------------------------------------
@@ -201,18 +203,19 @@ def sim_slit():
 
 
 def sim_icon(yc, zc):
-    """Recessed micro-SIM silhouette with a raised arrow, on the outside of the left wall under the slit."""
-    flare_h = SLIT_H / 2 + SLIT_FLARE * 1.3 * (WALL_IN_X + 0.1 - WALL_OUT_X) / (WALL_IN_X + 0.1 - (WALL_OUT_X - 0.6))
-    top = zc - flare_h - SIM_ICON_GAP
-    bot = top - SIM_ICON_H
-    l, r = yc + SIM_ICON_W / 2, yc - SIM_ICON_W / 2      # seen from outside, +y is on the left
+    """Recessed micro-SIM silhouette with a raised arrow, on the outside of the left wall beside the slit."""
+    t = (WALL_IN_X + 0.1 - WALL_OUT_X) / (WALL_IN_X + 0.1 - (WALL_OUT_X - 0.6))   # flare at the wall face
+    slit_end = yc + SLIT_W / 2 + SLIT_FLARE * 1.3 * t
+    cy = slit_end + SIM_ICON_GAP + SIM_ICON_W / 2                 # +y = toward the phone's top
+    top, bot = zc + SIM_ICON_H / 2, zc - SIM_ICON_H / 2
+    l, r = cy + SIM_ICON_W / 2, cy - SIM_ICON_W / 2               # seen from outside, +y is on the left
     c = SIM_ICON_CUT
     card = Polygon([(l, top), (r, top), (r, bot + c), (r + c, bot), (l, bot)])   # cut corner bottom-right
-    card = card.buffer(-0.25, join_style=1).buffer(0.25, join_style=1)            # slightly rounded corners
-    head_w, head_h, stem_w = 2.2, 1.3, 0.8
-    tip, base = top - 0.55, top - 0.55 - head_h
-    arrow = Polygon([(yc, tip), (yc + head_w / 2, base), (yc + stem_w / 2, base), (yc + stem_w / 2, bot + 0.6),
-                     (yc - stem_w / 2, bot + 0.6), (yc - stem_w / 2, base), (yc - head_w / 2, base)])
+    card = card.buffer(-0.35, join_style=1).buffer(0.35, join_style=1)            # slightly rounded corners
+    head_w, head_h, stem_w = 3.2, 2.0, 1.1
+    tip, base = top - 0.8, top - 0.8 - head_h
+    arrow = Polygon([(cy, tip), (cy + head_w / 2, base), (cy + stem_w / 2, base), (cy + stem_w / 2, bot + 0.9),
+                     (cy - stem_w / 2, bot + 0.9), (cy - stem_w / 2, base), (cy - head_w / 2, base)])
     shape = card.difference(arrow)
     return [prism_x(g, WALL_OUT_X - 1.0, WALL_OUT_X + SIM_ICON_DEPTH) for g in getattr(shape, "geoms", [shape])]
 
