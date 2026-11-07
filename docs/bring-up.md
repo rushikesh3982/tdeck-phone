@@ -125,7 +125,12 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 3. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
    antenna is connected. Power on and wait about 30 seconds. Then send `AT+CFUN?`. If it answers `4`, the radio is off
    (flight mode), so send `AT+CFUN=1`. This board was in flight mode when tested without a SIM, even with its blue
-   LED on.
+   LED on. With the SIM read, it started with the radio on (`1`).
+
+   **Which way the SIM goes in:** gold contacts facing the board, and the **cut corner going in last**, on the same
+   side as the holder's small latch window. Push until it clicks and stays. Turned end-to-end, it still clicks in, but
+   the modem reports `+CPIN: SIM REMOVED`. The modem only reads the SIM when it starts, so after re-seating the card,
+   restart it (`AT+CRESET`, or power off and on).
 
    | Command | Good answer |
    |---|---|
@@ -135,6 +140,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    | `AT+COPS?` | Operator name |
    | `AT+CPSI?` | Shows LTE and the band |
    | `AT*IMSRCFG="switch"` | `"switch","on"` (VoLTE path on) |
+   | `AT+CIREG?` | `+CIREG: 1,1,…`: the second number `1` = registered for VoLTE calls |
 
    The network LED also changes its blink pattern once the modem is registered.
 
@@ -147,16 +153,17 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    - Do both antennas in the same spot, with the board and battery in the printed case. Only compare readings taken on
      the same band (the `EUTRAN-BAND…` field).
    - If the sticker averages within about 5 dB of the SMA antenna, it's fine to keep inside.
-4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+COUTGAIN=4`, `AT+CMICGAIN=4` and
-   `AT+CLIP=1`.
+4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+COUTGAIN=5`, `AT+CMICGAIN=4` and
+   `AT+CLIP=1`. (5 was the comfortable earpiece level on this board; 7 was a bit loud in a call.)
    - Call your other phone with `ATD+91XXXXXXXXXX;` and answer it. The modem prints `VOICE CALL: BEGIN`.
    - During the call, send `AT+CPSI?`. `LTE` means **VoLTE works**. `GSM` means it fell back to 2G.
    - Listen on the earpiece and talk into the mic. Change the earpiece volume with `AT+COUTGAIN` (0–7) a step at a
      time. If the other side hears you faintly, raise `AT+CMICGAIN` (0–7) a step at a time.
-   - Hang up with `AT+CHUP`.
+   - Hang up with `AT+CHUP`. (`ATH` answered `OK` but didn't end a VoLTE call.)
    - Then call the module from your phone. `RING` and `+CLIP: "<number>"` appear. Answer with `ATA`.
 5. **SMS (receive).** Send `AT+CMGF=1` and `AT+CNMI=2,1,0,0,0`. Send an SMS to the module from your phone.
-   `+CMTI:` appears with a number at the end. `AT+CMGR=<that number>` shows the message. (Sending an SMS from the
+   `+CMTI:` appears with a number at the end. `AT+CMGR=<that number>` shows the message, and `AT+CMGL="ALL"` lists
+   them all. The SIM holds only **10 messages**, so delete read ones (`AT+CMGD=<number>`). (Sending an SMS from the
    module needs Ctrl-Z to finish the message, which works in Terminal's `screen` but not in the Arduino Serial
    Monitor.)
 6. **GNSS.** Take the patch outdoors with the ceramic side facing the sky, and send `AT+CGNSSPWR=1`. Wait for
@@ -182,7 +189,31 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | Capacitors | Swapped before these tests (470 µF for C11, 100 µF for C17), and both are the right way round. C11's + leg reads 3.86 V to GND. C17's + leg reads 4.97 V, so C17 is on the VCC input |
 | Earpiece | Works. Tones (`AT+SIMTONE`), speech (`AT+CTTS`) and file playback (`AT+CCMXPLAY`) were all heard. `AT+COUTGAIN=7` was set after it sounded low, and survives a restart |
 | GPS | **Works.** Full 3D position through a window, within about 7 minutes of `READY!`, using 33 satellites (HDOP 1.47). It turns off at every power-up, so send `AT+CGNSSPWR=1` again. `READY!` sometimes didn't appear until GPS was turned off and on again |
-| Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call |
+| Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call (done: see below) |
+
+### Results with a Jio SIM (7 Nov 2026, SMA antenna on the 15 cm cable, 5 V on VCC)
+
+| Check | Result |
+|---|---|
+| SIM | First `+CPIN: SIM REMOVED`: the card was in end-to-end. Turned round (cut corner in last, latch side), `+CPIN: READY` |
+| Radio at start-up | On (`AT+CFUN?` = `1`) once the SIM is read |
+| Network | **Registered on Jio 4G** (`+CEREG: 0,1`, operator 405864), band 5 (850 MHz) |
+| Signal | `AT+CSQ` 22; RSRP −91 dBm (`AT+CPSI?` field 49) |
+| Data | Jio's internet connection came up by itself (`+CGEV: EPS PDN ACT 1`) |
+| **VoLTE** | **Registered** (`+CIREG: 1,1,15`), and still registered after a call. The "used in a 5G phone" Jio problem didn't occur with this card |
+| Incoming call | Rang with caller ID; `ATA` answered; a 9-minute call on 4G. `AT+CHUP` ended it (`ATH` didn't) |
+| Earpiece in a call | **Clear.** Gain 7 was a bit loud, 5 is right (`AT+COUTGAIN=5`, kept after restarts) |
+| **Mic in a call** | **Not working.** The other phone heard silence at `AT+CMICGAIN=4` and only noise at 7. Photos show it wired the right way (the "+" pad to M+). The earlier meter test found no conduction in the direction a working mic conducts. So the mic is probably dead (soldering heat) or a joint at the mic is open. **Fix:** fit a spare mic at the mic end (below). The gain is at 7 until then |
+| SMS (receive) | **Works.** A text from the phone arrived and read correctly with `AT+CMGL="ALL"` |
+
+**Replacing the mic** (no work at the modem end, nothing near the earpiece capacitors):
+1. Test the spare first, with the meter in diode mode: red on the pad joined to the metal can, black on the "+" pad,
+   should read about 0.5–0.9. Reversed, it should read higher or "1".
+2. Cut the old mic off close to its body, keeping the orange and white wires.
+3. Solder the spare: orange to "+", white to the can pad. Tin the wire ends first, and keep the iron on each pad for
+   only 2–3 seconds.
+4. Test with a call before heat-shrinking or gluing, then set `AT+CMICGAIN=4` and adjust.
+5. Optional: test the old mic as in step 1. "1" both ways confirms it's dead.
 
 ### Phase B: after deciding to keep the board
 

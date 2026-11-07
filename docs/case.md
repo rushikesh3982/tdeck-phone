@@ -31,6 +31,7 @@ Printing: PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
 Print the 9 mm fit-test ring ([case/stl/test-prints/test-fit-ring-100.stl](../case/stl/test-prints/test-fit-ring-100.stl)) before the case, and
 only go to 101 % if it's too tight. Then print the ready-made [case/stl/101/](../case/stl/101/) set, not
 slicer-scaled files: scaling in the slicer would move the modem standoffs off the board's holes. See "Fit and scale" in [case/README.md](../case/README.md).
+**Result (7 Nov 2026):** the 101 % set fits the T-Deck and all the parts well.
 
 ## Why these variants
 

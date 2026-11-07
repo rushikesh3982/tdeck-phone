@@ -223,6 +223,8 @@ to bottom, with its connector end toward the bottom, over the patch.
 
 ## Fit and scale: print the test ring first
 
+**Result (7 Nov 2026):** the **101 % set** printed and fits the T-Deck and all the parts well.
+
 **The T-Deck's fit is tight on purpose.** For the first 5 mm above the screen face, the front's inside is exactly
 68.00 mm wide. That's LilyGO's width for the T-Deck, with no clearance. Above that, a 1.5 mm tall ridge narrows it to
 67.4–67.5 mm. The ridge snaps over the T-Deck's sides and holds it without screws, and the case is meant to flex as

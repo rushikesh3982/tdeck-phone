@@ -3,8 +3,15 @@
 A working mobile phone for India (voice calls, SMS, mobile data and GPS) built around a stock
 **LilyGO T-Deck**, a **SIMCom A7672S** 4G modem board and a modified 3D-printed case.
 
-**Status (2 Nov 2026):** the design is settled. Parts are not ordered yet, nothing is built yet, and there is
-no firmware yet.
+**Status (7 Nov 2026):**
+- **Case:** the 101 % print set fits the T-Deck and all the parts.
+- **Modem, tested on the bench with a Jio SIM:**
+  - registers on 4G with VoLTE;
+  - takes incoming calls, with clear earpiece sound;
+  - receives SMS;
+  - gets a GPS fix.
+- **Mic:** gave nothing in the first call, and is to be replaced.
+- **Firmware:** none yet.
 
 ## How it works
 
@@ -50,14 +57,16 @@ fallback and GNSS.
 
 ## Next steps
 
-1. Order the KTRON board, GPS patch, antenna cable and mics. Buy a multimeter. Choose the LTE antenna, or first try the
-   full-band sticker antenna that came with the T-Deck inside the case ([docs/wiring.md](docs/wiring.md), section 6).
-2. When the parts arrive, run the bench checks in [docs/bring-up.md](docs/bring-up.md) from the Mac through the
-   USB-serial adapter, including a VoLTE test call inside the seller's return window.
-3. Case: the front (earpiece grille, mic pocket), the earpiece holder and the back (modem standoffs, SIM slit,
-   GPS patch cradle) are done in [case/](case/). Print both and dry-fit. The KTRON's two tall capacitors get swapped for flat ones first.
-4. Firmware: a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call,
-   and a low-battery guard.
+1. **Mic:** fit a spare mic at the mic end and prove it in a call ([docs/bring-up.md](docs/bring-up.md), "Replacing
+   the mic"). Then test an outgoing call and sending an SMS.
+2. **Antenna:** compare the full-band sticker antenna inside the case with the SMA antenna
+   ([docs/wiring.md](docs/wiring.md), section 6).
+3. **Phase B:**
+   - Remove the 5 V bench wires.
+   - Feed the modem from the battery through the protection board and the slide switch.
+   - Move the data wires to the T-Deck's Grove pads ([docs/bring-up.md](docs/bring-up.md)).
+4. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and
+   a low-battery guard.
 
 ## Reference documents
 
