@@ -12,7 +12,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 | [stl/test-prints/test-mic-coupon.stl](stl/test-prints/test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [stl/test-prints/test-fit-ring-100.stl](stl/test-prints/test-fit-ring-100.stl), [test-fit-ring-101.stl](stl/test-prints/test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
 | [stl/earpiece-holder.stl](stl/earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
-| [stl/back-modem-gps.stl](stl/back-modem-gps.stl) | Back with modem standoffs, SIM slit, GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
+| [stl/back-modem-gps.stl](stl/back-modem-gps.stl) | Back with modem standoffs, SIM slit (with a picture showing which way the card goes), GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
 Alley Cat's small parts are included **unchanged**, copied from the same Printables download (same licence and
 credit). They're only scaled by 1 % like the rest of the set (see the folder note below), so everything to print is in
@@ -190,8 +190,20 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
   pull it out.
 - **SIM size:** a nano-SIM in a micro adapter can catch in push-push holders. A fresh multi-cut SIM, popped out at
   micro size, is safer.
+- **Which way (picture under the slit, added 7 Nov 2026):** a micro-SIM outline, 4 × 5 mm and 0.7 mm deep, with
+  its cut corner and a raised arrow pointing up into the slit.
+  - **How to read it:** it's the card as it should look going in, with the phone screen-up. The top edge goes in
+    first. The face you see is the face that's up, so the gold contacts face down. The cut corner is on the outer
+    end, toward the phone's USB end.
+  - **Why it's needed:** turned end-to-end, the card still clicks in but isn't read.
+  - **How it was checked:** on the board and against KTRON's own photo.
+  - **Where it sits:** the wall below the slit is flat for only about 3 mm before it curves into the back's rounded
+    edge, so the picture's lower part is shallower (about 0.35 mm).
 
-The SIM slit is shown from outside in the "after" half of the picture under *Modem standoffs* above.
+  ![The SIM slit and the picture under it, on the phone's left side](images/sim-picture.png)
+
+The SIM slit is also shown from outside in the "after" half of the picture under *Modem standoffs* above (drawn
+before the SIM picture was added).
 
 **GPS patch cradle.** A fence with a 27 mm square opening near the bottom. It is sized for the measured patch:
 26 × 26 mm board and a 25 × 25 × 4 mm ceramic that sits slightly crooked.

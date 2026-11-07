@@ -1,6 +1,6 @@
-"""Add KTRON modem standoffs, a SIM slit, a GPS patch cradle and a network-LED window to the Alley Cat
-TD1 X back, fill the back's half of the old GPS-module slot, and replace the cat on its outside with the
-rushiWorks logo.
+"""Add KTRON modem standoffs, a SIM slit (with a SIM-direction picture under it), a GPS patch cradle and a
+network-LED window to the Alley Cat TD1 X back, fill the back's half of the old GPS-module slot, and replace the
+cat on its outside with the rushiWorks logo.
 
 Usage:
     python make_back.py "<Alley Chat TD1 X Back Outside Cat Edition.stl>" <output.stl> [layout.png] [logo image]
@@ -59,6 +59,18 @@ SIM_CARD_U = 14.6          # card centre line across the board (holder spans u 7
 CARD_ABOVE_BOARD = 0.75    # card mid-plane above the solder side, standard 1.5 mm push-push holder
 SLIT_W, SLIT_H = 15.0, 1.8         # inside opening (card is 12 x 0.8 mm)
 SLIT_FLARE = 0.6                   # extra on every side at the outside face, as a lead-in
+
+# ---- SIM direction picture, engraved under the slit -------------------------------------------------------
+# A micro-SIM silhouette (12 x 15 mm card, drawn 4.0 x 5.0 mm) with its cut corner, and a raised arrow pointing
+# up into the slit. Read it as the card folded down out of the slit onto the wall: the top edge goes in first,
+# the face you see is the face that is UP with the phone screen-up (the printed side; the gold contacts face
+# down, toward the KTRON board under the card), and the cut corner is on the outside end, toward the phone's
+# bottom (bottom-right as you look at the left side). Checked on 7 Nov 2026: KTRON's photo, and the card read
+# only once its cut corner went in last, on the holder's latch side, which faces the phone's bottom here.
+SIM_ICON_W, SIM_ICON_H = 4.0, 5.0  # along y (the card's 12 mm leading edge) and z (its 15 mm length)
+SIM_ICON_GAP = 0.75                # wall left between the slit's outer flare and the picture
+SIM_ICON_CUT = 1.3                 # the cut corner (exaggerated: the real one would be 1 mm here)
+SIM_ICON_DEPTH = 0.7               # into the flat wall; about 0.35 at its bottom, where the wall starts to curve
 
 
 # ---- Network LED window --------------------------------------------------------
@@ -188,6 +200,23 @@ def sim_slit():
     return [funnel, straight], (yc, zc)
 
 
+def sim_icon(yc, zc):
+    """Recessed micro-SIM silhouette with a raised arrow, on the outside of the left wall under the slit."""
+    flare_h = SLIT_H / 2 + SLIT_FLARE * 1.3 * (WALL_IN_X + 0.1 - WALL_OUT_X) / (WALL_IN_X + 0.1 - (WALL_OUT_X - 0.6))
+    top = zc - flare_h - SIM_ICON_GAP
+    bot = top - SIM_ICON_H
+    l, r = yc + SIM_ICON_W / 2, yc - SIM_ICON_W / 2      # seen from outside, +y is on the left
+    c = SIM_ICON_CUT
+    card = Polygon([(l, top), (r, top), (r, bot + c), (r + c, bot), (l, bot)])   # cut corner bottom-right
+    card = card.buffer(-0.25, join_style=1).buffer(0.25, join_style=1)            # slightly rounded corners
+    head_w, head_h, stem_w = 2.2, 1.3, 0.8
+    tip, base = top - 0.55, top - 0.55 - head_h
+    arrow = Polygon([(yc, tip), (yc + head_w / 2, base), (yc + stem_w / 2, base), (yc + stem_w / 2, bot + 0.6),
+                     (yc - stem_w / 2, bot + 0.6), (yc - stem_w / 2, base), (yc - head_w / 2, base)])
+    shape = card.difference(arrow)
+    return [prism_x(g, WALL_OUT_X - 1.0, WALL_OUT_X + SIM_ICON_DEPTH) for g in getattr(shape, "geoms", [shape])]
+
+
 def led_window():
     lx, ly = board_to_back(*NETLIGHT_UV)
     cx = (lx + LED_HOLE_X) / 2
@@ -268,6 +297,7 @@ def main(src, dst, picture=None, logo_path=None, scale=1.0):
     a1, c1 = standoffs(scale)
     a2, c2 = patch_cradle()
     c3, (slit_y, slit_z) = sim_slit()
+    c3 += sim_icon(slit_y, slit_z)
     a4, c4 = led_window()
     a5 = fill_gps_slot(back)
     # Nothing added may stick out of the cover. Its outer edges are rounded, so near the floor the outside face curves in

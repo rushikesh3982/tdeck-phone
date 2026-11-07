@@ -4,7 +4,7 @@ Usage:
     python make_diagrams.py <front-earpiece-mic.stl> <back-modem-gps.stl> <output folder>
 
 Needs: numpy, trimesh, matplotlib. Writes assembly-front-outside.png, assembly-front-inside.png,
-assembly-back-inside.png and assembly-stack.png.
+assembly-back-inside.png, assembly-stack.png, front-top-edge.png and sim-picture.png.
 
 Front file coordinates: screen face at z = -14.7, inside toward +z, phone's LEFT side at x = -6,
 RIGHT side at x = -82, top edge y = 108, bottom edge y = -2.
@@ -403,6 +403,47 @@ def top_edge(front, path):
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 
+# ---------------------------------------------------------------- card-direction pictures
+def side_closeup(mesh, path, look_along_x, y_span, z_span, title, left_label, right_label, up_label):
+    """Close-up of a side wall seen from outside, shaded by depth so shallow engravings show.
+    look_along_x = +1 looks along +x (at a wall facing -x); the picture's up is +z or -z as given by z_span order."""
+    (y0, y1), (za, zb) = y_span, z_span
+    step = 0.03
+    ys = np.arange(y0, y1, step); zs = np.arange(min(za, zb), max(za, zb), step)
+    Y, Z = np.meshgrid(ys, zs)
+    x_start = mesh.bounds[0][0] - 5 if look_along_x > 0 else mesh.bounds[1][0] + 5
+    orig = np.c_[np.full(Y.size, x_start), Y.ravel(), Z.ravel()]
+    loc, ir, _ = mesh.ray.intersects_location(orig, np.tile([float(look_along_x), 0, 0], (Y.size, 1)),
+                                              multiple_hits=False)
+    d = np.full(Y.size, np.nan); d[ir] = (loc[:, 0] - x_start) * look_along_x
+    D = d.reshape(Y.shape)
+    near = np.nanmin(D)
+    img = np.clip(1.0 - (D - near) / 1.2, 0.15, 1.0)
+    gy, gx = np.gradient(np.nan_to_num(D, nan=near + 5))
+    img[np.hypot(gx, gy) > 0.12] = 0.0
+    img[np.isnan(D)] = 1.0
+    # orient as seen from outside: viewer's right is -y when looking along +x, +y when looking along -x
+    if look_along_x > 0:
+        img = img[:, ::-1]
+    if za > zb:                     # picture's up is -z
+        img = img[::-1, :]
+    w, h = y1 - y0, abs(zb - za)
+    fig, ax = plt.subplots(figsize=(7.5, 7.5 * h / w + 1.0), dpi=120)
+    ax.imshow(img, origin="lower", cmap="copper", vmin=0, vmax=1, extent=[0, w, 0, h])
+    ax.set_xticks([]); ax.set_yticks([])
+    ax.set_title(title, fontsize=10)
+    ax.set_xlabel(f"← {left_label}          {right_label} →", fontsize=9)
+    ax.set_ylabel(f"{up_label} ↑", fontsize=9)
+    fig.tight_layout(); fig.savefig(path); plt.close(fig)
+
+
+def sim_picture(back, path):
+    """The SIM-direction picture under the slit, on the back's left side (slit centre y 58.57, z -13.65)."""
+    side_closeup(back, path, +1, (48.0, 69.0), (-24.0, -9.0),
+                 "SIM slit and its picture: phone's LEFT side, screen up",
+                 "phone's top", "USB end", "screen side")
+
+
 def main(front_path, back_path, out_dir):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import make_back as mb
@@ -417,6 +458,7 @@ def main(front_path, back_path, out_dir):
     back_inside(back, os.path.join(out_dir, "assembly-back-inside.png"), layout)
     stack(front, back, os.path.join(out_dir, "assembly-stack.png"), layout)
     top_edge(front, os.path.join(out_dir, "front-top-edge.png"))
+    sim_picture(back, os.path.join(out_dir, "sim-picture.png"))
     print("done")
 
 

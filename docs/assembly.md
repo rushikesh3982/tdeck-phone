@@ -125,8 +125,13 @@ Details and checks are in [wiring.md](wiring.md).
 
 1. **SIM**: push a micro-SIM into the slit on the back's left side until it clicks. A fresh multi-cut SIM, popped
    out at micro size, works better than a nano in an adapter. Push again to release it.
-   - **Which way:** gold contacts toward the KTRON board, and the **cut corner going in last**, on the side of the
-     holder's latch window. End-to-end, it still clicks in but isn't read (`SIM REMOVED`).
+   - **Which way:** follow the picture engraved under the slit, with the phone screen-up:
+     - the gold contacts face down;
+     - the **cut corner goes in last**, toward the phone's USB end.
+
+     End-to-end, it still clicks in but isn't read (`SIM REMOVED`).
+
+     ![SIM slit and picture](../case/images/sim-picture.png)
    - Insert it with the modem off, or restart the modem afterwards: it only reads the SIM at start-up.
 2. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
    top-right one. With the internal LTE sticker, push the printed antenna plug into the top-right hole instead.
