@@ -223,7 +223,8 @@ to bottom, with its connector end toward the bottom, over the patch.
 
 ## Fit and scale: print the test ring first
 
-**Our result (7 Nov 2026):** the parts built at **101 %** printed and fit the T-Deck and all the parts well. So the
+**Our result (7 Nov 2026):** the parts built at **101 %**, printed in **ASA**, fit the T-Deck and all the parts
+well. That matches other builders' reports: ASA shrinks a little more than PLA or PETG as it cools. So the
 files in [stl/](stl/) are the 101 % set. The 100 % set was removed (it's in the git history, and the scripts can
 rebuild it).
 
@@ -269,7 +270,10 @@ the board's holes, and the M3 screws only have 0.2 mm of play in them. The 101 %
 - Print the files as they are oriented, outer face down on the bed (the screen side for the front), with no
   supports. The earpiece slot is vertical, the mic pocket has a 45° roof, and the back's standoffs and cradle grow
   straight up.
-- PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill.
+- **ASA** (ours), PLA+ or PETG; 0.2 mm layers, 3 perimeters, 20 % infill. The files are sized for ASA. PLA+ or PETG
+  shrink less, so with those, print the fit-test ring first.
+- **Heat-set inserts:** iron at about 240–255 °C in ASA (about 220 °C in PLA+, 240–250 °C in PETG). Let the insert
+  sink under light pressure and stop when it's flush. Ventilate when heating ASA.
 - The earpiece holder is the exception: lay it on its wire-groove face (see [Earpiece holder](#earpiece-holder)).
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
 - **On a different printer or filament, print the fit-test ring first** (see [Fit and scale](#fit-and-scale-print-the-test-ring-first)).

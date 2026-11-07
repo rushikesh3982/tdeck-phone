@@ -36,7 +36,7 @@ except the protection board (to order, above).
 - JST PH2.0 2-pin plug for the T-Deck battery socket
 - 24 AWG wire for the modem's battery feed (≤10 cm), thinner wire for the data and audio wires
 - Thin foam sheet (between battery and modem board)
-- PLA+ or PETG filament for the case
+- Filament for the case: ASA (used; the 101 % files suit it)
 - Heat-shrink tubing
 - 2 × 47 µF electrolytic capacitors, 10 V or more, about 4–5 mm across: one in series with each earpiece wire
   (SIMCom's and KTRON's reference circuit)

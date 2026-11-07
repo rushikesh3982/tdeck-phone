@@ -25,11 +25,11 @@ Print the modified front and back from this repository ([case/stl/](../case/stl/
 
 Fasteners: 2× M3×5 heat-set inserts (4.5 mm hole) + 2× M3×8 screws.
 
-Printing: PLA+ or PETG, 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
+Printing: ASA (ours), PLA+ or PETG; 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
 
 **Fit:** the T-Deck's fit is deliberately tight. The inside of Alley Cat's front is exactly the T-Deck's 68 mm,
-with a snap ridge. Our parts printed at 100 % didn't suit our T-Deck. The parts built **1 % larger** fit it and
-everything else well (7 Nov 2026), so [case/stl/](../case/stl/) holds that 101 % set.
+with a snap ridge. We print in **ASA**, which shrinks a little more as it cools. The parts built **1 % larger** fit
+our T-Deck and everything else well (7 Nov 2026), so [case/stl/](../case/stl/) holds that 101 % set.
 - **Already scaled:** print the files at 100 % in the slicer.
 - **Don't scale them in the slicer:** scaling there would move the modem standoffs off the board's holes.
 - **On a different printer or filament:** print the 9 mm fit-test ring first. See "Fit and scale" in
