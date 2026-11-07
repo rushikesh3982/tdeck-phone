@@ -4,7 +4,7 @@ A working mobile phone for India (voice calls, SMS, mobile data and GPS) built a
 **LilyGO T-Deck**, a **SIMCom A7672S** 4G modem board and a modified 3D-printed case.
 
 **Status (7 Nov 2026):**
-- **Case:** the 101 % print set fits the T-Deck and all the parts.
+- **Case:** printed and fits the T-Deck and all the parts (the files are built 1 % larger).
 - **Modem, tested on the bench with a Jio SIM:**
   - registers on 4G with VoLTE;
   - makes and takes calls, with clear earpiece sound;
@@ -53,7 +53,7 @@ fallback and GNSS.
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
-| [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/100/](case/stl/100/) (or [case/stl/101/](case/stl/101/) if the T-Deck fit is tight), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
+| [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/](case/stl/) (built 1 % larger, which fits; print at 100 % in the slicer), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
 
 ## Next steps
 
