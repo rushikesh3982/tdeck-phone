@@ -133,9 +133,13 @@ Details and checks are in [wiring.md](wiring.md).
 
      ![SIM slit and picture](../case/images/sim-picture.png)
    - Insert it with the modem off, or restart the modem afterwards: it only reads the SIM at start-up.
-2. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
+2. **microSD (if used)**: follow the picture beside the slot on the phone's right side. With the phone screen-up,
+   the gold contacts face up and the contacts end goes in first.
+
+   ![microSD slot and picture](../case/images/sd-picture.png)
+3. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
    top-right one. With the internal LTE sticker, push the printed antenna plug into the top-right hole instead.
-3. **Power**: switch on the T-Deck with its own switch (right side) and the modem with its switch (left side).
+4. **Power**: switch on the T-Deck with its own switch (right side) and the modem with its switch (left side).
    Switch both off together, because a modem left on drains the battery in about 10 days.
 
 ## Things to check at the first dry fit

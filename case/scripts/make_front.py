@@ -1,4 +1,5 @@
-"""Cut the earpiece grille, mic pocket and a second SMA antenna cut-out into the Alley Cat TD1 front,
+"""Cut the earpiece grille, mic pocket, a second SMA antenna cut-out and a microSD-direction picture into the
+Alley Cat TD1 front,
 and keep Alley Cat's slide-switch mount on its left side for the modem's SS-12F15 power switch. The top-edge badge carries Alley Cat's cat-head logo
 (from ../logo/alley-cat-head.json, taken from her TD1 files) as a visible credit to the case's designer.
 
@@ -60,6 +61,21 @@ SMA_BLOCK = [[-26.5, 99.0, -10.5], [-11.5, 109.0, 5.6]]   # around the top-left 
 # (4 mm tall) through the 6.9 x 3.4 mm slot, so about 1 mm of it stands proud of the wall. Body centre: y = 63.4,
 # z = 0.1. (It was filled in an earlier version, when the modem was to follow the T-Deck's switch.)
 SWITCH_CENTRE = (63.4, 0.1)          # y, z of the mount, on the left wall (outer face x = -6.0, recess floor x = -9.0)
+
+# microSD direction picture, engraved on the right wall beside the T-Deck's microSD opening, on the phone-top side
+# (the matching SIM picture is beside the SIM slit on the back's left side). Alley Cat's opening: y 72.5-89.75
+# with its lead-in, centred at y 81.0, z -5.85; the wall is flat at x = -82 for y 50-101, z -10.1 to 3.9.
+# The picture is the card as it should look going in, with the phone screen-up (owner's photo, 7 Nov 2026): the
+# contacts end goes in first (picture's top, toward the screen side), the GOLD CONTACTS FACE UP (so they are drawn,
+# as raised stripes), and the card's narrow section with its step is on the side toward the phone's bottom
+# (the picture's left as you look at the right side). Card 11 x 15 mm, drawn 5.87 x 8.0 mm; step exaggerated.
+SD_SLOT = (81.0, -5.85)             # y, z centre of the opening
+SD_SLOT_TOP_END = 89.75             # y of the opening's lead-in edge on the phone-top side
+SD_ICON_W, SD_ICON_H = 5.87, 8.0
+SD_ICON_GAP = 1.6                   # wall left between the opening's lead-in and the picture
+SD_ICON_STEP = 1.1                  # how far the narrow section is cut back (the real step would be 0.7 mm here)
+SD_ICON_DEPTH = 0.8                 # into the 4 mm wall
+SD_WALL_X = -82.0                   # outer face of the right wall
 
 # Top-edge badge: Alley Cat's raised badge with the cat + GPS-pin art is replaced by a fresh badge of the same
 # footprint carrying her cat-head logo, cut the way it is on her Alley Chat HT Pocket case: the head recessed,
@@ -161,6 +177,34 @@ def replace_badge_with_cat(front, cat_json):
     return trimesh.boolean.difference([front] + cuts, engine="manifold")
 
 
+def sd_icon():
+    """Recessed microSD silhouette with raised contact stripes and a raised arrow, beside the microSD opening.
+    Drawn in picture coordinates (u to the right = +y, v up = -z as seen from outside the right wall, screen up)."""
+    cy = SD_SLOT_TOP_END + SD_ICON_GAP + SD_ICON_W / 2
+    cz = SD_SLOT[1]
+    W, H, s = SD_ICON_W, SD_ICON_H, SD_ICON_STEP
+    narrow, slope = 2.77, 0.7                      # narrow section 5.2 mm of 15, then the step
+    def yz(pts):
+        return [(cy + u, cz - v) for u, v in pts]
+    card = Polygon(yz([(W / 2, H / 2), (-W / 2 + s, H / 2), (-W / 2 + s, H / 2 - narrow),
+                       (-W / 2, H / 2 - narrow - slope), (-W / 2, -H / 2), (W / 2, -H / 2)]))
+    card = card.buffer(-0.35, join_style=1).buffer(0.35, join_style=1)
+    keep = []
+    u0 = s / 2                                     # centre of the narrow section
+    for i in range(4):                             # gold contacts: 4 stripes (the card has 8; too fine to print)
+        u = u0 + (i - 1.5) * 1.1
+        keep.append(Polygon(yz([(u - 0.3, H / 2 - 0.55), (u + 0.3, H / 2 - 0.55),
+                                (u + 0.3, H / 2 - 2.55), (u - 0.3, H / 2 - 2.55)])))
+    tip = H / 2 - 3.15
+    base, head_w, stem_w = tip - 1.5, 2.6, 1.0
+    keep.append(Polygon(yz([(0, tip), (head_w / 2, base), (stem_w / 2, base), (stem_w / 2, -H / 2 + 0.8),
+                            (-stem_w / 2, -H / 2 + 0.8), (-stem_w / 2, base), (-head_w / 2, base)])))
+    shape = card
+    for k in keep:
+        shape = shape.difference(k)
+    return [prism_x(g, SD_WALL_X - 1.0, SD_WALL_X + SD_ICON_DEPTH) for g in getattr(shape, "geoms", [shape])]
+
+
 def main(src, dst, cat_json=None, scale=1.0):
     front = trimesh.load(src, force="mesh")
     assert front.is_watertight, "source mesh is not watertight"
@@ -185,7 +229,7 @@ def main(src, dst, cat_json=None, scale=1.0):
     cut_groove = prism_y(band(MIC_Z, GROOVE_Z_TOP), *GROOVE_Y)
     cut_notch = prism_y(band(GROOVE_Z_TOP, LIP_NOTCH_Z_TOP), *LIP_NOTCH_Y)
 
-    cutters = trimesh.boolean.union([cut_slot, cut_pocket, cut_hole, cut_groove, cut_notch],
+    cutters = trimesh.boolean.union([cut_slot, cut_pocket, cut_hole, cut_groove, cut_notch] + sd_icon(),
                                     engine="manifold")
     out = trimesh.boolean.difference([front, cutters], engine="manifold")
     assert out.is_watertight, "result is not watertight"

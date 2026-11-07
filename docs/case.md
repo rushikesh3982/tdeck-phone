@@ -86,6 +86,9 @@ Full details are in [case/README.md](../case/README.md).
   recommended (see [case/README.md](../case/README.md)).
 - **Modem power switch:** an SS-12F15 slide switch in Alley Cat's original left-side mount (kept, not filled). The
   battery sits about 9 mm toward the phone's right to clear it.
+- **microSD picture (added 7 Nov 2026):** an engraved microSD outline beside the T-Deck's microSD opening on the right
+  side, toward the phone's top. It shows which way the card goes: with the phone screen-up, gold contacts up,
+  contacts end first. Details are in [case/README.md](../case/README.md).
 - **Top-edge badge:** Alley Cat's cat-head logo, from her TD1 files (the same cat as on her HT Pocket case), on a
   fresh badge of the original footprint. It's a visible credit to the case's designer. The head is recessed and the
   eyes and nose are cut deeper. It reads upright with the phone screen-up.

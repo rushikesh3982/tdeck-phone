@@ -4,7 +4,7 @@ Usage:
     python make_diagrams.py <front-earpiece-mic.stl> <back-modem-gps.stl> <output folder>
 
 Needs: numpy, trimesh, matplotlib. Writes assembly-front-outside.png, assembly-front-inside.png,
-assembly-back-inside.png, assembly-stack.png, front-top-edge.png and sim-picture.png.
+assembly-back-inside.png, assembly-stack.png, front-top-edge.png, sim-picture.png and sd-picture.png.
 
 Front file coordinates: screen face at z = -14.7, inside toward +z, phone's LEFT side at x = -6,
 RIGHT side at x = -82, top edge y = 108, bottom edge y = -2.
@@ -188,9 +188,9 @@ def front_outside(front, path):
         (7, "Speaker grille: the T-Deck's own speaker,\nwhich plays the ringtone."),
         (8, "Opening for the printed Reset Button part."),
         (9, "T-Deck power switch: the printed Switch\npart slides here. It turns the T-Deck on\nand off (the modem has its own switch, 11)."),
-        (10, "microSD card slot."),
+        (10, "microSD card slot. The picture beside it shows\nwhich way the card goes: gold contacts up\n(screen side), contacts end first."),
         (11, "Modem power switch (SS-12F15) in Alley Cat's\nmount: slide it to turn the modem on and\noff. Two M2 screws hold it; the knob stands\n1 mm proud."),
-        ("", "The SIM slit is on the back panel's\nleft side (see the back diagram)."),
+        ("", "The SIM slit is on the back panel's\nleft side, with its own picture (see the\nback diagram and sim-picture.png)."),
     ], title="Front panel, outside (unfolded)")
     fig.savefig(path); plt.close(fig)
 
@@ -422,10 +422,11 @@ def side_closeup(mesh, path, look_along_x, y_span, z_span, title, left_label, ri
     gy, gx = np.gradient(np.nan_to_num(D, nan=near + 5))
     img[np.hypot(gx, gy) > 0.12] = 0.0
     img[np.isnan(D)] = 1.0
-    # orient as seen from outside: viewer's right is -y when looking along +x, +y when looking along -x
-    if look_along_x > 0:
+    # orient as seen from outside: the viewer's right is forward x up, i.e. -y when (look along +x, up +z)
+    up_z = 1 if zb > za else -1
+    if look_along_x * up_z > 0:
         img = img[:, ::-1]
-    if za > zb:                     # picture's up is -z
+    if up_z < 0:                    # picture's up is -z
         img = img[::-1, :]
     w, h = y1 - y0, abs(zb - za)
     fig, ax = plt.subplots(figsize=(7.5, 7.5 * h / w + 1.0), dpi=120)
@@ -444,6 +445,13 @@ def sim_picture(back, path):
                  "phone's top", "USB end", "screen side")
 
 
+
+def sd_picture(front, path):
+    """The microSD-direction picture beside the T-Deck's microSD opening, on the front's right side."""
+    side_closeup(front, path, +1, (69.0, 101.0), (3.0, -12.0),
+                 "microSD slot and its picture: phone's RIGHT side, screen up",
+                 "USB end", "phone's top", "screen side")
+
 def main(front_path, back_path, out_dir):
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import make_back as mb
@@ -459,6 +467,7 @@ def main(front_path, back_path, out_dir):
     stack(front, back, os.path.join(out_dir, "assembly-stack.png"), layout)
     top_edge(front, os.path.join(out_dir, "front-top-edge.png"))
     sim_picture(back, os.path.join(out_dir, "sim-picture.png"))
+    sd_picture(front, os.path.join(out_dir, "sd-picture.png"))
     print("done")
 
 

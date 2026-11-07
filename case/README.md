@@ -8,7 +8,7 @@ Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
 | File | What it is | Changed from |
 |---|---|---|
-| [stl/front-earpiece-mic.stl](stl/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, Alley Cat's left-side switch mount kept for the modem's SS-12F15 switch, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [stl/front-earpiece-mic.stl](stl/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, a microSD-direction picture beside the microSD opening, Alley Cat's left-side switch mount kept for the modem's SS-12F15 switch, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
 | [stl/test-prints/test-mic-coupon.stl](stl/test-prints/test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
 | [stl/test-prints/test-fit-ring-100.stl](stl/test-prints/test-fit-ring-100.stl), [test-fit-ring-101.stl](stl/test-prints/test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
 | [stl/earpiece-holder.stl](stl/earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
@@ -112,6 +112,19 @@ in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
 that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
+
+**microSD picture (right side, added 7 Nov 2026).** An engraved microSD outline, 5.9 × 8 mm and 0.8 mm deep, on the
+flat wall beside Alley Cat's microSD opening. It sits toward the phone's top, at the opening's height, matching the
+SIM picture on the back.
+- **What's on it:** the card's narrow front section with its step, four raised stripes for the gold contacts, and a
+  raised arrow.
+- **How to read it:** with the phone screen-up, the picture's top edge (the contacts end) goes in first. The gold
+  contacts face up, toward the screen, which is why they're drawn. The narrow section with its step is on the
+  USB-end side.
+- **Where the direction comes from:** the owner's photo of a card beside the T-Deck's slot, 7 Nov 2026. LilyGO's
+  documentation doesn't say which way it goes.
+
+![The microSD opening and the picture beside it, on the phone's right side](images/sd-picture.png)
 
 ## Earpiece holder
 
