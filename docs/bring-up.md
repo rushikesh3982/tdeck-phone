@@ -205,6 +205,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | Earpiece in a call | **Clear.** Gain 7 was a bit loud, 5 is right (`AT+COUTGAIN=5`, kept after restarts) |
 | **Mic in a call** | **Not working.** The other phone heard silence at `AT+CMICGAIN=4` and only noise at 7. Photos show it wired the right way (the "+" pad to M+). The earlier meter test found no conduction in the direction a working mic conducts. So the mic is probably dead (soldering heat) or a joint at the mic is open. **Fix:** fit a spare mic at the mic end (below). The gain is at 7 until then |
 | SMS (receive) | **Works.** A text from the phone arrived and read correctly with `AT+CMGL="ALL"` |
+| SMS (send) | **Works.** `AT+CMGS="+91…"`, then the text ending in Ctrl-Z: `+CMGS: 61` and the phone received it |
 
 **Replacing the mic** (no work at the modem end, nothing near the earpiece capacitors):
 1. Test the spare first, with the meter in diode mode: red on the pad joined to the metal can, black on the "+" pad,
