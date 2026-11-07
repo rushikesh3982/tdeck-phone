@@ -7,7 +7,7 @@ A working mobile phone for India (voice calls, SMS, mobile data and GPS) built a
 - **Case:** the 101 % print set fits the T-Deck and all the parts.
 - **Modem, tested on the bench with a Jio SIM:**
   - registers on 4G with VoLTE;
-  - takes incoming calls, with clear earpiece sound;
+  - makes and takes calls, with clear earpiece sound;
   - sends and receives SMS;
   - gets a GPS fix.
 - **Mic:** gave nothing in the first call, and is to be replaced.
@@ -58,7 +58,7 @@ fallback and GNSS.
 ## Next steps
 
 1. **Mic:** fit a spare mic at the mic end and prove it in a call ([docs/bring-up.md](docs/bring-up.md), "Replacing
-   the mic"). Then test an outgoing call.
+   the mic").
 2. **Antenna:** compare the full-band sticker antenna inside the case with the SMA antenna
    ([docs/wiring.md](docs/wiring.md), section 6).
 3. **Phase B:**

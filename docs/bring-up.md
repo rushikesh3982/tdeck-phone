@@ -161,6 +161,9 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
      time. If the other side hears you faintly, raise `AT+CMICGAIN` (0–7) a step at a time.
    - Hang up with `AT+CHUP`. (`ATH` answered `OK` but didn't end a VoLTE call.)
    - Then call the module from your phone. `RING` and `+CLIP: "<number>"` appear. Answer with `ATA`.
+   - **Without a working mic:** `AT+CDTAM=1` sends the modem's speech into the call, then `AT+CTTS=2,"Hello"` speaks
+     to the other phone. If they hear it, everything but the mic works. `AT+CDTAM=0` puts speech back on the
+     earpiece.
 5. **SMS (receive).** Send `AT+CMGF=1` and `AT+CNMI=2,1,0,0,0`. Send an SMS to the module from your phone.
    `+CMTI:` appears with a number at the end. `AT+CMGR=<that number>` shows the message, and `AT+CMGL="ALL"` lists
    them all. The SIM holds only **10 messages**, so delete read ones (`AT+CMGD=<number>`). (Sending an SMS from the
@@ -202,6 +205,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | Data | Jio's internet connection came up by itself (`+CGEV: EPS PDN ACT 1`) |
 | **VoLTE** | **Registered** (`+CIREG: 1,1,15`), and still registered after a call. The "used in a 5G phone" Jio problem didn't occur with this card |
 | Incoming call | Rang with caller ID; `ATA` answered; a 9-minute call on 4G. `AT+CHUP` ended it (`ATH` didn't) |
+| Outgoing call | **Works.** `ATD+91…;` rang the phone; answered after about 8 s, on 4G (band 40). Speech from the modem (`AT+CDTAM=1`, then `AT+CTTS=2,"…"`) was heard clearly on the phone, so the call's outgoing sound works up to the mic input |
 | Earpiece in a call | **Clear.** Gain 7 was a bit loud, 5 is right (`AT+COUTGAIN=5`, kept after restarts) |
 | **Mic in a call** | **Not working.** The other phone heard silence at `AT+CMICGAIN=4` and only noise at 7. Photos show it wired the right way (the "+" pad to M+). The earlier meter test found no conduction in the direction a working mic conducts. So the mic is probably dead (soldering heat) or a joint at the mic is open. **Fix:** fit a spare mic at the mic end (below). The gain is at 7 until then |
 | SMS (receive) | **Works.** A text from the phone arrived and read correctly with `AT+CMGL="ALL"` |
