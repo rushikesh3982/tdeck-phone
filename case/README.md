@@ -110,7 +110,7 @@ IPX → SMA-female cable (KSTA0380):
 Both top corners now have identical SMA cut-outs, so either antenna can go in either corner. **Recommended:** 4G
 in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top-left, where it already sits.
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
-that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
+that side (about 5 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
 
 **microSD picture (right side, added 7 Nov 2026).** An engraved microSD outline, 5.9 × 8 mm and 0.8 mm deep, on the
@@ -175,6 +175,18 @@ it. The cat is filled flush, and the **rushiWorks logo** is engraved in its plac
 front's part of it now, so the back's part is filled solid. The fill copies the block's cross-section from just beside
 the slot, so the block now runs unbroken between the screw holes and caps the earpiece holder.
 
+**Layout change (7 Nov 2026), after the dry fit:**
+- **The problem:** the earpiece wires come down from the top, past the filled block between the case screws. The
+  board and battery left them only about 1.5 mm.
+- **What moved:**
+  - **The GPS patch:** 5 mm left and 4 mm down, as far into the bottom-left corner as it can go with its ceramic
+    still flat on the pads. Its fence merges into the curved corner.
+  - **The modem board:** 7 mm down, with its standoffs, the SIM slit and its picture, and the network-LED window.
+  - **The battery and protection board:** 7 mm down too, so the J3 pads stay at the battery's top end.
+- **The result:**
+  - about 8.5 mm between the battery's top end and the block, room for the earpiece wires;
+  - about 5 mm more between the GPS patch and the internal 4G sticker antenna (about 28 mm edge to edge).
+
 **Modem standoffs.** Four columns at the KTRON board's holes.
 
 - **Board:** the KTRON is 54.33 × 57.23 mm, with its holes on a 47.90 × 50.70 mm rectangle.
@@ -219,13 +231,13 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
 The SIM slit is also shown from outside in the "after" half of the picture under *Modem standoffs* above (drawn
 before the SIM picture was added).
 
-**GPS patch cradle.** A fence with a 27 mm square opening near the bottom. It is sized for the measured patch:
+**GPS patch cradle.** A fence with a 27 mm square opening in the bottom-left corner. It is sized for the measured patch:
 26 × 26 mm board and a 25 × 25 × 4 mm ceramic that sits slightly crooked.
 
 - **Pads:** the ceramic faces down and rests on four 3 mm pads, 0.5 mm high, so it stays just off the cover.
 - **Fence:** 7 mm tall.
 - **Cable notches:** 4 mm wide, in every side, for the cable that leaves the middle of one side of the board.
-- **Fixing:** a dab of hot glue at two corners. The 95 mm cable easily reaches the GPS socket about 6 mm away.
+- **Fixing:** a dab of hot glue at two corners. The 95 mm cable easily reaches the GPS socket, just above the patch.
 
 **Network LED window.** The KTRON's network LED (NETLIGHT) faces the back cover from 9 mm up.
 

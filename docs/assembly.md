@@ -111,8 +111,9 @@ Details and checks are in [wiring.md](wiring.md).
 4. **Protection board** (⑬): already on the battery's tabs, at its bottom end, insulated with tape.
 5. **Foam**: lay a 1 mm foam sheet over the board, with a cut-out for the SIM holder (③).
 6. **Battery** (⑪): lay it on the foam over the board, tab end toward the bottom of the phone, about 9 mm toward the
-   phone's right and 2 mm toward the bottom. That keeps it clear of the modem switch (back ⑱) and leaves room for the
-   earpiece wires at the top. Plug its JST lead into the T-Deck's battery socket.
+   phone's right, with its top end level with the board's top edge (just below the J3 pads). That keeps it clear of
+   the modem switch (back ⑱) and leaves about 8.5 mm at the top for the earpiece wires. Plug its JST lead into the
+   T-Deck's battery socket.
 
 ### 5. Close
 
@@ -148,8 +149,8 @@ Details and checks are in [wiring.md](wiring.md).
   T-Deck's top edge).
 - **SIM:** the card lines up with the slit and clicks into the holder.
 - **Battery:** it sits flat over the board with about 1 mm to spare under the T-Deck.
-- **Earpiece wires:** they pass between the battery's top edge and the back's solid block. Centred on the board, the
-  battery leaves only 0.5 mm there, so slide it about 2 mm toward the bottom of the phone.
+- **Earpiece wires:** they pass between the battery's top end and the back's solid block between the case screws.
+  Since the 7 Nov 2026 layout change there's about 8.5 mm there.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
 - **Internal LTE sticker:** compare its signal inside the case with its signal in the open before sticking it down
   ([bring-up.md](bring-up.md), "Checking the sticker antenna inside the case").

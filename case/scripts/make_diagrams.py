@@ -241,7 +241,8 @@ def back_inside(back, path, layout):
 
     # free strip
     x_edge = btb(0, 0)[0]
-    ax.add_patch(Rectangle((x_edge + 0.3, 45), 68.8 - x_edge - 0.3, 53, fc=COL["strip"], alpha=0.35, ec="none"))
+    strip_y0 = btb(0, 0)[1] + 1.0                # from just above the board's bottom edge to its top edge
+    ax.add_patch(Rectangle((x_edge + 0.3, strip_y0), 68.8 - x_edge - 0.3, 53, fc=COL["strip"], alpha=0.35, ec="none"))
     # board, SIM holder, caps
     bpoly([(0, 0), (BW, 0), (BW, BH), (0, BH)], fill=False, ec=COL["board"], lw=2.0)
     bpoly([(7.3, 41.0), (21.9, 41.0), (21.9, BH), (7.3, BH)], fc=COL["sim"], alpha=0.45, ec=COL["sim"])
@@ -267,9 +268,10 @@ def back_inside(back, path, layout):
     # GPS patch
     cx, cy = layout["PATCH_CENTRE"]; hp = layout["PATCH_PCB"] / 2
     ax.add_patch(Rectangle((cx - hp, cy - hp), 2 * hp, 2 * hp, fc=COL["patch"], alpha=0.25, ec=COL["patch"], lw=1.5))
-    # battery (dashed, over the board)
-    ax.add_patch(Rectangle((9.5, 32.5), 55, 65, fill=False, ec=COL["battery"], lw=2.2, ls="--"))
-    ax.text(37, 35.2, "battery 65 × 55 × 9.5 (over the board, shifted right)", ha="center", fontsize=7.5,
+    # battery (dashed, over the board): its top end 0.8 mm below the board's J3 edge, as first laid out
+    bat_y0 = btb(BW, 0)[1] - 0.8 - 65
+    ax.add_patch(Rectangle((9.5, bat_y0), 55, 65, fill=False, ec=COL["battery"], lw=2.2, ls="--"))
+    ax.text(37, bat_y0 + 2.7, "battery 65 × 55 × 9.5 (over the board, shifted right)", ha="center", fontsize=7.5,
             color=COL["battery"])
     # 4G cable route
     x1, y1 = btb(24.8, 3.6)
@@ -283,7 +285,7 @@ def back_inside(back, path, layout):
     # internal LTE sticker option: the band along the right side (floor + wall), beside the board
     ax.add_patch(Rectangle((57.6, 9.0), 70.0 - 57.6, 91.0, fill=False, ec="#c0392b", lw=1.6, ls=(0, (4, 2))))
     # protection board on the battery's tabs (bottom end) and the modem switch (front half, left wall)
-    ax.add_patch(FancyBboxPatch((20.5, 24.5), 33, 7, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
+    ax.add_patch(FancyBboxPatch((20.5, bat_y0 - 8.0), 33, 7, boxstyle="round,pad=0.3", fc="0.85", ec="0.3"))
     ax.add_patch(FancyBboxPatch((-1.5, 53.6), 2.2, 19.7, boxstyle="round,pad=0.2", fc="0.25", ec="0.1"))
     # callouts
     marker(ax, *btb(51.115, 53.965), 1, dx=-9, dy=-6)
@@ -299,9 +301,9 @@ def back_inside(back, path, layout):
     marker(ax, cx, cy, 9)
     marker(ax, *btb(44.4, 28.8), 10, dy=5)
     marker(ax, *btb(42.85, 48.1), 10, dy=5)
-    marker(ax, 50, 37.5, 11)
-    marker(ax, 64, 82, 12)
-    marker(ax, 37, 28, 13)
+    marker(ax, 50, bat_y0 + 5.0, 11)
+    marker(ax, 64, strip_y0 + 37, 12)
+    marker(ax, 37, bat_y0 - 4.5, 13)
     marker(ax, -0.4, 63.4, 18, dx=6, dy=4)
     marker(ax, 63.8, 20.0, 19, dx=0, dy=0)
     marker(ax, 19.6, 102.85, 14, dy=6)
@@ -321,7 +323,7 @@ def back_inside(back, path, layout):
         (8, "U.FL2 (GPS) → GPS patch cable (95 mm; coil the extra)."),
         (9, "GPS patch cradle: patch ceramic side DOWN on the four pads,\ncable through any notch, a dab of hot glue."),
         (10, "C11: 470 µF 16 V laid flat and glued (C17: 100 µF, or left off),\nunder the board. Nothing there taller than 8 mm."),
-        (11, "Battery outline (orange, dashed): over the board with 1 mm foam\nbetween, tab end toward the bottom. Moved about 9 mm toward the\nphone's right and 2 mm down, clear of the modem switch (18)."),
+        (11, "Battery outline (orange, dashed): over the board with 1 mm foam\nbetween, tab end toward the bottom, about 9 mm toward the phone's\nright (clear of the modem switch, 18). Its top end is 8.5 mm below\nthe filled block at the top: room for the earpiece wires."),
         (12, "Free strip (green): 4G cable. The battery now covers part of it\nabove board level, so keep cables low here."),
         (13, "Protection board (1S, 3 A, 2 MOSFETs) on the battery's tabs.\nThe T-Deck lead and the modem's feed both take power from\nits P+ / P−, never straight from the cell."),
         (14, "Case screw holes (2): M3 × 8 from outside into the front's inserts."),
@@ -336,7 +338,7 @@ def back_inside(back, path, layout):
 
 # ---------------------------------------------------------------- stack (section through the SIM slit)
 def stack(front, back, path, layout):
-    y_cut = 58.6
+    y_cut = layout["board_to_back"](layout["SIM_CARD_U"], layout["BOARD_H"])[1]     # through the SIM slit
     b = back.copy()
     T = np.eye(4); T[0, 0] = -1; T[0, 3] = -10; T[2, 2] = -1; T[2, 3] = -4.7
     b.apply_transform(T)
@@ -356,7 +358,6 @@ def stack(front, back, path, layout):
     layers = [
         ("T-Deck (11 mm)", 10, 78, -13.7, -2.7, "#bbbbbb"),
         ("battery (9 mm)", -xf(9.5), -xf(64.5), zf(-11.9), zf(-2.9), COL["battery"]),
-        ("modem switch", 9.0, 17.0, -2.2, 2.4, "0.3"),
         ("foam (1 mm)", -xf(15.0), -xf(55.4), zf(-12.9), zf(-11.9), "#f3d19c"),
         ("SIM holder", -xf(-1.4), -xf(14.8), zf(-14.4), zf(-12.9), COL["sim"]),
         ("KTRON board (1.6 mm)", -xf(-1.4), -xf(X0), zf(-16.0), zf(-14.4), COL["board"]),
@@ -372,8 +373,9 @@ def stack(front, back, path, layout):
     ax.text(40, zf(-15.2), "KTRON board, component side down", ha="center", va="center", fontsize=7.5, color="white")
     ax.text(40, zf(-20.5), "9 mm gap: flat capacitors, U.FL plugs, wires", ha="center", va="center", fontsize=8, color="0.25")
     ax.text(70.5, zf(-14), "free strip:\n4G cable", ha="center", va="center", fontsize=7.5, color="0.25")
-    ax.annotate("modem switch (SS-12F15)", (13, 0.1), (-1, -11.5), fontsize=7.5, color="0.15", ha="right",
-                arrowprops=dict(arrowstyle="->", lw=0.6))
+    ax.add_patch(Rectangle((9.0, -2.2), 8.0, 4.6, fill=False, ec="0.3", lw=0.9, ls="--"))
+    ax.annotate("modem switch (SS-12F15),\njust above this cut (dashed)", (13, 0.1), (-1, -11.5), fontsize=7.5,
+                color="0.15", ha="right", arrowprops=dict(arrowstyle="->", lw=0.6))
     ax.annotate("", (88.5, -14.7), (88.5, zf(-27)), arrowprops=dict(arrowstyle="<->", color="0.3"))
     ax.text(89.2, (zf(-27) - 14.7) / 2, "≈37 mm overall", rotation=90, va="center", fontsize=8, color="0.3")
     ax.annotate("", (84, -2.7), (84, zf(-25)), arrowprops=dict(arrowstyle="<->", color=NAVY))
@@ -438,9 +440,10 @@ def side_closeup(mesh, path, look_along_x, y_span, z_span, title, left_label, ri
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 
 
-def sim_picture(back, path):
-    """The SIM-direction picture beside the slit, on the back's left side (slit centre y 58.57, z -13.65)."""
-    side_closeup(back, path, +1, (47.0, 79.0), (-21.0, -8.0),
+def sim_picture(back, path, layout):
+    """The SIM-direction picture beside the slit, on the back's left side (slit centre z -13.65)."""
+    yc = layout["board_to_back"](layout["SIM_CARD_U"], layout["BOARD_H"])[1]
+    side_closeup(back, path, +1, (yc - 11.5, yc + 20.5), (-21.0, -8.0),
                  "SIM slit and its picture: phone's LEFT side, screen up",
                  "phone's top", "USB end", "screen side")
 
@@ -457,7 +460,8 @@ def main(front_path, back_path, out_dir):
     import make_back as mb
     layout = dict(board_to_back=mb.board_to_back, BOARD_W=mb.BOARD_W, BOARD_H=mb.BOARD_H,
                   PATCH_CENTRE=mb.PATCH_CENTRE, PATCH_PCB=mb.PATCH_PCB, X0=mb.X0,
-                  NETLIGHT_UV=mb.NETLIGHT_UV, LED_HOLE_X=mb.LED_HOLE_X, LED_TUBE_OD=mb.LED_TUBE_OD)
+                  NETLIGHT_UV=mb.NETLIGHT_UV, LED_HOLE_X=mb.LED_HOLE_X, LED_TUBE_OD=mb.LED_TUBE_OD,
+                  SIM_CARD_U=mb.SIM_CARD_U)
     front = trimesh.load(front_path, force="mesh")
     back = trimesh.load(back_path, force="mesh")
     os.makedirs(out_dir, exist_ok=True)
@@ -466,7 +470,7 @@ def main(front_path, back_path, out_dir):
     back_inside(back, os.path.join(out_dir, "assembly-back-inside.png"), layout)
     stack(front, back, os.path.join(out_dir, "assembly-stack.png"), layout)
     top_edge(front, os.path.join(out_dir, "front-top-edge.png"))
-    sim_picture(back, os.path.join(out_dir, "sim-picture.png"))
+    sim_picture(back, os.path.join(out_dir, "sim-picture.png"), layout)
     sd_picture(front, os.path.join(out_dir, "sd-picture.png"))
     print("done")
 

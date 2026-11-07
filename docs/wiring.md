@@ -103,7 +103,7 @@ sits in Alley Cat's original slide-switch mount on the case's left side, which w
 the other outer pin free. The switch replaces the plug used on the bench.
 
 **Battery position:** the switch's body and pins take the space where the battery's left edge was. So the battery
-sits about **9 mm further toward the phone's right** (and about 2 mm toward the bottom, for the earpiece wires). It
+sits about **9 mm further toward the phone's right**, and low enough to leave room at the top for the earpiece wires. It
 still fits both halves, with 2.5 mm between the switch's pins and the battery's edge.
 
 **Using it:**
@@ -246,7 +246,7 @@ The T-Deck's own speaker plays the ringtone when the modem sends `RING`. No extr
 Both top corners now have identical SMA cut-outs, so either antenna can go in either corner. **Recommended:** 4G
 in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top-left, where it already sits.
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
-that side (about 4 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
+that side (about 5 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).
 
 ### Internal LTE sticker antenna (option to try, 6 Nov 2026)
@@ -271,9 +271,9 @@ from the case file, with distances counted from the inside of the right wall:
   - **Along its length:** about 91 mm along the side, plus about 10 mm up the bottom corner and about 9 mm over the
     top step.
 - **Nothing in the way:** the LED tube, SIM slit, GPS cradle and switch are all elsewhere.
-- **Cable:** U.FL1 sits just beside the band, about two-thirds of the way up. It is about 35 mm from the strip's
-  top end and about 60 mm from its bottom end, so the 11 cm cable reaches from either end. Lay any spare cable on
-  the floor, not across the strip.
+- **Cable:** U.FL1 sits just beside the band, a little above halfway up. It is about 40 mm from the strip's top
+  end and about 53 mm from its bottom end, so the 11 cm cable reaches from either end. Lay any spare cable on the
+  floor, not across the strip.
 
 **Why there:** it lies **beside** the KTRON board, not under it. An antenna under the board (9 mm below its copper
 layer) or under the battery's foil casing would lose a lot, most of all on 850/900 MHz.
@@ -281,8 +281,9 @@ layer) or under the battery's foil casing would lose a lot, most of all on 850/9
 **What will cost some signal:**
 - **Battery:** its right edge, moved for the modem switch, is about 5 mm from the wall part of the strip, and it
   overhangs the floor part 13 mm above.
-- **GPS:** the strip's bottom end is about 23 mm from the GPS patch, closer than the 60 mm aimed for. GPS only
-  suffers while the modem transmits.
+- **GPS:** the GPS patch is about 28 mm from the strip, edge to edge (23 mm before the patch moved into the
+  bottom-left corner on 7 Nov 2026). That's still closer than the 60 mm aimed for. GPS only suffers while the
+  modem transmits.
 
 **Decide by measurement** (see [bring-up.md](bring-up.md), "Checking the sticker antenna inside the case"):
 1. **Reading in the open:** read the 4G signal (`AT+CPSI?`) with the strip lying flat in the open, away from the

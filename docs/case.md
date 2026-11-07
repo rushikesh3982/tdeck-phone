@@ -109,7 +109,7 @@ nearest the VDD/RX/TX header.
 - **Inside floor:** Alley Cat's engraved cat head and "Alley Chat TD1 X" text are filled flat (they're hidden once
   assembled). The cat-head logo on the front's top-edge badge credits the designer instead.
 - **Modem board** on four 9 mm standoffs with M3 heat-set insert holes (4.5 mm), 7 mm wide with a 10 mm foot.
-  - **Placement:** top half, component side toward the back cover.
+  - **Placement:** above the GPS patch, its top edge about 17 mm below the top wall (7 mm lower since 7 Nov 2026, for the earpiece wires), component side toward the back cover.
   - **Orientation:** the SIM edge faces the phone's **left** side. That puts the 4G socket on the right, toward
     the planned 4G antenna corner, and the GPS socket near the bottom, right above the patch.
   - **Fixing:** M3 × 6 screws from the solder side.
@@ -118,7 +118,8 @@ nearest the VDD/RX/TX header.
 - **SIM slit** in the left wall, 15 × 1.8 mm, flared on the outside, in line with the SIM holder. It is fully in the
   back panel, 4.65 mm below the rim. An engraved picture beside it, toward the phone's top, shows which way the card goes in (added
   7 Nov 2026; see [case/README.md](../case/README.md)).
-- **GPS patch cradle** in the bottom half, about 90 mm from the 4G antenna corner.
+- **GPS patch cradle** in the bottom-left corner, as far in as the curved floor allows (moved there on 7 Nov 2026,
+  so the modem board could come 7 mm down and leave room for the earpiece wires at the top).
   - A 27 mm square opening with a 7 mm fence, for the measured 26 × 26 mm patch with its 25 × 25 × 4 mm ceramic.
   - The ceramic faces down onto four 0.5 mm pads.
   - There is a cable notch in every side, and the patch is fixed with glue.

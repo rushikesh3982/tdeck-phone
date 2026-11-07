@@ -45,7 +45,11 @@ BOARD_W, BOARD_H = 54.33, 57.23            # drawing: u across (J1 header at u=0
 HOLES_UV = [(3.215, 3.265), (51.115, 3.265), (3.215, 53.965), (51.115, 53.965)]
 SIM_EDGE_X = -1.4          # board's SIM edge, 0.6 mm from the left wall
 X0 = SIM_EDGE_X + BOARD_H  # back x of the board's U.FL1 edge (v = 0)
-Y0 = 98.30                 # back y of the board's J3 edge (u = BOARD_W), just below the screw columns
+# Back y of the board's J3 edge (u = BOARD_W). First drawn at 98.30, just below the screw columns. Moved 7 mm
+# down on 7 Nov 2026, after the dry fit: the earpiece wires come down from the top past the filled GPS-module slot
+# (y 99-107), and the board and battery left them only about 1.5 mm. The battery moves down with the board, so the
+# J3 pads stay at its top end. The GPS patch moved left and down to make room (see PATCH_CENTRE).
+Y0 = 91.30
 STANDOFF_H = 9.0           # tallest part on the component side: 470 uF laid flat (~7 mm) + ~1 mm under it + 1 mm
 STANDOFF_D = 7.0
 INSERT_D = 4.5             # M3 x 5 heat-set insert hole
@@ -125,7 +129,11 @@ def board_to_back(u, v):
 # ---- GPS patch (KTRON KSTA1417), measured ----------------------------------
 # 26 x 26 mm board, 25 x 25 x 4 mm ceramic (sits slightly crooked), no mounting holes,
 # cable leaves the board from the middle of one side, 95 mm long.
-PATCH_CENTRE = (21.5, 26.0)
+# Moved from (21.5, 26.0) on 7 Nov 2026: 5 mm left and 4 mm down, the furthest it can go into the bottom-left corner
+# with the ceramic still resting flat on its pads (floor rise under it <= 0.4 mm; the patch board clears the curve).
+# The fence merges into the curved corner. This lets the modem board come 7 mm down, and puts about 5 mm more
+# between the patch and the internal 4G sticker antenna along the right side (about 28 mm, edge to edge).
+PATCH_CENTRE = (16.5, 22.0)
 PATCH_PCB = 26.0
 OPENING = 27.0             # room for the board and a slightly rotated ceramic
 FENCE_T = 1.2
