@@ -144,15 +144,16 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 
    The network LED also changes its blink pattern once the modem is registered.
 
-   **Comparing antennas** (SMA vs the internal LTE sticker, [wiring.md](wiring.md) section 6):
+   **Checking the sticker antenna inside the case** ([wiring.md](wiring.md) section 6):
    - On 4G, `AT+CPSI?` answers like `+CPSI: LTE,Online,…,EUTRAN-BAND3,1650,5,0,21,67,255,19`. The last four numbers are
      the signal quality (RSRQ), **signal strength (RSRP)**, RSSI and noise ratio.
    - Compare **RSRP**, the third number from the end (67 here, which is −73 dBm: subtract 140). Higher is better, and
      each step is 1 dB. Read it five times about
      10 seconds apart, and average.
-   - Do both antennas in the same spot, with the board and battery in the printed case. Only compare readings taken on
-     the same band (the `EUTRAN-BAND…` field).
-   - If the sticker averages within about 5 dB of the SMA antenna, it's fine to keep inside.
+   - Read it first with the strip lying in the open, then taped inside the case with the board and battery fitted,
+     in the same spot. Only compare readings taken on the same band (the `EUTRAN-BAND…` field).
+   - If the reading inside the case averages within about 5 dB of the reading in the open, it's fine to keep
+     inside. If it's much worse, an SMA antenna in the top-right hole is the fallback.
 4. **Call.** With the earpiece and mic connected, send `AT+CSDVC=1`, `AT+COUTGAIN=5`, `AT+CMICGAIN=4` and
    `AT+CLIP=1`. (5 was the comfortable earpiece level on this board; 7 was a bit loud in a call.)
    - Call your other phone with `ATD+91XXXXXXXXXX;` and answer it. The modem prints `VOICE CALL: BEGIN`.
@@ -194,7 +195,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | GPS | **Works.** Full 3D position through a window, within about 7 minutes of `READY!`, using 33 satellites (HDOP 1.47). It turns off at every power-up, so send `AT+CGNSSPWR=1` again. `READY!` sometimes didn't appear until GPS was turned off and on again |
 | Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call (done: see below) |
 
-### Results with a Jio SIM (7 Nov 2026, SMA antenna on the 15 cm cable, 5 V on VCC)
+### Results with a Jio SIM (7 Nov 2026, the full-band sticker antenna on U.FL1 in the open, 5 V on VCC)
 
 | Check | Result |
 |---|---|

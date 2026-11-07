@@ -7,7 +7,7 @@ Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
 | Part | Where | Notes |
 |---|---|---|
 | **1S Li-ion protection board, 3 A, two MOSFETs** ("1S 3.7V 3A 2MOS BMS") | [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/) | For the bare 5000 mAh cell. Why this one: see "Small parts" below. Cheap, so a spare is worth adding |
-| **LoRa antenna: "865–868 MHz 1.8 dBi Gain Rubber Duck Antenna"** (Lambdoid LWC-868-RD-ST-SMA-PLUG-02) | [Robu](https://robu.in/product/865-868mhz-1-8-dbi-gain-rubber-duck-antenna/) | 50 × 10 mm stubby, SMA male, 865–868 MHz (India's LoRa band). For the top-left hole. **Not** Robu's "865–868 MHz 1 dBi" listing: that one is 210 mm long. Check first: the T-Deck must be the 868 MHz version, and the T-Deck's LoRa cable end must be plain SMA (a hole in the centre, not a pin) |
+| **LoRa antenna: "865–868 MHz 1.8 dBi Gain Rubber Duck Antenna"** (Lambdoid LWC-868-RD-ST-SMA-PLUG-02) | [Robu](https://robu.in/product/865-868mhz-1-8-dbi-gain-rubber-duck-antenna/) | 50 × 10 mm stubby, SMA male, 865–868 MHz (India's LoRa band), **LoRa only** (no 4G). For the top-left hole, because the T-Deck's own antenna now serves 4G. **Not** Robu's "865–868 MHz 1 dBi" listing: that one is 210 mm long. Check first: the T-Deck must be the 868 MHz version, and the T-Deck's LoRa cable end must be plain SMA (a hole in the centre, not a pin) |
 
 ## Version 1 parts (all owned now)
 
@@ -16,7 +16,7 @@ Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
 | 1 | KTRON KSTM1548: SIMCom A7672S 4G + GNSS development board | [ktron.in](https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/) | ₹1,530 | owned, bench-tested | 54.33 × 57.23 mm, 28 g |
 | 2 | KTRON GPS active patch antenna KSTA1417 | [ktron.in](https://www.ktron.in/product/gps-antenna-with-ufl-female-connector/) | ₹105 | owned, works | 25 × 25 × ~8 mm, 4 corner holes, short u.FL lead |
 | 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | owned | 10 cm for the top-right corner (recommended). The 15 cm version ([KSTA0380](https://www.ktron.in/product/rf-cable-ipx-to-sma-female/), ₹42) if the 4G antenna goes top-left. Comes with nut and washers |
-| 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | owned (used in the bench tests) | Or the internal full-band sticker (below), if it tests well. **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
+| 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | **not owned: fallback only** | The bench tests used the full-band sticker (below) instead. Buy one only if the sticker is too weak inside the case. **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
 | 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | owned, with spares | The first one fitted gave nothing in a call: fit a spare ([docs/bring-up.md](docs/bring-up.md)) |
 | 6 | Multimeter | any | ~₹250 | owned | Needed **before** soldering the battery wire to the modem board |
 | 7 | Modem power switch: **SS-12F15** slide switch (owned, 4 mm knob) + 2 × M2 countersunk screws (6–8 mm) + 2 × M2 nuts | owned / any | ~₹10 | owned | Fits Alley Cat's left-side mount. Circuit in [docs/wiring.md](docs/wiring.md), section 2. The earlier two-MOSFET switch that follows the T-Deck (AO3401A + AO3400A + 2 × 100 kΩ) is documented there as an alternative, not used |
@@ -49,7 +49,7 @@ except the protection board (to order, above).
 | Part | Used for |
 |---|---|
 | LilyGO T-Deck (base model, ESP32-S3FN16R8) | The phone itself |
-| Full-band LTE sticker antenna, 698–960 / 1710–2690 MHz, 110 × 20 mm, U.FL plug on an 11 cm cable (came with the T-Deck) | Internal 4G antenna option on U.FL1 ([docs/wiring.md](docs/wiring.md), section 6) |
+| Full-band LTE sticker antenna, 698–960 / 1710–2690 MHz, 110 × 20 mm, U.FL plug on an 11 cm cable (came in the T-Deck's box as its LoRa antenna) | **The 4G antenna**, on U.FL1, inside the case ([docs/wiring.md](docs/wiring.md), section 6). Used for all the bench tests. LoRa gets the stubby above instead |
 | CP2102 USB-serial adapter (with 3.3 V pin) | Bench tests from the Mac before the firmware exists ([docs/bring-up.md](docs/bring-up.md)) |
 | Li-ion pouch cell HH 955465, 5000 mAh, 9.5 × 54 × 65 mm nominal (measured 65 × 55 × 9), bare tabs with a JST lead. No protection circuit, so it needs a protection board (above) | Powers both boards |
 | Radial electrolytics: 470 µF 16 V (6–7 × 12 mm) and 100 µF 16 V (4–5 × 8 mm) | Replace the KTRON's 11 mm tall C11 and C17, laid flat, so the board fits under the battery |

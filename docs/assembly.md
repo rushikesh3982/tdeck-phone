@@ -142,8 +142,8 @@ Details and checks are in [wiring.md](wiring.md).
 - **Earpiece wires:** they pass between the battery's top edge and the back's solid block. Centred on the board, the
   battery leaves only 0.5 mm there, so slide it about 2 mm toward the bottom of the phone.
 - **Mic:** it fits its pocket. Print the mic test coupon first.
-- **Internal LTE sticker (if used):** compare its signal with an SMA antenna before sticking it down
-  ([bring-up.md](bring-up.md), "Comparing antennas").
+- **Internal LTE sticker:** compare its signal inside the case with its signal in the open before sticking it down
+  ([bring-up.md](bring-up.md), "Checking the sticker antenna inside the case").
 - **Modem switch:** it slides freely end to end, and the T-Deck sits flat under it (0.5 mm clearance by design). Its
   pins and wires stay clear of the battery's left edge.
 - **Earpiece:** the receiver fits the holder's 12.4 mm cup, between the holder's wall and the pocket's far wall. With the holder in, there's no rattle and the case

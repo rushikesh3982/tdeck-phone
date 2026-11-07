@@ -189,12 +189,17 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
   (old Grove corner), close to the modem's 4G socket, and away from the T-Deck's Wi-Fi/BT antenna at the top centre.
 - **GNSS:** KTRON KSTA1417 active ceramic patch, ₹105, on U.FL2, which powers active antennas. At least 60 mm from
   the LTE antenna.
-- **LoRa:** unchanged, the T-Deck's own cable and the case's existing antenna hole.
+- **LoRa:** the T-Deck's own cable and the case's existing top-left hole. Its antenna is now a 50 mm 865–868 MHz
+  SMA stubby (Robu, LWC-868-RD-ST-SMA-PLUG-02), because the antenna in the T-Deck's box is the full-band sticker
+  now used for 4G (7 Nov 2026).
 - **LTE, internal option (6 Nov 2026):** the full-band LTE sticker antenna that came with the T-Deck (698–960 /
   1710–2690 MHz, 110 × 20 mm, U.FL) can go inside the back's right side. It sits beside the modem board, not under it
   or the battery, wrapped from the floor up the wall. The SMA cut-outs stay, so the case doesn't change. Kept only if
-  its signal is within about 5 dB of an SMA antenna's in the closed case. Under the board, it would sit 9 mm below the
-  board's copper layer and lose too much.
+  its signal in the closed case is within about 5 dB of its signal in the open. Under the board, it would sit 9 mm
+  below the board's copper layer and lose too much.
+- **LTE, now the plan (7 Nov 2026):** that sticker was the antenna for all the bench tests (band 5, RSRP −91 dBm,
+  VoLTE calls both ways). No SMA LTE antenna is owned. The SMA antenna above becomes the fallback, bought only if the
+  sticker is too weak inside the case.
 
 ## Case: Alley Cat TD1, Standard front (GPS inserts) + X back
 

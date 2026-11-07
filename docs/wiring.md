@@ -238,10 +238,10 @@ The T-Deck's own speaker plays the ringtone when the modem sends `RING`. No extr
 
 | Antenna | Connects to | Part | Where it goes |
 |---|---|---|---|
-| LTE | KTRON U.FL1 (top edge) | SMA antenna rated 700–2700 MHz, through the KTRON IPX → SMA female cable | Recommended: the case's top-right SMA cut-out (old Grove corner), close to U.FL1. Away from the top centre, where the T-Deck's Wi-Fi/BT antenna is |
-| LTE, internal option | KTRON U.FL1 directly | The full-band LTE sticker antenna that came with the T-Deck (110 × 20 mm, U.FL, 11 cm) | Inside the back, along its right side, wrapped from the floor up the wall (see below). Antenna plug in the top-right hole |
+| LTE, **in use** | KTRON U.FL1 directly | The full-band LTE sticker antenna that came in the T-Deck's box as its LoRa antenna (110 × 20 mm, U.FL, 11 cm). Used for all the bench tests on 7 Nov 2026 | Inside the back, along its right side, wrapped from the floor up the wall (see below). Antenna plug in the top-right hole |
+| LTE, fallback (not owned) | KTRON U.FL1 (top edge) | SMA antenna rated 700–2700 MHz, through the KTRON IPX → SMA female cable | Only if the sticker is too weak inside the case: the case's top-right SMA cut-out (old Grove corner), close to U.FL1. Away from the top centre, where the T-Deck's Wi-Fi/BT antenna is |
 | GNSS | KTRON U.FL2 (beside L2; it powers an active antenna) | KTRON KSTA1417 active patch | Bottom half of the back, at least 60 mm from the LTE antenna, ceramic side toward the back cover |
-| LoRa | T-Deck's own u.FL | T-Deck's own u.FL-to-SMA cable | The case's top-left SMA cut-out, where it already sits (or the printed plug if the LoRa antenna stays inside) |
+| LoRa | T-Deck's own u.FL | T-Deck's own u.FL-to-SMA cable, and a 50 mm 865–868 MHz SMA stubby (to order: [bom.md](../bom.md)), because the T-Deck's own antenna now serves 4G | The case's top-left SMA cut-out, where it already sits |
 
 Both top corners now have identical SMA cut-outs, so either antenna can go in either corner. **Recommended:** 4G
 in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top-left, where it already sits.
@@ -284,11 +284,13 @@ layer) or under the battery's foil casing would lose a lot, most of all on 850/9
 - **GPS:** the strip's bottom end is about 23 mm from the GPS patch, closer than the 60 mm aimed for. GPS only
   suffers while the modem transmits.
 
-**Decide by measurement** (see [bring-up.md](bring-up.md), "Comparing antennas"):
-1. Tape the strip in place first; don't peel its backing yet.
-2. In the printed case, with the board and battery in place, compare its 4G signal (`AT+CPSI?`) with an SMA
-   antenna's.
-3. **Within about 5 dB:** stick it down. **Much worse:** use the SMA antenna.
+**Decide by measurement** (see [bring-up.md](bring-up.md), "Checking the sticker antenna inside the case"):
+1. **Reading in the open:** read the 4G signal (`AT+CPSI?`) with the strip lying flat in the open, away from the
+   board and battery. On the bench on 7 Nov 2026 this gave RSRP −91 dBm on band 5, with a clean VoLTE call.
+2. **Reading inside the case:** at the same spot, tape the strip in place (don't peel its backing yet), with the
+   board and battery fitted, and read it again.
+3. **Within about 5 dB:** stick it down. **Much worse:** buy an SMA antenna rated 700–2700 MHz for the top-right
+   hole.
 
 ## Version 2: speakerphone
 

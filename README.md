@@ -59,8 +59,8 @@ fallback and GNSS.
 
 1. **Mic:** fit a spare mic at the mic end and prove it in a call ([docs/bring-up.md](docs/bring-up.md), "Replacing
    the mic").
-2. **Antenna:** compare the full-band sticker antenna inside the case with the SMA antenna
-   ([docs/wiring.md](docs/wiring.md), section 6).
+2. **Antenna:** check that the full-band sticker antenna (used for 4G in all the bench tests) still works well
+   inside the closed case ([docs/wiring.md](docs/wiring.md), section 6).
 3. **Phase B:**
    - Remove the 5 V bench wires.
    - Feed the modem from the battery through the protection board and the slide switch.
