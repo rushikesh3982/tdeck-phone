@@ -2,14 +2,34 @@
 
 **Status: brainstorm only (8 Nov 2026). Nothing here is designed yet.** The rest of the docs and the case files still
 describe the current build: the X back, the 5000 mAh battery over the modem board, and the GPS patch in the
-bottom-left corner. The redesign happens in one go once the open items at the end are settled.
+bottom-left corner. There are **three options** below. The redesign happens in one go once one is chosen and its
+open items are settled.
 
 ## Why
 
 The finished handset is about **37 mm** thick, which looks and feels chunky. Most of that is the stack behind the
 T-Deck: standoffs, board, SIM holder, foam and a 9 mm battery, all piled on top of each other (23 mm).
 
-## The idea
+## The three options at a glance
+
+All three stop stacking the battery on the modem board. That stack is what makes the phone 37 mm thick.
+
+| | Now | Option 1 | Option 2 | Option 3 |
+|---|---|---|---|---|
+| **Idea** | Battery over the modem | 103565 battery beside the modem | Case 13 mm longer at the top, your 5000 mAh cell below the modem | One 18650 across the top, in a grip ridge |
+| **Size (mm)** | 110 × 76 × 37 | 110 × 76 × 27–28 | about 123 × 76 × 27.5 | 110 × 76 × 27.5, **33.5 at the grip** |
+| **Battery** | 5000 mAh | about 3000 mAh (to buy) | **5000 mAh (already owned)** | 3000–3500 mAh (to buy) |
+| **Case outline** | — | unchanged | 13 mm taller top bezel | unchanged |
+| **GPS** | 25 mm patch | small antenna, top pocket | in the taller top bezel | in the 15 mm strip at the bottom (to check) |
+| **Main catch** | Too thick | Hard-to-find cell, less battery | Longer phone | Grip ridge; the cell sits behind the T-Deck's Wi-Fi/Bluetooth antenna |
+
+Common to all three: the modem board keeps its 9 mm standoffs for now; 4G uses an external SMA antenna (the internal
+sticker strip needs a deep back); the back panel shrinks from 18 mm to about 8–9 mm; and the SIM slit, modem switch and
+speaker are placed again for the new layout.
+
+## Option 1: a 103565 battery beside the modem
+
+### The idea
 
 Put the battery **beside** the modem board instead of on top of it. The modem board goes back to the top of the case,
 and a 10 mm battery lies across the phone in the lower part, under the keyboard. Then the modem stack (about
@@ -24,7 +44,7 @@ and a 10 mm battery lies across the phone in the lower part, under the keyboard.
 The front's own 7 mm behind the T-Deck is part of the "space behind the T-Deck" in every row. With this plan the
 modem board sits across the joint, partly in the front half.
 
-## Battery
+### Battery
 
 - **Size: 103565** (10 × 35 × 65 mm), sold as about 3000 mAh, realistically 2500–3000 mAh. That's about half to 60 %
   of the current 5000 mAh cell.
@@ -61,7 +81,7 @@ modem board sits across the joint, partly in the front half.
 | Large thin pouch (6 mm) over the board | about 33 mm | about 3000 mAh | Thicker for the same battery |
 | Two 18650 cells across the lower part | about 33.5 mm | about 6000–7000 mAh | An 18650 is 18.5 mm thick on its own, so the phone can't get thin |
 
-## Modem board
+### Modem board
 
 - **Position:** back at the top, where it was first drawn (its top edge just below the case screws), to leave the
   lower part free for the battery.
@@ -69,7 +89,7 @@ modem board sits across the joint, partly in the front half.
 - **Earpiece wires:** with nothing lying over the board, they come down onto its top pads freely. The 7 Nov problem
   of too little room at the top doesn't arise.
 
-## GPS antenna
+### GPS antenna
 
 - **Type:** a small active antenna with a U.FL plug, about 12–15 mm across, in place of the 25 mm patch. The patch's
   corner is where the battery goes.
@@ -86,13 +106,13 @@ modem board sits across the joint, partly in the front half.
   **Test it on the bench before designing around it,** with the T-Deck running, by checking time to fix and the
   number of satellites.
 
-## 4G and LoRa antennas
+### 4G and LoRa antennas
 
 - **4G:** an external SMA antenna in the top-right hole. The internal sticker strip along the right side
   ([wiring.md](wiring.md), section 6) needs a deep back and the bottom corner, so it no longer fits.
 - **LoRa:** unchanged: the T-Deck's cable in the top-left hole, with the 50 mm 868 MHz stubby.
 
-## Left side of the phone
+### Left side of the phone
 
 From the bottom to the top:
 
@@ -105,7 +125,7 @@ From the bottom to the top:
 
 The old switch mount (55–76 mm) and the old speaker grille (32–48 mm) on this side are filled in.
 
-## Right side of the phone
+### Right side of the phone
 
 - **Speaker:** the T-Deck's own speaker, a box about 12 × 19 × 7 mm. It's only lightly glued to the T-Deck's board,
   and its wires reach either side. It moves to this side, about **66–85 mm up**, right behind the T-Deck. About 5–6 mm
@@ -117,6 +137,52 @@ The old switch mount (55–76 mm) and the old speaker grille (32–48 mm) on thi
   just above it.
 - **Below the bump won't work:** toward the T-Deck switch, the speaker would hit the end of the battery.
 
+## Option 2: stretched case, your 5000 mAh battery below the modem
+
+- **The idea:** keep the battery you have (65 × 55 × 9 mm) and lay it **across** the lower part of the case, under the
+  keyboard, with the modem board above it. Not on top of it, as now.
+- **The space:** that needs about 112 mm of inside length. The case has about 92 mm, or about 101 mm with the solid top
+  block (the case-screw block) removed. So the case gets **about 13 mm longer, all of it at the top**, above the T-Deck.
+  - **Only the top bezel changes:** it grows from about 8 to about 21 mm. The screen, keyboard, bottom edge and USB-C
+    stay as they are.
+  - **Why not the bottom:** the T-Deck's USB-C port sits right behind the bottom wall. A thicker bottom would leave the
+    port too deep for a cable plug, unless an internal USB-C extension were added.
+- **The battery on a 4 mm shelf:** the case's bottom corners are strongly rounded, so the battery starts about 8 mm up,
+  on a 4 mm shelf. That costs no thickness: the battery's top then sits level with the modem stack.
+- **The two case screws** lose their block and need new places.
+- **Bonus:** the taller top bezel has the phone's full depth behind it, not just the thin space behind the T-Deck. It's
+  a natural home for the GPS antenna (the 18 mm Abracon patch fits beside the earpiece), and the earpiece can sit
+  wherever feels best in that bezel.
+
+![Option 2, inside the back: the 5000 mAh battery across the bottom, the modem board above it](images/slim-option2-layout.png)
+
+![Option 2, front view: today's phone and the stretched one, with the taller top bezel](images/slim-option2-front.png)
+
+## Option 3: one 18650 at the top, in a grip ridge
+
+- **The idea:** one 18650 cell (18.5 × 65 mm, about 67 mm with welded tabs) lies **across the top** of the back, just
+  below the top block, which keeps its case screws. The modem board goes below it, and about 15 mm stays free at the
+  bottom. The case outline stays **110 × 76 mm**.
+- **Thickness:**
+  - **Most of the phone:** about **27.5 mm**, set by the modem stack.
+  - **The grip:** the cell needs about 19.5 mm behind the T-Deck, so the back gets a rounded **ridge about 6 mm high
+    and 22–25 mm tall** across its top, making it **33.5 mm** there.
+  - **Comfort:** when typing with both thumbs, your index fingers rest on it, and it stops the phone sliding in one
+    hand. In the real design it would run the full width and blend smoothly into the back.
+- **Battery:** a genuine 18650 gives about 3000–3500 mAh (for example Samsung 35E or Molicel P30B), handles the
+  modem's 2 A bursts easily, and is easy to buy in India. Buy only genuine cells from a reputable seller. It weighs
+  about 47 g, against about 80 g for the pouch.
+- **Watch:**
+  - **Wi-Fi/Bluetooth:** the cell's steel can sits right behind the T-Deck's Wi-Fi/Bluetooth antenna (top centre of
+    its board), so Wi-Fi and Bluetooth range would drop. Calls, 4G and LoRa aren't affected.
+  - **GPS** would go in the 15 mm strip at the bottom, which points down when the phone is in your hand.
+  - **The side-wall parts** (SIM slit, modem switch, speaker) all move again, because the board sits lower.
+
+![Option 3: today's phone and the 18650 version from behind and from the side, at the same scale](images/slim-option3-18650-grip.png)
+
+The pictures are rough mock-ups built from the real print files: the back cut down to 8.5 mm, with a simple rounded
+ridge added.
+
 ## Capacitors (to discuss later)
 
 If the 470 µF capacitor C11 were replaced by flat polymer capacitors (about 3 mm tall), the tallest part under the
@@ -126,6 +192,9 @@ about 26 mm thick. **Left for later, once everything else is settled.**
 
 ## Open items
 
-1. **Battery:** the seller's actual measured size, which must be 66 × 36 × 10 mm or less including the tabs.
-2. **GPS antenna:** choose a small active one with a U.FL plug, and bench-test it.
-3. **Capacitors:** decide later whether to rework C11 to reach the S back's thickness.
+1. **Choose an option** (1, 2 or 3).
+2. **Option 1 only:** the battery seller's actual measured size, which must be 66 × 36 × 10 mm or less including the
+   tabs.
+3. **GPS antenna:** the Abracon APAM1866YA18 (active, 18 × 18 mm, 205 mm cable, element14 or DigiKey India). Its
+   amplifier needs **2.7–3.3 V**, so first measure the voltage on the KTRON's U.FL2 centre pin with GPS on.
+4. **Capacitors:** decide later whether to rework C11 to reach the S back's thickness.

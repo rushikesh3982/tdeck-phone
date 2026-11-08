@@ -53,7 +53,7 @@ fallback and GNSS.
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
-| [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | Brainstorm (not designed yet): a slimmer layout, about 28 mm instead of 37 |
+| [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | Brainstorm (not designed yet): three options for a slimmer phone, about 27.5 mm instead of 37 |
 | [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/](case/stl/) (built 1 % larger, which fits; print at 100 % in the slicer), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
 
 ## Next steps
