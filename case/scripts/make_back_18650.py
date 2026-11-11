@@ -11,6 +11,8 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
 - the 18 x 18 mm active GPS antenna standing on its edge in the top slot, facing the phone's top edge, above the
   earpiece: the S back's gap between its two screw blocks is kept open for it, with a 0.9 mm-deep pocket in the floor
   for its top edge (0.9 mm of plastic left outside). The earpiece holder's roof is the separator below it;
+- the modem's power switch (SS-12F15) on the back's right wall, just below the cell, using Alley Cat's switch slot
+  and screw holes (taken from her front file);
 - the network-LED light tube and window. The outside keeps Alley Cat's grooves, with no logo; each now ends 2 mm
   short of the grip at the top and 2 mm short of the bottom edge's rounding at the bottom.
 
@@ -20,8 +22,8 @@ contacts sit, a route for the earpiece wires and the GPS cable past the cell, th
 18.6 mm for the antenna, and a new, low earpiece holder whose roof the antenna stands on).
 
 Usage:
-    python make_back_18650.py "<Alley Chat TD1 S Inside Cat Edition.stl>" <output.stl>
-    python make_back_18650.py --scale 1.01 "<...S Inside Cat Edition.stl>" <output.stl>
+    python make_back_18650.py "<Alley Chat TD1 S Inside Cat Edition.stl>" "<...Standard Front GPS Inserts.stl>" <output.stl>
+    python make_back_18650.py --scale 1.01 "<...S Inside Cat Edition.stl>" "<...Front GPS Inserts.stl>" <output.stl>
 
 Coordinates are the S back's own, after the 0.5 mm slice: outside face z = -11, inside floor z = -9.2, rim z = -3.5
 (where the front's mating face, z = 4.3 in the front's file, meets it), the T-Deck's back at z = +3.5. As in
@@ -113,6 +115,24 @@ TOPGPS_FLOOR = OUTER_Z + 0.9                # -10.1
 # Above the grip, three outside grooves run on to y 101.5 as short stubs: the middle one (over the antenna's pocket) and
 # the two at the corners are filled, so the top above the grip is plain.
 GROOVE_STUBS = [(31.0, 97.0, 37.0, 103.0), (0.0, 97.0, 8.0, 103.0), (60.0, 97.0, 68.0, 103.0)]
+
+# ---- modem power switch -------------------------------------------------------------------------------------
+# On the back's right wall, just below the grip: its top end (the upper screw's countersink) lines up with where the
+# grip leaves the flat back. Alley Cat's mount on her front's left wall (a recess for the
+# switch's 19.7 x 5.6 mm plate, a 6.9 x 3.4 mm slot for the knob and two countersunk M2 holes 15 mm apart, centred at
+# y 63.4, z 0.1 on the wall's outside face x = -6.0, with 2.58 mm from that face to the plate) is copied: its slot and
+# holes, the outer 2.58 mm. This wall is 1.95 mm thick and has only about 3.6 mm of straight height inside (between
+# the floor's rounded corner and the front's lip), so: a 0.6 mm pad inside brings it to her 2.58 mm (the knob then
+# stands out 1 mm as in her design); the floor's rounded corner is cleared where the plate's lower edge sits; and the
+# front's lip is notched along the plate (make_front_18650.py). The plate's lower edge sits 0.3 mm into the floor.
+SWITCH_REGION = [[-8.55, 52.5, -4.0], [-5.5, 74.5, 4.25]]     # in her front's coordinates: slot and holes only
+SWITCH_SRC_Y, SWITCH_SRC_Z = 63.4, 0.1
+SWITCH_AT = (GRIP_Y[0] - 10.05, -6.6)                          # y, z of the knob slot's centre: the upper screw's
+                                                               # countersink ends where the grip leaves the flat
+                                                               # back (y 72.9); 1.4 mm of wall above the slot
+SWITCH_PLATE = (19.7, 5.6, 0.5)                                # length (y), height (z), thickness
+SWITCH_PAD_X = (69.45, 70.3)                                   # 0.6 mm pad on the wall's inside face (70.05)
+
 
 # ---- network LED, inside text fill ----------------------------------------------------------------------
 NETLIGHT_UV = (45.6, 3.58)
@@ -261,17 +281,37 @@ def led_window():
     return adds, cuts
 
 
+def switch_mount(front_src):
+    """Alley Cat's switch slot and screw holes, on the back's right wall. Returns (solids to add, spaces to cut)."""
+    front = trimesh.load(front_src, force="mesh")
+    region = trimesh.creation.box(bounds=SWITCH_REGION)
+    space = trimesh.boolean.difference([region, front], engine="manifold")
+    # the wall's outside face is eased into the mating edge near z 4; keep that sliver out of the copy
+    space = trimesh.boolean.difference([space, trimesh.creation.box(bounds=[[-6.4, 50, 3.6], [-5.4, 77, 4.5]])],
+                                       engine="manifold")
+    # her left wall faces +x like this right wall, so the copy is a plain shift: outside face x -6.0 -> 72.0
+    space.apply_translation([78.0, SWITCH_AT[0] - SWITCH_SRC_Y, SWITCH_AT[1] - SWITCH_SRC_Z])
+    yc, zc = SWITCH_AT
+    L, H, T = SWITCH_PLATE
+    pad = trimesh.creation.box(bounds=[[SWITCH_PAD_X[0], yc - L / 2 - 1.0, FLOOR_Z - 0.3],
+                                       [SWITCH_PAD_X[1], yc + L / 2 + 1.0, zc + H / 2 + 0.2]])
+    corner = trimesh.creation.box(bounds=[[SWITCH_PAD_X[0] - T - 0.4, yc - L / 2 - 0.4, zc - H / 2 - 0.1],
+                                          [SWITCH_PAD_X[0], yc + L / 2 + 0.4, RIM_Z + 0.2]])
+    return [pad], [space, corner]
+
+
 def inside_fill():
     """Fill Alley Cat's engraved text on the inside floor flat."""
     return [prism_z(box(*INSIDE_FILL), FLOOR_Z - 0.4, FLOOR_Z)]
 
 
-def main(src, dst, scale=1.0):
+def main(src, front_src, dst, scale=1.0):
     sback = trimesh.load(src, force="mesh")
     assert sback.is_watertight
     back = deepen(sback)
     outline = MultiPoint(back.vertices[:, :2]).convex_hull
     a_fill = inside_fill()
+    sw_adds, sw_cuts = switch_mount(front_src)
     a_gr, c_gr = groove_ends()
     a_led, c_led = led_window()
     ridge = grip_ridge(back, outline)
@@ -282,8 +322,8 @@ def main(src, dst, scale=1.0):
     # Trim the inside additions to the cover's outer shape (its convex hull, carried straight up past the rim).
     envelope = trimesh.convex.convex_hull(np.vstack([back.vertices, back.vertices + [0, 0, 10.0]]))
     inside = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in stubs + a_fill + a_gr + a_led]
-    shell = trimesh.boolean.union([back, ridge] + inside, engine="manifold")
-    shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + recesses, engine="manifold")],
+    shell = trimesh.boolean.union([back, ridge] + inside + sw_adds, engine="manifold")
+    shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + sw_cuts + recesses, engine="manifold")],
                                        engine="manifold")
     if scale != 1.0:
         shell.apply_scale(scale)
@@ -306,4 +346,4 @@ if __name__ == "__main__":
     sc = 1.0
     if args and args[0] == "--scale":
         sc = float(args[1]); args = args[2:]
-    main(*args[:2], scale=sc)
+    main(*args[:3], scale=sc)
