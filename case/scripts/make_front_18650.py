@@ -9,7 +9,9 @@ Done here:
   T-Deck's switch (the stretch between the T-Deck's switch and the microSD slot is left alone: the notch that holds
   the T-Deck and the slot for the switch's slider piece are there). The modem switch goes on the back's right wall,
   so the front's lip is notched there for the switch's plate;
-- earpiece pocket widened from 16.4 to 18.6 mm above the earpiece, for the GPS antenna standing on its edge.
+- earpiece pocket widened from 16.4 to 18.6 mm above the earpiece, for the GPS antenna standing on its edge;
+- the top-edge badge carries the owner's rushiWorks logo instead of Alley Cat's cat. Her cat and "Alley Chat TD1 S"
+  are kept on the back's inside floor, and she is credited in the README and case files.
 
 Not done yet: a new low earpiece holder, the cut-out for the battery contacts, and routes past the cell for the
 earpiece wires and the GPS cable.
@@ -75,6 +77,16 @@ SD_Z = -3.05
 SPEAKER_REGION = [[-10.2, 27.5, -6.0], [-5.5, 50.0, 4.29]]
 SPEAKER_SHIFT_Y = -12.0         # cavity y 16-37.5, grille y 20-34
 
+# Owner's logo on the top-edge badge. The badge is built as make_front.py builds its fresh badge (rounded face,
+# 1 mm proud, 45-degree edge), but larger: its face is as wide as the antenna slot behind it (x -53.3..-34.7), and
+# its sloped edge spans exactly the flat part of the top edge (z -10.0, where the edge starts to curve toward the
+# screen, to 4.0, where the flat ends just before the seam), so the face is z -9.0..3.0. The logo fills the face with
+# 0.8 mm left round it, recessed 0.5 mm; its thinnest strokes (about 0.55 mm at this size) are widened by 0.05 mm
+# each side so they print as clean grooves on this vertical face.
+LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo", "rushi-logo.jpg")
+LOGO_MARGIN, LOGO_DEPTH, LOGO_GROW = 0.8, 0.5, 0.05
+BADGE_FACE_18650 = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0, -9.0, 3.0)
+
 # Lip notch for the modem switch's plate on the back's right wall (make_back_18650.py): the lip that reaches into
 # the back (z 4.3-5.3, x -79.9..-79.0 here) is removed along the plate.
 LIP_NOTCH = [[-80.3, B.SWITCH_AT[0] - B.SWITCH_PLATE[0] / 2 - 1.0, 4.2],
@@ -85,6 +97,38 @@ POCKET_NEW_X = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0)                # -
 POCKET_OLD_X = (-52.2, -35.8)
 POCKET_Y = (100.2, 106.4)
 POCKET_Z = (-7.6, 5.4)
+
+
+def badge_with_logo(front, _cat_json=None):
+    """make_front.py's badge, with the owner's logo cut into its face instead of the cat."""
+    from shapely.affinity import affine_transform
+    from shapely.geometry import box as sbox
+    from make_back import trace_logo
+    # steps 1 and 2 of make_front.replace_badge_with_cat: restore the plain top wall, add a fresh badge
+    zs = np.arange(F.BADGE_CUT_Z[0], F.BADGE_CUT_Z[1] + 1e-9, 0.1)
+    origins = np.array([[F.BADGE_CUT_X[0] - 1.3, 130.0, z] for z in zs])
+    loc, idx, _ = front.ray.intersects_location(origins, np.tile([0, -1, 0], (len(zs), 1)), multiple_hits=False)
+    prof = np.full(len(zs), np.nan); prof[idx] = loc[:, 1]
+    assert not np.isnan(prof).any(), "could not sample the top wall profile"
+    ring = [(y, z) for y, z in zip(prof, zs)] + [(112.0, zs[-1]), (112.0, zs[0])]
+    front = trimesh.boolean.difference([front, F.prism_x(Polygon(ring), *F.BADGE_CUT_X)], engine="manifold")
+    x0, x1, z0, z1 = BADGE_FACE_18650
+    r = F.BADGE_FACE_R
+    face = sbox(x0 + r, z0 + r, x1 - r, z1 - r).buffer(r, quad_segs=12)
+    base = face.buffer(F.BADGE_HEIGHT, quad_segs=12)
+    pts = [(x, F.BADGE_FACE_Y, z) for x, z in face.exterior.coords]
+    pts += [(x, F.BADGE_FACE_Y - F.BADGE_HEIGHT, z) for x, z in base.exterior.coords]
+    pts += [(x, F.BADGE_FACE_Y - F.BADGE_HEIGHT - 0.4, z) for x, z in base.exterior.coords]
+    front = trimesh.boolean.union([front, trimesh.convex.convex_hull(np.array(pts))], engine="manifold")
+    # 3. the logo: drawing (x right, y up) -> badge face (right = +x, up = -z), as the cat was
+    logo = trace_logo(LOGO_PATH)
+    lx0, ly0, lx1, ly1 = logo.bounds
+    s = min((x1 - x0 - 2 * LOGO_MARGIN) / (lx1 - lx0), (z1 - z0 - 2 * LOGO_MARGIN) / (ly1 - ly0))
+    cx, cz = (x0 + x1) / 2, (z0 + z1) / 2
+    art = affine_transform(logo, [s, 0, 0, -s, cx - s * (lx0 + lx1) / 2, cz + s * (ly0 + ly1) / 2])
+    art = art.buffer(LOGO_GROW, join_style=1).intersection(face.buffer(-0.3))
+    cuts = [F.prism_y(p, F.BADGE_FACE_Y - LOGO_DEPTH, F.BADGE_FACE_Y + 1.0) for p in getattr(art, "geoms", [art])]
+    return trimesh.boolean.difference([front] + cuts, engine="manifold")
 
 
 def wall_fill(front, y0, y1, z0, z1):
@@ -192,10 +236,11 @@ def main(src, dst, scale=1.0):
     with tempfile.TemporaryDirectory() as tmp:
         base = os.path.join(tmp, "front.stl")
         small_sd, F.sd_icon = F.sd_icon, lambda: []      # the larger microSD picture is cut below instead
+        cat_badge, F.replace_badge_with_cat = F.replace_badge_with_cat, badge_with_logo
         try:
             F.main(src, base)
         finally:
-            F.sd_icon = small_sd
+            F.sd_icon, F.replace_badge_with_cat = small_sd, cat_badge
         front = trimesh.load(base, force="mesh")
     assert front.is_watertight
     speaker = moved_speaker_space(front)

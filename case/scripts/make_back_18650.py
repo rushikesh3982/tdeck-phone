@@ -13,7 +13,8 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
   for its top edge (0.9 mm of plastic left outside). The earpiece holder's roof is the separator below it;
 - the modem's power switch (SS-12F15) on the back's right wall, just below the cell, using Alley Cat's switch slot
   and screw holes (taken from her front file);
-- the network-LED light tube and window. The outside keeps Alley Cat's grooves, with no logo; each now ends 2 mm
+- the network-LED light tube and window. Inside, Alley Cat's own engraved cat and "Alley Chat TD1 S" stay on the
+  floor, as her credit. The outside keeps her grooves, with no logo; each now ends 2 mm
   short of the grip at the top and 2 mm short of the bottom edge's rounding at the bottom.
 
 Not done yet (needs parts measured): the battery contacts' pockets at the two ends of the cell's channel (the contacts
@@ -138,7 +139,6 @@ SWITCH_PAD_X = (69.45, 70.3)                                   # 0.6 mm pad on t
 NETLIGHT_UV = (45.6, 3.58)
 LED_TUBE_ID, LED_TUBE_OD = 3.6, 5.6
 LED_HOLE_D, LED_HOLE_X = 1.6, 54.0          # in the middle of the outside groove at x 52-56 (floor 0.8 mm there)
-INSIDE_FILL = (2.0, 8.0, 66.0, 96.0)        # covers Alley Cat's engraved text on the inside floor
 
 
 def deepen(sback):
@@ -300,17 +300,11 @@ def switch_mount(front_src):
     return [pad], [space, corner]
 
 
-def inside_fill():
-    """Fill Alley Cat's engraved text on the inside floor flat."""
-    return [prism_z(box(*INSIDE_FILL), FLOOR_Z - 0.4, FLOOR_Z)]
-
-
 def main(src, front_src, dst, scale=1.0):
     sback = trimesh.load(src, force="mesh")
     assert sback.is_watertight
     back = deepen(sback)
     outline = MultiPoint(back.vertices[:, :2]).convex_hull
-    a_fill = inside_fill()
     sw_adds, sw_cuts = switch_mount(front_src)
     a_gr, c_gr = groove_ends()
     a_led, c_led = led_window()
@@ -321,7 +315,7 @@ def main(src, front_src, dst, scale=1.0):
                 for x, y in SCREW_RECESSES]
     # Trim the inside additions to the cover's outer shape (its convex hull, carried straight up past the rim).
     envelope = trimesh.convex.convex_hull(np.vstack([back.vertices, back.vertices + [0, 0, 10.0]]))
-    inside = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in stubs + a_fill + a_gr + a_led]
+    inside = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in stubs + a_gr + a_led]
     shell = trimesh.boolean.union([back, ridge] + inside + sw_adds, engine="manifold")
     shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + sw_cuts + recesses, engine="manifold")],
                                        engine="manifold")
