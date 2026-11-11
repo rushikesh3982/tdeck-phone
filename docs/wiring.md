@@ -10,7 +10,7 @@ left row:      STA  NET  DTR  RI  VDD  GND  RX  TX  RST  1V8
 right row:     CLK  CS  MOSI  MISO  M-  M+  S-  S+  SCL  SDA  GND  VCC
 ```
 
-Used in v1: **VDD, GND, RX, TX** (data link), **M+, M−** (mic), **S+, S−** (earpiece), plus the battery feed
+Used in v1: **VDD, GND, RX, TX** (data link), **M+, M−** and the right row's **GND** (mic), **S+, S−** (earpiece), plus the battery feed
 described below. **Never use the VCC pad** while the battery is connected.
 
 Antenna sockets on the board: **U.FL1** at the top edge = LTE. **U.FL2** beside inductor L2 = GNSS. The micro-SIM
@@ -218,13 +218,22 @@ board. **Never connect an 8 Ω speaker directly to S+/S−.**
 
 ## 4. Microphone
 
-A 2-wire electret mic (Sunrom 6027) across **M+ and M−**. The module provides the mic bias on M+.
+A 2-wire electret mic (Sunrom 6027) across **M+ and M−**, plus a **1 kΩ resistor from M− to GND**.
 
 - The mic's pin that connects to its metal can (Sunrom's "term 2") → **M−**.
 - The other pin, the one in the insulating ring ("term 1") → **M+**.
-- The mic's datasheet powers it through a 2.2 kΩ resistor. Here the modem provides that bias on M+ (as above), so
-  nothing extra should be needed. If the bench test call is silent, measure the voltage between M+ and M− with the
-  multimeter while a call is up. It should be about 1–2.5 V.
+- **The resistor is required.** The module feeds M+ through its own 2.2 kΩ, but the resistor from M− to ground sits
+  outside the module (SIMCom A7672S Hardware Design, figure 28, which shows 2.2 kΩ). KTRON's speaker/mic drawing
+  doesn't show it. Without it no current can flow through the mic, and the other person hears silence.
+- **Where it goes:** between M− and the GND hole in the same row (right row, beside VCC), on the board's component
+  side, because the SIM side has too little room once the case is closed. Sleeve its legs, because they pass over
+  M+, S−, S+, SCL and SDA. On the bench that GND hole also holds the 5 V supply's negative wire. Only that wire
+  comes off in phase B; the resistor stays.
+- **Tested 11 Nov 2026:** 1 kΩ, soldered at the mic end with a jumper to GND, gave clear, loud enough speech at
+  `AT+CMICGAIN=4`. It has not yet been tested in its place on the board. 2.2 kΩ, SIMCom's value, wasn't tried. 4.7 kΩ
+  wasn't tried either, and would probably leave the mic too little voltage.
+- **If a call is silent:** measure each mic pad to GND while a call is up. Without the resistor, both pads read
+  1.65 V, with 0 V between them.
 
 If the person you call hears you faintly, raise the gain with `AT+CMICGAIN=5` or higher. Sunrom lists this mic at
 −60 dB sensitivity without saying what that's measured against, so it can't be compared with other mics' figures.

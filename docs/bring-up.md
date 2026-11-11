@@ -28,6 +28,7 @@ the T-Deck's, so there are no settings to change.
 - SIM: a fresh Jio SIM, or Airtel/Vi (see the SIM warning below). The holder takes **micro-SIM**.
 - Multimeter
 - Earpiece (the Micromax receiver) and a Sunrom mic
+- **1 kΩ resistor** for the mic (see the table)
 - **2 × 47 µF electrolytic capacitors, 10 V or more,** about 4–5 mm across, plus heat-shrink tubing. One goes in
   each earpiece wire (see the table). A 100 µF one works too.
 
@@ -65,9 +66,9 @@ Solder only the holes in brackets, and leave the rest empty.
 | GND (left) | CP2102 GND | |
 | — | CP2102 5V | **Leave unconnected** |
 | VCC (right) | 5 V supply + | **Bench only**, removed in phase B. Check the supply's polarity with the multimeter first |
-| GND (right) | 5 V supply − | Bench only, removed in phase B |
+| GND (right) | 5 V supply −, and the mic's resistor | The supply wire is bench only, removed in phase B. The resistor stays |
 | S+ and S− | Earpiece, through a **47 µF capacitor in each wire** | Each capacitor's **+ leg goes to the board** (the + leg is the longer one; the − side has a stripe). The earpiece itself goes either way round. Nothing goes to ground. This is the final wiring, so it can be soldered in for good (see below) |
-| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can |
+| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can. **Also solder a 1 kΩ resistor from M− to the GND hole in this row:** the mic gets no power without it (not shown in the picture; [wiring.md](wiring.md), section 4) |
 | U.FL1 (top edge) | LTE antenna cable | Press straight down until it clicks |
 | U.FL2 (beside L2) | GPS patch | |
 
@@ -118,8 +119,9 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
    - **Earpiece:** send `AT+CSDVC=1` (sound to the earpiece), then `AT+SIMTONE=1,1000,200,200,3000`. You should
      hear 3 seconds of beeps. Other ways: `AT+CLDTMF=2,"1,2,3"` plays keypad tones, and `AT+CTTS=2,"hello"` speaks.
    - **Mic:** send `AT+CREC=1,"c:/t.amr"`, talk at the mic for a few seconds, and send `AT+CREC=0`. Then
-     `AT+CCMXPLAY="c:/t.amr",0,0` plays it back on the earpiece. **A silent result doesn't prove a fault.** On this
-     firmware the mic got no power during a recording (see the results below), so the first real call is the real test.
+     `AT+CCMXPLAY="c:/t.amr",0,0` plays it back on the earpiece. **A silent result doesn't prove a fault,** so the
+     first real call is the real test. The silent recordings below were all made without the mic's resistor, and
+     recording hasn't been retried with it.
    - **GPS:** step 6 works without a SIM.
 
 3. **SIM and network.** Unplug the 5 V. Put the SIM in the holder on the back of the board. Make sure the LTE
@@ -194,7 +196,7 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | Capacitors | Swapped before these tests (470 µF for C11, 100 µF for C17), and both are the right way round. C11's + leg reads 3.86 V to GND. C17's + leg reads 4.97 V, so C17 is on the VCC input |
 | Earpiece | Works. Tones (`AT+SIMTONE`), speech (`AT+CTTS`) and file playback (`AT+CCMXPLAY`) were all heard. `AT+COUTGAIN=7` was set after it sounded low, and survives a restart |
 | GPS | **Works.** Full 3D position through a window, within about 7 minutes of `READY!`, using 33 satellites (HDOP 1.47). It turns off at every power-up, so send `AT+CGNSSPWR=1` again. `READY!` sometimes didn't appear until GPS was turned off and on again |
-| Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). So the modem seems not to power the mic when recording outside a call. Test it on the first real call (done: see below) |
+| Mic | **Not proven yet.** Recordings held no voice (peak 7 of 32768, mostly 50 Hz hum). M+ to M− read 0 V during a recording, though VDD read 3.3 V with the same meter. No short between M+ and M− (no steady beep). At the time this looked like the modem not powering the mic outside a call. The likelier cause is the missing M− resistor (see "Mic in a call"). Recording hasn't been retried with the resistor |
 
 ### Results with a Jio SIM (7 Nov 2026, the full-band sticker antenna on U.FL1 in the open, 5 V on VCC)
 
@@ -209,18 +211,19 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | Incoming call | Rang with caller ID; `ATA` answered; a 9-minute call on 4G. `AT+CHUP` ended it (`ATH` didn't) |
 | Outgoing call | **Works.** `ATD+91…;` rang the phone; answered after about 8 s, on 4G (band 40). Speech from the modem (`AT+CDTAM=1`, then `AT+CTTS=2,"…"`) was heard clearly on the phone, so the call's outgoing sound works up to the mic input |
 | Earpiece in a call | **Clear.** Gain 7 was a bit loud, 5 is right (`AT+COUTGAIN=5`, kept after restarts) |
-| **Mic in a call** | **Not working.** The other phone heard silence at `AT+CMICGAIN=4` and only noise at 7. Photos show it wired the right way (the "+" pad to M+). The earlier meter test found no conduction in the direction a working mic conducts. So the mic is probably dead (soldering heat) or a joint at the mic is open. **Fix:** fit a spare mic at the mic end (below). The gain is at 7 until then |
+| **Mic in a call** | **Works, with a resistor (11 Nov 2026).** Clear and loud enough at `AT+CMICGAIN=4` with 1 kΩ from M− to GND. Before that, two different mics on the same wires gave silence (the first gave only noise at gain 7). During a call both mic pads read 1.65 V to GND, with 0 V between them, while speech sent by the modem (`AT+CDTAM=1`, `AT+CTTS`) reached the phone. So the first mic was probably never faulty |
 | SMS (receive) | **Works.** A text from the phone arrived and read correctly with `AT+CMGL="ALL"` |
 | SMS (send) | **Works.** `AT+CMGS="+91…"`, then the text ending in Ctrl-Z: `+CMGS: 61` and the phone received it |
 
 **Replacing the mic** (no work at the modem end, nothing near the earpiece capacitors):
-1. Test the spare first, with the meter in diode mode: red on the pad joined to the metal can, black on the "+" pad,
-   should read about 0.5–0.9. Reversed, it should read higher or "1".
-2. Cut the old mic off close to its body, keeping the orange and white wires.
-3. Solder the spare: orange to "+", white to the can pad. Tin the wire ends first, and keep the iron on each pad for
+1. Cut the old mic off close to its body, keeping the orange and white wires.
+2. Solder the spare: orange to "+", white to the can pad. Tin the wire ends first, and keep the iron on each pad for
    only 2–3 seconds.
+3. Check that the 1 kΩ resistor from M− to GND is in place.
 4. Test with a call before heat-shrinking or gluing, then set `AT+CMICGAIN=4` and adjust.
-5. Optional: test the old mic as in step 1. "1" both ways confirms it's dead.
+
+Don't judge a mic with the meter's diode mode. The mic that later worked read "1" both ways while soldered in, though
+the modem was probably still powered at the time. A call is the test that counts.
 
 ### Phase B: after deciding to keep the board
 

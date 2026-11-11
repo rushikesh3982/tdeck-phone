@@ -17,7 +17,7 @@ Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
 | 2 | KTRON GPS active patch antenna KSTA1417 | [ktron.in](https://www.ktron.in/product/gps-antenna-with-ufl-female-connector/) | ₹105 | owned, works | 25 × 25 × ~8 mm, 4 corner holes, short u.FL lead |
 | 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | owned | 10 cm for the top-right corner (recommended). The 15 cm version ([KSTA0380](https://www.ktron.in/product/rf-cable-ipx-to-sma-female/), ₹42) if the 4G antenna goes top-left. Comes with nut and washers |
 | 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | **not owned: fallback only** | The bench tests used the full-band sticker (below) instead. Buy one only if the sticker is too weak inside the case. **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
-| 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | owned, with spares | The first one fitted gave nothing in a call: fit a spare ([docs/bring-up.md](docs/bring-up.md)) |
+| 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | owned, with spares | Needs the 1 kΩ resistor below to work ([docs/wiring.md](docs/wiring.md), section 4) |
 | 6 | Multimeter | any | ~₹250 | owned | Needed **before** soldering the battery wire to the modem board |
 | 7 | Modem power switch: **SS-12F15** slide switch (owned, 4 mm knob) + 2 × M2 countersunk screws (6–8 mm) + 2 × M2 nuts | owned / any | ~₹10 | owned | Fits Alley Cat's left-side mount. Circuit in [docs/wiring.md](docs/wiring.md), section 2. The earlier two-MOSFET switch that follows the T-Deck (AO3401A + AO3400A + 2 × 100 kΩ) is documented there as an alternative, not used |
 | 8 | M3 heat-set inserts (4.5 mm hole), M3 screws, M2 self-tapping screws | any | — | owned | Case closure: 2× M3×5 inserts + 2× M3×8 screws. Modem board: 4 more M3 inserts + screws. GPS patch: M2 self-tappers |
@@ -40,6 +40,7 @@ except the protection board (to order, above).
 - Heat-shrink tubing
 - 2 × 47 µF electrolytic capacitors, 10 V or more, about 4–5 mm across: one in series with each earpiece wire
   (SIMCom's and KTRON's reference circuit)
+- 1 kΩ resistor, from M− to GND on the modem board: the mic gets no power without it
 - For the bench tests: 10 female-to-female jumper wires, 20 cm long, one per hole (one plug cut off and soldered to
   the KTRON board, the other plug on the CP2102 or the supply), and a 5 V ≥2 A phone charger with a USB
   breakout board or a cut-open USB cable

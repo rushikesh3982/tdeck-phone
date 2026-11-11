@@ -10,7 +10,7 @@ A working mobile phone for India (voice calls, SMS, mobile data and GPS) built a
   - makes and takes calls, with clear earpiece sound;
   - sends and receives SMS;
   - gets a GPS fix.
-- **Mic:** gave nothing in the first call, and is to be replaced.
+- **Mic:** works, clear in a call. It needed a resistor from M− to GND that the first wiring left out.
 - **Firmware:** none yet.
 
 ## How it works
@@ -58,8 +58,8 @@ fallback and GNSS.
 
 ## Next steps
 
-1. **Mic:** fit a spare mic at the mic end and prove it in a call ([docs/bring-up.md](docs/bring-up.md), "Replacing
-   the mic").
+1. **Mic:** move the test resistor to its permanent place, M− to GND on the modem board, and prove it in a call
+   ([docs/wiring.md](docs/wiring.md), section 4).
 2. **Antenna:** check that the full-band sticker antenna (used for 4G in all the bench tests) still works well
    inside the closed case ([docs/wiring.md](docs/wiring.md), section 6).
 3. **Phase B:**

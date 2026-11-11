@@ -160,8 +160,9 @@ earphone driver for bench tests.
 
 ## Microphone: Sunrom 6027 electret, 6 × 2.7 mm, ₹20.70
 
-**Why:** the modem has an analog mic input with its own electret bias, so a plain 2-wire electret mic works with
-no extra parts. It is small enough for a pocket in the case's bottom edge.
+**Why:** the modem has an analog mic input that powers an electret mic, so a plain 2-wire electret mic works with
+one extra part: a resistor from M− to ground ([wiring.md](wiring.md), section 4). It is small enough for a pocket in
+the case's bottom edge.
 
 **Rejected:**
 
