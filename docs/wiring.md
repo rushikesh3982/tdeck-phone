@@ -229,9 +229,9 @@ A 2-wire electret mic (Sunrom 6027) across **M+ and M−**, plus a **1 kΩ resis
   side, because the SIM side has too little room once the case is closed. Sleeve its legs, because they pass over
   M+, S−, S+, SCL and SDA. On the bench that GND hole also holds the 5 V supply's negative wire. Only that wire
   comes off in phase B; the resistor stays.
-- **Tested 11 Nov 2026:** 1 kΩ, soldered at the mic end with a jumper to GND, gave clear, loud enough speech at
-  `AT+CMICGAIN=4`. It has not yet been tested in its place on the board. 2.2 kΩ, SIMCom's value, wasn't tried. 4.7 kΩ
-  wasn't tried either, and would probably leave the mic too little voltage.
+- **Tested 11 Nov 2026:** 1 kΩ, soldered on the modem board from M− to GND, gave clear, loud enough speech at
+  `AT+CMICGAIN=4`. 2.2 kΩ, SIMCom's value, wasn't tried. 4.7 kΩ wasn't tried either, and would probably leave the
+  mic too little voltage.
 - **If a call is silent:** measure each mic pad to GND while a call is up. Without the resistor, both pads read
   1.65 V, with 0 V between them.
 

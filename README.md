@@ -58,7 +58,7 @@ fallback and GNSS.
 
 ## Next steps
 
-1. **Mic:** move the test resistor to its permanent place, M− to GND on the modem board, and prove it in a call
+1. **Mic:** done. It works with a 1 kΩ resistor from M− to GND on the modem board
    ([docs/wiring.md](docs/wiring.md), section 4).
 2. **Antenna:** check that the full-band sticker antenna (used for 4G in all the bench tests) still works well
    inside the closed case ([docs/wiring.md](docs/wiring.md), section 6).
