@@ -146,5 +146,5 @@ Measured from the inside floor of the back. The T-Deck (11 mm thick, LilyGO's fi
 
 1. Print the front, the back, the earpiece holder and Alley Cat's small parts from [case/stl/](../case/stl/) (done: the
    101 % set fits).
-2. Swap the KTRON's two tall capacitors after the 5 V bench tests ([bring-up.md](bring-up.md), phase B).
+2. Swap the KTRON's two tall capacitors (done before the bench tests: [bring-up.md](bring-up.md), phase B).
 3. Dry-fit the T-Deck, modem board, battery, patch and antennas, and check that a SIM goes in through the slit.

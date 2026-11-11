@@ -229,8 +229,9 @@ the modem was probably still powered at the time. A call is the test that counts
 
 1. Unplug the 5 V supply. Desolder the two bench power wires (VCC and the GND beside it). From now on the **VCC
    hole is never used again**.
-2. **Swap the two tall capacitors.** The stock ones are 11 mm tall SMD cans, too tall for the board to fit under the
-   9 mm battery. Before removing each one, note which pad is +.
+2. **Swap the two tall capacitors** (done before the bench tests, and tested: see the results above). The stock
+   ones are 11 mm tall SMD cans, too tall for the board to fit under the 9 mm battery. Before removing each one, note
+   which pad is +.
    - **C11** (330 µF 50 V, next to the modem chip): replace it with the **470 µF 16 V** radial capacitor, laid flat
      (about 7 mm high). Solder its leads flat onto the old pads.
    - **C17** (100 µF 50 V, next to the regulator): replace it with the **100 µF 16 V**, laid flat. If its + pad
