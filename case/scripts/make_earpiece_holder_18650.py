@@ -4,8 +4,9 @@ It is make_earpiece_holder.py's holder cut down: the same cup (open on the far s
 the earpiece), the same deeper pockets at both ends for the earpiece's folded contacts, and the same wire groove up the
 T-Deck-side face from each end pocket. The front's pocket floor is 0.5 mm lower in the 18650 front (z -11.6), and the
 tall tongue is gone: the roof is flat at z -8.2, 0.5 mm above the contacts' pockets (which leave 0.2 mm over the
-folded contacts for their solder), which is where make_back_18650.py's height budget puts the antenna's lower edge. The antenna (about 18.5 mm wide) then sits on the roof (16 mm wide) with its
-ends over the widened part of the pocket (make_front_18650.py).
+folded contacts for their solder), which is where make_back_18650.py's height budget puts the antenna's lower edge. The
+holder fills Alley Cat's earpiece pocket, whose side walls hold it; above it the 18650 front's GPS slot is 19.5 mm wide,
+with a step on each side level with the roof, so the antenna (about 18.5 mm wide) stands on the roof and the steps.
 
 The two earpiece wires leave the grooves at the roof and go up between the T-Deck's top edge and the antenna's board
 (about 1 mm apart there) to the space behind the T-Deck.

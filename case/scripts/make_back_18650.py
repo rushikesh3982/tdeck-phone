@@ -458,8 +458,12 @@ def main(src, front_src, dst, scale=1.0, stand=False):
         envelope.apply_scale(scale)
     a_st = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in a_st]
     out = trimesh.boolean.union([shell] + a_st, engine="manifold")
-    out = trimesh.boolean.difference([out, trimesh.boolean.union(c_st + [cell_channel(scale)], engine="manifold")],
-                                     engine="manifold")
+    # the network light's bore and window are cut again here: the nearest standoff's flared foot reaches into them
+    c_led_scaled = [m.copy() for m in c_led]
+    for m in c_led_scaled:
+        m.apply_scale(scale)
+    out = trimesh.boolean.difference([out, trimesh.boolean.union(c_st + [cell_channel(scale)] + c_led_scaled,
+                                                                 engine="manifold")], engine="manifold")
     hull = trimesh.convex.convex_hull(out.vertices)       # includes the grip, unlike the envelope above
     a_ct, c_ct = contact_parts(scale)
     a_ct = [trimesh.boolean.intersection([m, hull], engine="manifold") for m in a_ct]

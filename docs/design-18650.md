@@ -108,8 +108,11 @@ now.
 (see [Battery contacts](#battery-contacts)). About 2 mm of wall is left there.
 
 **Top:**
-- **Earpiece pocket:** widened from 16.4 to 19.5 mm above the earpiece, to match the GPS slot. Its floor is 0.5 mm
-  lower, so the face under it is 3.1 mm instead of 3.6.
+- **Earpiece pocket:** Alley Cat's own pocket, 16.4 mm wide, whose side walls hold the earpiece holder. Its floor is
+  0.5 mm lower, so the face under it is 3.1 mm instead of 3.6.
+- **GPS slot above it:** one clean slot, 19.5 mm wide (as wide as the back's slot), running the full depth of the
+  pocket and straight up through the top. On each side, a flat step level with the holder's roof, so the antenna
+  stands on one flat surface.
 - **Badge:** 19.5 × 12 mm, the width of the GPS slot. It stops where the top edge starts to curve and stands 1 mm
   proud. It carries the rushiWorks logo (14.9 × 10.4 mm, engraved 0.5 mm deep).
 
@@ -117,7 +120,8 @@ now.
 
 ## The low earpiece holder
 
-The current holder, cut down, with the same cup and wire grooves. Its roof is flat, and the GPS antenna stands on it.
+The current holder, cut down, with the same cup and wire grooves. Its roof is flat and level with the steps beside
+it, and the GPS antenna stands on them.
 
 - **Roof:** 0.5 mm over the earpiece's folded contacts, leaving 0.2 mm for their solder.
 - **Earpiece wires:** come up the holder's grooves, then pass between the T-Deck's top edge and the antenna's board

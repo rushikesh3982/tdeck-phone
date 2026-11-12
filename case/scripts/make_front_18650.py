@@ -10,8 +10,9 @@ Done here:
   T-Deck's switch (the stretch between the T-Deck's switch and the microSD slot is left alone: the notch that holds
   the T-Deck and the slot for the switch's slider piece are there). The modem switch goes on the back's right wall,
   set deep enough to clear the front's lip, so the lip is whole;
-- earpiece pocket widened from 16.4 to 19.5 mm above the earpiece, and its floor lowered 0.5 mm (the face under it
-  is 3.1 mm instead of 3.6), for the GPS antenna standing on its edge;
+- top pocket: Alley Cat's earpiece pocket kept (16.4 mm wide, its side walls hold the holder) with its floor lowered
+  0.5 mm (the face under it is 3.1 mm instead of 3.6), and above it a clean 19.5 mm slot for the GPS antenna
+  standing on its edge, as wide as the back's slot;
 - a notch in each side wall where the top of a battery contact stands above the back's rim;
 - the top-edge badge carries the owner's rushiWorks logo instead of Alley Cat's cat. Her cat and "Alley Chat TD1 S"
   are kept on the back's inside floor, and she is credited in the README and case files.
@@ -128,15 +129,16 @@ def contact_notches(scale=1.0):
     return out
 
 
-# Earpiece pocket, widened above the earpiece to match the back's slot (x 24.7-43.3 there).
+# Top pocket, two clean boxes stacked, both running the full depth to her far wall:
+# - the earpiece's part: Alley Cat's own pocket (x -52.2..-35.8, far wall at y 107.5), whose side walls hold the
+#   earpiece holder, with its floor 0.5 mm lower (z -11.1 -> -11.6) so the low holder sits lower;
+# - the GPS antenna's part above it: 19.5 mm wide, as wide as the back's slot (x 24.25-43.75 there), from the low
+#   holder's roof (z -8.2) straight up through the top. The step between them is level with the holder's roof, so
+#   the antenna stands on one flat surface: the roof in the middle and the steps under its ends.
+EAR_POCKET_X = (-52.2, -35.8)
 POCKET_NEW_X = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0)                # -53.75 .. -34.25
-POCKET_OLD_X = (-52.2, -35.8)
-POCKET_Y = (100.2, 106.4)
-POCKET_Z = (-8.4, 5.4)             # from just below the holder's roof (-8.2)
-# The pocket's floor (z -11.1, over the earpiece's grille slot) is lowered 0.5 mm, and the small fillet where it met
-# the far wall is cleared with it, so the low earpiece holder sits 0.5 mm lower.
-FLOOR_CUTS = [[[POCKET_OLD_X[0], 100.2, -11.6], [POCKET_OLD_X[1], 107.55, -11.1 + 0.01]],
-              [[POCKET_OLD_X[0], 106.9, -11.2], [POCKET_OLD_X[1], 107.55, -10.5]]]
+POCKET_Y = (100.2, 107.5)          # her near edge (open to the T-Deck) and far wall
+POCKET_FLOOR_Z, POCKET_STEP_Z, POCKET_TOP_Z = -11.6, -8.2, 7.4
 
 
 def badge_with_logo(front, _cat_json=None):
@@ -279,12 +281,11 @@ def moved_speaker_space(front):
     return trimesh.boolean.union([space, down], engine="manifold")
 
 
-def pocket_widening():
+def top_pocket():
+    """The earpiece's pocket (her width, lowered floor) and the GPS antenna's slot above it, both to the far wall."""
     y0, y1 = POCKET_Y
-    z0, z1 = POCKET_Z
-    return [trimesh.creation.box(bounds=[[POCKET_NEW_X[0], y0, z0], [POCKET_OLD_X[0] + 0.1, y1, z1]]),
-            trimesh.creation.box(bounds=[[POCKET_OLD_X[1] - 0.1, y0, z0], [POCKET_NEW_X[1], y1, z1]])] + \
-        [trimesh.creation.box(bounds=b) for b in FLOOR_CUTS]
+    return [trimesh.creation.box(bounds=[[EAR_POCKET_X[0], y0, POCKET_FLOOR_Z], [EAR_POCKET_X[1], y1, POCKET_STEP_Z + 0.01]]),
+            trimesh.creation.box(bounds=[[POCKET_NEW_X[0], y0, POCKET_STEP_Z], [POCKET_NEW_X[1], y1, POCKET_TOP_Z]])]
 
 
 def main(src, dst, scale=1.0):
@@ -304,7 +305,7 @@ def main(src, dst, scale=1.0):
     out = trimesh.boolean.union([trimesh.boolean.difference([front, clear], engine="manifold"), wall, hold_bump(src_front)],
                                 engine="manifold")
     cuts = trimesh.boolean.union([speaker, sim_scoop(), reset_opening(src_front)]
-                                 + sd_icon_big() + sim_slit() + sim_icon() + pocket_widening() + contact_notches(scale),
+                                 + sd_icon_big() + sim_slit() + sim_icon() + top_pocket() + contact_notches(scale),
                                  engine="manifold")
     out = trimesh.boolean.difference([out, cuts], engine="manifold")
     assert out.is_watertight, "result is not watertight"
