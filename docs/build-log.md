@@ -3,8 +3,10 @@
 The hardware as it was really built, step by step, with photos. The other docs explain the design and the reasons
 for it. This page shows what was done and what it looked like. The newest step is at the bottom.
 
-Before a photo goes in, its hidden data (location, date, camera) is removed and the modem's serial number and IMEI
-are blurred (see [Adding photos](#adding-photos)).
+Each photo is shown on a white background, with its parts labelled. Before it goes in, its hidden data (location,
+date, camera) is removed, and the modem's serial number, IMEI and QR code are blurred: the IMEI is the modem's
+identity on the mobile network. Its make and model (SIMCom A7672S) and part number stay readable (see
+[Adding photos](#adding-photos)).
 
 ## 1. Modem board: the tall capacitors swapped (4 Nov 2026)
 
@@ -61,9 +63,13 @@ Photos to come: the parts going into the printed 18650 back and front.
 
 1. Take the photos with your phone and leave them in Downloads.
 2. Ask Claude to add the latest ones to this page, and say what each step was.
-3. Each photo is then turned the right way up, shrunk, labelled, and saved without its hidden data (location, date,
-   camera). The modem's serial number, IMEI and QR code are blurred. The labels for every photo are listed in
+3. Each photo is then turned the right way up, lifted off its background with the Mac's own "lift subject"
+   feature, put on white, shrunk, labelled, and saved without its hidden data (location, date, camera). The modem's
+   serial number, IMEI and QR code are blurred. The labels and any hand-traced fixes for every photo are listed in
    [docs/scripts/make_build_log_photos.py](scripts/make_build_log_photos.py), so they can be changed and the photos
    made again.
+4. **Photos that come out best:** the parts on a plain surface that contrasts with them (a white sheet of paper
+   suits dark and coloured parts), lit evenly, with no hand in the frame. Thin black wires on a dark table are the
+   hardest to lift cleanly.
 
 **Keep out of the photos:** the SIM card's number, phone numbers on a screen, and anything that shows where you live.
