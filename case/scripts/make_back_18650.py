@@ -1,4 +1,4 @@
-"""18650 version of the back (option 3 of docs/slim-layout-plan.md), first draft.
+"""18650 version of the back (option 3 of docs/slim-layout-plan.md).
 
 Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), which mates with the same front:
 - 0.5 mm deeper than her S back (a slice copied from its straight walls), so the space behind the T-Deck is 12.7 mm:
@@ -6,8 +6,12 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
 - a grip ridge across the top of the outside, holding one 18650 cell (LG MJ1, 65.2 x 18.5 mm) lying across the phone;
 - the KTRON modem board low down, on four 8 mm standoffs with M3 heat-set inserts, leaving the same 10.7 mm of flat
   floor below it as beside it on the right: an L-shaped band, along the bottom and up the right side, kept empty for
-  the 4G sticker antenna;
-- the battery protection board (about 33 x 7 x 3 mm) lies flat on tape in the gap between the board and the cell;
+  a 4G antenna (the owner's choice);
+- the battery contacts (the two spring contacts from an 18650 holder, their solder feet cut off) stand against the
+  two end walls of the cell's channel, each between two ribs; + at the right end, - at the left, both engraved on
+  the floor;
+- a thin support wall along the cell's modem side, with the battery protection board (32 x 4-5 mm) glued to its
+  back; the board's own nickel strips reach behind the contacts through slits, so the contacts need no soldering;
 - the active GPS antenna (18 x 18 mm ceramic, its board likely about 18.5 mm) standing on its edge in the top slot, facing the phone's top edge, above the
   earpiece: the S back's gap between its two screw blocks is kept open for it, with a 0.9 mm-deep pocket in the floor
   for its top edge (0.9 mm of plastic left outside). The earpiece holder's roof is the separator below it;
@@ -17,14 +21,16 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
   floor, as her credit. The outside keeps her grooves, with no logo; each now ends 2 mm
   short of the grip at the top and 2 mm short of the bottom edge's rounding at the bottom.
 
-Not done yet (needs parts measured): the battery contacts' pockets at the two ends of the cell's channel (the contacts
-from an 18650 holder), and the front's changes (SIM slit, modem switch, speaker, a notch in the front's lip where the
-contacts sit, a route for the earpiece wires and the GPS cable past the cell, the earpiece pocket widened from 16.4 to
-18.6 mm for the antenna, and a new, low earpiece holder whose roof the antenna stands on).
+The front's changes are in make_front_18650.py and the low earpiece holder in make_earpiece_holder_18650.py. The design
+as a whole is described in docs/design-18650.md.
+
+Wires pass the cell's ends between the end walls and the cell, below the contacts' springs (about 3 mm of room), so
+they need no grooves of their own.
 
 Usage:
     python make_back_18650.py "<Alley Chat TD1 S Inside Cat Edition.stl>" "<...Standard Front GPS Inserts.stl>" <output.stl>
     python make_back_18650.py --scale 1.01 "<...S Inside Cat Edition.stl>" "<...Front GPS Inserts.stl>" <output.stl>
+    python make_back_18650.py --scale 1.01 --stand ...   (saved standing on its top edge, as it prints)
 
 Coordinates are the S back's own, after the 0.5 mm slice: outside face z = -11, inside floor z = -9.2, rim z = -3.5
 (where the front's mating face, z = 4.3 in the front's file, meets it), the T-Deck's back at z = +3.5. As in
@@ -40,6 +46,7 @@ import numpy as np
 import trimesh
 from shapely.affinity import translate
 from shapely.geometry import MultiPoint, Point, Polygon, box
+from shapely.geometry.polygon import orient
 from shapely.ops import unary_union
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -75,7 +82,7 @@ CELL_D, CELL_L = 18.5, 65.2       # LG MJ1 (65.15 x 18.4-18.5)
 CELL_GAP = 0.25                   # all round, in the channel
 CELL_Y = 88.0                     # axis, across the phone (along x)
 CELL_Z = TDECK_Z - 0.5 - CELL_D / 2   # top of the cell 0.5 mm under the T-Deck: -6.25
-CHANNEL_X = WALL_IN               # the channel runs wall to wall; the contacts' pockets come later
+CHANNEL_X = WALL_IN               # the channel runs wall to wall: the contacts stand against the two end walls
 # The grip, seen from the side: a circle round the cell (1.5 mm of plastic under its channel) that blends into the
 # flat back through concave curves, with no crease. The curves are sized so the steepest part of the grip slopes at
 # 45 degrees, so the back prints standing on its top edge without supports on the outside.
@@ -99,8 +106,54 @@ GROOVE_END_Y = GRIP_Y[0] - 4.0      # centre of the new top end: its tip at the 
 GROOVE_OLD_BOTTOM = [14.02, 7.62, 6.02, 6.02, 6.02, 7.62, 14.02]
 GROOVE_NEW_BOTTOM = [10.52, 5.48, 4.0, 4.0, 4.0, 5.48, 10.52]
 
-# ---- battery protection board (Robu 1S 3A 2MOS, about 33 x 7 x 3 mm): no frame, it lies flat on double-sided
-# tape between the board's top edge (y 71.3) and the cell (lowest at y 78.75), centred at about (30, 74).
+# ---- battery contacts: the two spring contacts from an 18650 SMD holder (Robu), measured 12 Nov 2026: a plate 7 mm
+# wide and 16 mm tall whose top is folded down into a leaf spring (5 mm deep with the plate, reaching 10 mm down),
+# with a 7 mm solder foot bent out at the bottom. The foot is cut off. Each contact stands upright against an end
+# wall, the fold at the top as in the holder, so the cell slides in from above over the folds. Its plate stands on a
+# small seat level with the channel's floor at its lower edge, which puts its top 1.5-2.4 mm above the rim (the front
+# is notched there, make_front_18650.py) and the spring's pressing part over the upper half of the + cap.
+# Plate to plate is 72.0 mm at any print scale (the channel grows with the case, so in the 101 % print a 0.36 mm pad
+# behind each plate takes up the difference): each spring is pressed from 4.7 to 3.1 mm (2.95 with the strip).
+# Holding it, as in the holder (whose end posts have a narrow groove for each edge of the plate): two ribs on each end
+# wall, 7.2 mm apart, each with a lip 0.4 mm thick that reaches 0.5 mm over the plate's front edge, 0.6 mm in front of
+# the wall. The plate slides down into these grooves with the strip behind it; its lower part is stepped about 0.5 mm
+# toward the wall and has small tabs bent out at its sides, so in a 0.6 mm groove it presses on both faces and holds.
+# The plate's lower edge rests on a seat. A thin bar joins the two lips across the front at the top of the ribs: the
+# back prints standing on its top edge, where the lip on the lower rib (the one nearer the phone's bottom) would
+# otherwise start in mid-air; with the bar it prints as a short bridge from the seat up to the bar. The upper rib's
+# face toward the phone's top slopes at 45 degrees. The middle of the plate stays open for its spring, and wires pass
+# the cell's ends in front of the lips, below the springs (2.4 mm). The strip comes in through a thin slit in the
+# lower rib.
+# + goes at the right end (beside the modem switch), - at the left: both are engraved on the floor.
+#
+# No soldering at the contacts (the owner's idea, 12 Nov 2026): a support wall runs along the cell's modem side, and
+# the protection board (Robu 1S 3A 2MOS, 32 x 4-5 mm, a nickel strip welded on each end of its chip side, 91 mm in
+# all) is glued chip side to it, centred, B- to the left. Each strip runs along the wall to its end, turns past it
+# along the end wall, goes through a slit in the contact's lower rib and lies behind the contact's plate, which the
+# cell's spring presses onto it. The strips are only about 29.5 mm long, so the contacts sit 2 mm toward the board
+# from the cell's axis (still over the + cap): each strip then needs about 27.5 mm to reach 2 mm behind its plate.
+CONTACT_W = 7.0
+CONTACT_DY = -2.0                               # plate centre, from the cell's axis (toward the board)
+CONTACT_SPAN = WALL_IN[1] - WALL_IN[0]          # 72.0: plate to plate, kept at every scale
+RIB_GAP, RIB_W, RIB_D = 7.2, 1.0, 1.0
+GROOVE_D, LIP_T, LIP_OVER = 0.6, 0.4, 0.5         # groove depth (strip + plate + their bend), lip thickness and overlap
+TOP_BAR_H = 1.5                                   # the bar joining the lips, at the top of the ribs
+SUPPORT_T, SUPPORT_GAP, SUPPORT_END_GAP = 1.2, 0.25, 0.6   # thinnest part (at the cell's axis), gap to the cell, gap at each end for the strip
+SUPPORT_TOP = RIM_Z - 1.2                        # -4.7: under the front's lip, which reaches 1 mm into the back
+STRIP_Z = (FLOOR_Z, FLOOR_Z + 4.8)               # the strips' height band (the board stands on the floor)
+STRIP_SLOT = 0.45                                # slit width, at the plate line
+BOARD_L = 32.0                                   # protection board, centred on the cell: marks on the wall's top
+POLARITY = [("-", 11.0), ("+", 62.0)]           # x of each mark's centre, on the floor in front of the wall
+POLARITY_Y, POLARITY_SIZE, POLARITY_STROKE, POLARITY_DEPTH = 74.6, 3.6, 0.8, 0.4
+
+
+def contact_pad(scale):
+    """Thickness of the pad behind each plate that keeps the plates CONTACT_SPAN apart in a scaled case."""
+    return ((WALL_IN[1] - WALL_IN[0]) * scale - CONTACT_SPAN) / 2
+
+# ---- battery protection board (Robu 1S 3A 2MOS, measured 32 x 4-5 mm, with nickel strips at both ends): no frame,
+# it lies flat on double-sided tape between the board's top edge (y 71.3) and the cell (lowest at y 78.75), at about
+# x 16-48, y 73.6-78.6, clear of the two upper standoffs' feet (which reach y 73.1).
 
 # ---- GPS antenna in the top slot ------------------------------------------------------------------------
 # Alley Cat made this slot for a GPS module (15 x 15 mm antenna, e.g. the M100 Mini). The ~200 comments on her
@@ -127,17 +180,19 @@ GROOVE_STUBS = [(31.0, 97.0, 37.0, 103.0), (0.0, 97.0, 8.0, 103.0), (60.0, 97.0,
 # grip leaves the flat back. Alley Cat's mount on her front's left wall (a recess for the
 # switch's 19.7 x 5.6 mm plate, a 6.9 x 3.4 mm slot for the knob and two countersunk M2 holes 15 mm apart, centred at
 # y 63.4, z 0.1 on the wall's outside face x = -6.0, with 2.58 mm from that face to the plate) is copied: its slot and
-# holes, the outer 2.58 mm. This wall is 1.95 mm thick and has only about 3.6 mm of straight height inside (between
-# the floor's rounded corner and the front's lip), so: a 0.6 mm pad inside brings it to her 2.58 mm (the knob then
-# stands out 1 mm as in her design); the floor's rounded corner is cleared where the plate's lower edge sits; and the
-# front's lip is notched along the plate (make_front_18650.py). The plate's lower edge sits 0.3 mm into the floor.
+# holes, the outer 2.58 mm. This wall is 1.95 mm thick, so a pad inside carries the plate. The pad is 1.95 mm thick,
+# which puts the plate 3.9 mm in from the outside face: the 4 mm knob then stands out 0.1 mm, like Alley Cat's slider
+# on the T-Deck's own switch, and the plate stays 0.9 mm clear of the front's lip, which reaches 1 mm into the back
+# (so the lip is whole). The pad stops 0.1 mm below that lip; the knob slot and screw holes go on through it. The
+# floor's rounded corner is cleared where the plate's lower edge sits, 0.2 mm into the floor.
 SWITCH_REGION = [[-8.55, 52.5, -4.0], [-5.5, 74.5, 4.25]]     # in her front's coordinates: slot and holes only
 SWITCH_SRC_Y, SWITCH_SRC_Z = 63.4, 0.1
 SWITCH_AT = (GRIP_Y[0] - 10.05, -6.6)                          # y, z of the knob slot's centre: the upper screw's
                                                                # countersink ends where the grip leaves the flat
                                                                # back (y 72.9); 1.4 mm of wall above the slot
 SWITCH_PLATE = (19.7, 5.6, 0.5)                                # length (y), height (z), thickness
-SWITCH_PAD_X = (69.45, 70.3)                                   # 0.6 mm pad on the wall's inside face (70.05)
+SWITCH_PAD_X = (68.1, 70.3)                                    # 1.95 mm pad on the wall's inside face (70.05)
+SWITCH_PAD_TOP = RIM_Z - 1.1                                   # -4.6: 0.1 mm under the tip of the front's lip
 
 
 # ---- network LED, inside text fill ----------------------------------------------------------------------
@@ -236,6 +291,69 @@ def cell_channel(scale=1.0):
     return cyl
 
 
+def contact_parts(scale=1.0):
+    """The contacts' ribs with their lips, seats and pads, the support wall along the cell, and the strips' slits.
+    Built at true size on the scaled case. Returns (solids to add, spaces to cut)."""
+    yc, zc = CELL_Y * scale, CELL_Z * scale
+    yp = yc + CONTACT_DY                                        # plate centre
+    r = CELL_D / 2 + CELL_GAP
+    top = RIM_Z * scale
+    pad = contact_pad(scale)
+    floor_at = lambda y: zc - np.sqrt(r ** 2 - (y - yc) ** 2)   # the channel's floor
+    seat = floor_at(yp - CONTACT_W / 2)                          # level with the floor at the plate's lower edge
+    sy0, sy1 = yc - CELL_D / 2 - SUPPORT_GAP - SUPPORT_T, yc - CELL_D / 2 - SUPPORT_GAP
+    z0, z1 = STRIP_Z[0] * scale - 0.1, STRIP_Z[1] * scale + 0.3
+    adds, cuts = [], []
+    lines = []
+    for wall, inward in ((WALL_IN[0] * scale, 1.0), (WALL_IN[1] * scale, -1.0)):
+        line = wall + pad * inward                               # where the plate's back sits
+        lines.append(line)
+        # the two ribs with their lips (outline across the wall, extruded up the wall)
+        X = lambda d: line + d * inward                                     # d mm in front of the plate's back line
+        xa, xg, xf = wall - 0.3 * inward, X(GROOVE_D), X(GROOVE_D + LIP_T)  # into the wall; lip's back; lip's front
+        g0, g1 = yp - RIB_GAP / 2, yp + RIB_GAP / 2                          # the groove's sides
+        lower = [(xa, g0 - RIB_W), (xf, g0 - RIB_W), (xf, g0 + LIP_OVER), (xg, g0 + LIP_OVER), (xg, g0), (xa, g0)]
+        upper = [(xa, g1), (xg, g1), (xg, g1 - LIP_OVER), (xf, g1 - LIP_OVER), (xf, g1 + RIB_W - 0.7),
+                 (X(0.3), g1 + RIB_W), (xa, g1 + RIB_W)]                    # 45-degree face toward the phone's top
+        bottom = min(floor_at(g0 - RIB_W), floor_at(g1 + RIB_W)) - 0.4      # 0.4 into the channel's floor
+        for ring in (lower, upper):
+            adds.append(prism_z(orient(Polygon(ring)), bottom, top))
+        # the bar across the front at the top of the ribs, and the seat under the plate (to the lips' front)
+        x0, x1 = sorted((xg, xf))
+        adds.append(trimesh.creation.box(bounds=[[x0, g0, top - TOP_BAR_H], [x1, g1, top]]))
+        x0, x1 = sorted((xa, xf))
+        adds.append(trimesh.creation.box(bounds=[[x0, g0, floor_at(g1) - 0.4], [x1, g1, seat]]))
+        if pad > 0.01:
+            x0, x1 = sorted((wall - 0.3 * inward, line))
+            adds.append(trimesh.creation.box(bounds=[[x0, yp - RIB_GAP / 2 - 0.1, seat - 0.1],
+                                                     [x1, yp + RIB_GAP / 2 + 0.1, top]]))
+        # the strip's path: from the support wall's back face, along the end wall, through the lower rib
+        x0, x1 = sorted((line - 0.01 * inward, line + STRIP_SLOT * inward))
+        cuts.append(trimesh.creation.box(bounds=[[x0, sy0 - 0.6, z0], [x1, yp - CONTACT_W / 2 + 0.1, z1]]))
+    # the support wall, with a gap at each end for the strip and a mark on its top at each end of the board. Its face
+    # toward the cell is the channel's own surface carried on up (the wall is cut by the channel), so the channel's
+    # curve runs straight into it with no shelf, and the cell has the channel's 0.25 mm gap all the way up.
+    slab = trimesh.creation.box(bounds=[[lines[0] + SUPPORT_END_GAP, sy0, FLOOR_Z * scale - 0.4],
+                                        [lines[1] - SUPPORT_END_GAP, yc - r + 1.5, SUPPORT_TOP * scale]])
+    adds.append(trimesh.boolean.difference([slab, cell_channel(scale)], engine="manifold"))
+    for x in (34 * scale - BOARD_L / 2, 34 * scale + BOARD_L / 2):
+        cuts.append(trimesh.creation.box(bounds=[[x - 0.4, sy0 - 0.1, SUPPORT_TOP * scale - 0.6],
+                                                 [x + 0.4, yc - r + 0.5, SUPPORT_TOP * scale + 0.1]]))
+    return adds, cuts
+
+
+def polarity_marks():
+    """'+' and '-' engraved on the floor beside the channel's ends, so the cell goes in the right way round."""
+    s, w = POLARITY_SIZE / 2, POLARITY_STROKE / 2
+    cuts = []
+    for sign, x in POLARITY:
+        shape = box(x - s, POLARITY_Y - w, x + s, POLARITY_Y + w)
+        if sign == "+":
+            shape = shape.union(box(x - w, POLARITY_Y - s, x + w, POLARITY_Y + s))
+        cuts.append(prism_z(shape, FLOOR_Z - POLARITY_DEPTH, FLOOR_Z + 1.0))
+    return cuts
+
+
 def groove_ends():
     """Fill the grooves' last few mm below the grip and cut new rounded ends there; lengthen them at the bottom."""
     fill = prism_z(box(-10.0, GROOVE_END_Y - 1.0, 80.0, GRIP_Y[0] + 3.0), OUTER_Z, OUTER_Z + 1.1)
@@ -299,13 +417,21 @@ def switch_mount(front_src):
     yc, zc = SWITCH_AT
     L, H, T = SWITCH_PLATE
     pad = trimesh.creation.box(bounds=[[SWITCH_PAD_X[0], yc - L / 2 - 1.0, FLOOR_Z - 0.3],
-                                       [SWITCH_PAD_X[1], yc + L / 2 + 1.0, zc + H / 2 + 0.2]])
+                                       [SWITCH_PAD_X[1], yc + L / 2 + 1.0, SWITCH_PAD_TOP]])
+    # her slot and holes end at x 69.45 (her plate's face, 2.55 mm in); carry their outline on through the pad
+    to2d = np.array([[0, 1, 0, 0], [0, 0, 1, 0], [1, 0, 0, -69.6], [0, 0, 0, 1]], float)
+    p2, _ = space.section(plane_origin=[69.6, 0, 0], plane_normal=[1, 0, 0]).to_planar(to_2D=to2d, check=False)
+    through = []
+    for poly in p2.polygons_full:
+        m = trimesh.creation.extrude_polygon(poly, height=69.65 - (SWITCH_PAD_X[0] - 0.1))
+        m.apply_transform(np.array([[0, 0, 1, SWITCH_PAD_X[0] - 0.1], [1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1]], float))
+        through.append(m)
     corner = trimesh.creation.box(bounds=[[SWITCH_PAD_X[0] - T - 0.4, yc - L / 2 - 0.4, zc - H / 2 - 0.1],
                                           [SWITCH_PAD_X[0], yc + L / 2 + 0.4, RIM_Z + 0.2]])
-    return [pad], [space, corner]
+    return [pad], [space, corner] + through
 
 
-def main(src, front_src, dst, scale=1.0):
+def main(src, front_src, dst, scale=1.0, stand=False):
     sback = trimesh.load(src, force="mesh")
     assert sback.is_watertight
     back = deepen(sback)
@@ -322,7 +448,8 @@ def main(src, front_src, dst, scale=1.0):
     envelope = trimesh.convex.convex_hull(np.vstack([back.vertices, back.vertices + [0, 0, 10.0]]))
     inside = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in stubs + a_gr + a_led]
     shell = trimesh.boolean.union([back, ridge] + inside + sw_adds, engine="manifold")
-    shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + sw_cuts + recesses, engine="manifold")],
+    shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + sw_cuts + recesses
+                                                                     + polarity_marks(), engine="manifold")],
                                        engine="manifold")
     if scale != 1.0:
         shell.apply_scale(scale)
@@ -333,7 +460,17 @@ def main(src, front_src, dst, scale=1.0):
     out = trimesh.boolean.union([shell] + a_st, engine="manifold")
     out = trimesh.boolean.difference([out, trimesh.boolean.union(c_st + [cell_channel(scale)], engine="manifold")],
                                      engine="manifold")
+    hull = trimesh.convex.convex_hull(out.vertices)       # includes the grip, unlike the envelope above
+    a_ct, c_ct = contact_parts(scale)
+    a_ct = [trimesh.boolean.intersection([m, hull], engine="manifold") for m in a_ct]
+    out = trimesh.boolean.union([out] + a_ct, engine="manifold")
+    out = trimesh.boolean.difference([out, trimesh.boolean.union(c_ct, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
+    if stand:   # as it prints: standing on its top edge (the first layer is about 64 x 4 mm; use a brim)
+        out = out.copy()
+        out.apply_transform(np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, -1, 0, 0], [0, 0, 0, 1]], float))
+        lo, hi = out.bounds
+        out.apply_translation([-(lo[0] + hi[0]) / 2, -(lo[1] + hi[1]) / 2, -lo[2]])
     out.export(dst)
     print(f"18650 back: {out.bounds.round(2).tolist()}, watertight {out.is_watertight}, "
           f"bodies {len(out.split(only_watertight=False))}, scale {scale}; "
@@ -342,7 +479,12 @@ def main(src, front_src, dst, scale=1.0):
 
 if __name__ == "__main__":
     args = sys.argv[1:]
-    sc = 1.0
-    if args and args[0] == "--scale":
-        sc = float(args[1]); args = args[2:]
-    main(*args[:3], scale=sc)
+    sc, st = 1.0, False
+    while args and args[0].startswith("--"):
+        if args[0] == "--scale":
+            sc = float(args[1]); args = args[2:]
+        elif args[0] == "--stand":
+            st = True; args = args[1:]
+        else:
+            sys.exit(f"unknown option {args[0]}")
+    main(*args[:3], scale=sc, stand=st)

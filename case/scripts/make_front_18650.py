@@ -1,21 +1,22 @@
-"""18650 version of the front, to go with make_back_18650.py. First draft: the parts that don't depend on unmeasured
-parts. It starts from make_front.py's result, so the earpiece grille, mic pocket, antenna cut-outs and badge are kept.
+"""18650 version of the front, to go with make_back_18650.py. It starts from make_front.py's result, so the earpiece
+grille, mic pocket, antenna cut-outs and badge are kept.
 
 Done here:
 - left wall: the SIM slit (the board now sits at this height, in the front half) in a finger scoop, with its
   direction picture beside it;
-  Alley Cat's speaker grille and switch mount filled, because the board's edge now runs along this wall;
+  the wall is rebuilt in one plain piece where Alley Cat's speaker grille and switch mount were (the board's edge now
+  runs along this wall), with only her reset opening copied back;
 - right wall: Alley Cat's speaker cavity and grille, an exact copy of hers moved from the left wall to below the
   T-Deck's switch (the stretch between the T-Deck's switch and the microSD slot is left alone: the notch that holds
   the T-Deck and the slot for the switch's slider piece are there). The modem switch goes on the back's right wall,
-  so the front's lip is notched there for the switch's plate;
+  set deep enough to clear the front's lip, so the lip is whole;
 - earpiece pocket widened from 16.4 to 19.5 mm above the earpiece, and its floor lowered 0.5 mm (the face under it
   is 3.1 mm instead of 3.6), for the GPS antenna standing on its edge;
+- a notch in each side wall where the top of a battery contact stands above the back's rim;
 - the top-edge badge carries the owner's rushiWorks logo instead of Alley Cat's cat. Her cat and "Alley Chat TD1 S"
   are kept on the back's inside floor, and she is credited in the README and case files.
 
-Not done yet: a new low earpiece holder, the cut-out for the battery contacts, and routes past the cell for the
-earpiece wires and the GPS cable.
+The low earpiece holder is make_earpiece_holder_18650.py. The design as a whole is described in docs/design-18650.md.
 
 Usage:
     python make_front_18650.py "<Alley Chat TD1 Standard Front GPS Inserts.stl>" <output.stl>
@@ -30,19 +31,32 @@ import tempfile
 
 import numpy as np
 import trimesh
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, box as shapely_box
+from shapely.ops import unary_union
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import make_back_18650 as B  # noqa: E402
 import make_front as F  # noqa: E402
 
 LEFT_OUTER_X = -6.0
-FILL_INNER_X = -9.0            # fills stop here (1 mm inside the board's edge line), so nothing narrows the inside
-
-# Left wall openings to fill (y0, y1, z0, z1). The T-Deck's reset opening (y 66-71, z -7 to -4.7) is below these.
-GRILLE_FILL = (31.0, 47.0, -4.3, 3.6)
-SWITCH_FILL = (52.5, 74.5, -3.6, 3.7)   # includes the lead-ins and the screw countersinks
-PLAIN_WALL_Y = 90.0            # the wall's plain outside profile is sampled here
+# Left wall: rebuilt as one plain piece between y 27.5 and 80, where Alley Cat had her speaker recess and grille and
+# the switch mount (plate recess, knob slot, screw holes, and the notch in the lip). Her wall is a straight extrusion
+# there, so the piece is her own cross-section (taken at y 80, which has no features) carried along y, from z -8 up to
+# the top of the lip; the wall below z -8 was never changed. Below y 27.5 her wall is left as it is: the rounded groove
+# at y 21-26 runs the full height beside the T-Deck's edge (clearance she gave the T-Deck), and her wall's inside
+# face changes there from upright to sloped. Only two openings are then cut into the piece: her reset opening, copied
+# from her file, and the SIM slit (with its scoop and picture). Her bump beside the reset that holds the T-Deck down is
+# copied back too.
+LEFT_WALL_Y = (27.5, 80.0)
+LEFT_WALL_X = (-10.8, -5.2)       # the box the wall is rebuilt in (her inside face is at -10 to -9.1, outside -6.0)
+LEFT_WALL_Z0 = -8.0
+LEFT_WALL_SECTION_Y = 80.0
+# Her bump just above the reset opening (y 59-64, z -6.6 to -4.8, 0.8 mm proud) holds the T-Deck's board down: it is
+# copied back from her file into the rebuilt wall.
+HOLD_BUMP_REGION = [[-11.2, 58.5, -7.1], [-9.95, 64.4, -4.3]]
+# Her reset opening, with its counterbore outside and the recess inside that her reset button sits in (the button is
+# 5.2 x 3.4 mm; her recess reaches up into her switch recess, so it is copied up to z -3.4: 3.7 mm tall).
+RESET_REGION = [[-10.6, 65.5, -7.8], [-5.4, 72.25, -3.4]]
 
 # SIM slit, lined up with the card on the board.
 SIM_Y = B.board_to_back(14.6, B.BOARD_H)[1]                                  # 31.57
@@ -52,11 +66,10 @@ SLIT_INNER_X = -9.6            # straight part, just past the wall's inside face
 SLIT_FLARE = 1.0               # extra on every side at the outside face: the wall is 4 mm thick here
 
 # Finger scoop round the slit: a shallow oval dish, 2.2 mm deep at the slit, so the card's edge (4.3 mm in from the
-# wall's face) is 2.1 mm from the bottom of the dish. Alley Cat's old speaker cavity behind it (1 mm deep, inside the
-# wall) is filled where it sits behind the T-Deck, so the wall left under the dish stays 1.7 mm or more.
+# wall's face) is 2.1 mm from the bottom of the dish. Alley Cat's old speaker recess behind it (1 mm deep, inside the
+# wall) is gone with the rebuilt wall, so the wall left under the dish stays about 1.7 mm.
 SCOOP_DEPTH = 2.2
 SCOOP_OPEN = (22.0, 7.6)       # length along the wall (y) and height (z) of the dish's rim
-CAVITY_FILL = [[-9.95, 22.5, -2.6], [-8.9, 41.0, 4.25]]
 
 # SIM direction picture: as on make_back.py, on the phone-top side of the scoop.
 # Drawn 1.6x the size used on the current back (6.0 x 7.5 mm), so it reads easily, and centred on the flat part of
@@ -71,12 +84,16 @@ ICON_Z = -3.0
 SD_K = 1.5
 SD_Z = -3.05
 
-# Speaker: the space of Alley Cat's left-wall speaker cavity and grille (cavity y 28-49.5, z -5.7 up to the mating
+# Speaker: the space of Alley Cat's left-wall speaker cavity and grille (cavity y 28-49.3, z -5.7 up to the mating
 # face, 1 mm into the wall; grille y 32-46), mirrored to the right wall and moved down the phone, into the free
-# stretch below the T-Deck's switch recess (which starts at y 38). The speaker (about 20 x 10 x 7 mm) stands in the
-# cavity with its face to the grille, between the wall and the modem board's edge.
+# stretch below the slot for the T-Deck switch's slider (which starts at y 37.5), leaving 1.2 mm of wall between them.
+# The speaker (about 20 x 10 x 7 mm) stands in the cavity with its face to the grille, between the wall and the modem
+# board's edge. The cavity's lower edge comes down to the top of the snap ridge that runs along this wall (z -6.7),
+# so the two line up.
 SPEAKER_REGION = [[-10.2, 27.5, -6.0], [-5.5, 50.0, 4.29]]
-SPEAKER_SHIFT_Y = -12.0         # cavity y 16-37.5, grille y 20-34
+SPEAKER_SHIFT_Y = -13.0         # cavity y 15-36.3, grille y 19-33
+SPEAKER_FLOOR_X = F.MIRROR_X + 9.0        # -79.0: her cavity's floor (x -9.0 on her left wall), mirrored
+SNAP_RIDGE_TOP = -6.70          # top of the ridge along the inside of the right wall that the T-Deck snaps under
 
 # Owner's logo on the top-edge badge. The badge is built as make_front.py builds its fresh badge (rounded face,
 # 1 mm proud, 45-degree edge), but larger: its face is as wide as the antenna slot behind it (x -53.3..-34.7), and
@@ -88,10 +105,28 @@ LOGO_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "logo
 LOGO_MARGIN, LOGO_DEPTH, LOGO_GROW = 0.8, 0.5, 0.05
 BADGE_FACE_18650 = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0, -9.0, 3.0)
 
-# Lip notch for the modem switch's plate on the back's right wall (make_back_18650.py): the lip that reaches into
-# the back (z 4.3-5.3, x -79.9..-79.0 here) is removed along the plate.
-LIP_NOTCH = [[-80.3, B.SWITCH_AT[0] - B.SWITCH_PLATE[0] / 2 - 1.0, 4.2],
-             [-78.6, B.SWITCH_AT[0] + B.SWITCH_PLATE[0] / 2 + 1.0, 5.6]]
+
+# Battery contacts (make_back_18650.py): each contact's top stands about 1.5-2.4 mm above the back's rim, where the
+# front's side wall comes in to within 1.5-2.4 mm of the cell's end. So the wall is notched there out to the line of
+# the plate's back (the back's wall, x -2.0 / 70.0 in the back's coordinates, plus the pad that a scaled print adds),
+# up to 1 mm above the contact's highest top, leaving about 2 mm of wall; the lip that reaches into the back is
+# removed across the contact's ribs too. Worked out in the back's coordinates (x, y, z) and converted.
+CONTACT_NOTCH_TOP = 3.0           # 0.5 mm under the T-Deck's back
+
+
+def contact_notches(scale=1.0):
+    pad = B.contact_pad(scale) / scale              # the cut is made before the front is scaled
+    yp = B.CELL_Y + B.CONTACT_DY / scale            # the plates' centre (true offset from the scaled cell's axis)
+    out = []
+    for wall, inward in ((B.WALL_IN[0], 1.0), (B.WALL_IN[1], -1.0)):
+        x0, x1 = sorted((wall + (pad - 0.05) * inward, wall + 3.0 * inward))
+        for (y0, y1), (z0, z1) in (((yp - B.CONTACT_W / 2 - 0.7, yp + B.CONTACT_W / 2 + 0.7),
+                                    (B.RIM_Z - 0.01, CONTACT_NOTCH_TOP)),
+                                   ((yp - B.RIB_GAP / 2 - B.RIB_W - 0.2, yp + B.RIB_GAP / 2 + B.RIB_W + 0.2),
+                                    (B.RIM_Z - 1.2, B.RIM_Z + 0.1))):
+            out.append(trimesh.creation.box(bounds=[[-x1 - 10.0, y0, 0.8 - z1], [-x0 - 10.0, y1, 0.8 - z0]]))
+    return out
+
 
 # Earpiece pocket, widened above the earpiece to match the back's slot (x 24.7-43.3 there).
 POCKET_NEW_X = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0)                # -53.75 .. -34.25
@@ -136,16 +171,27 @@ def badge_with_logo(front, _cat_json=None):
     return trimesh.boolean.difference([front] + cuts, engine="manifold")
 
 
-def wall_fill(front, y0, y1, z0, z1):
-    """A plug for the left wall: the wall's plain outside profile, carried along y from y0 to y1."""
-    zs = np.arange(z0, z1 + 1e-9, 0.1)
-    origins = np.array([[10.0, PLAIN_WALL_Y, z] for z in zs])
-    loc, idx, _ = front.ray.intersects_location(origins, np.tile([-1.0, 0, 0], (len(zs), 1)), multiple_hits=False)
-    outer = np.full(len(zs), np.nan)
-    outer[idx] = loc[:, 0]
-    assert not np.isnan(outer).any(), "could not sample the plain wall"
-    ring = [(x, z) for x, z in zip(outer, zs)] + [(FILL_INNER_X, zs[-1]), (FILL_INNER_X, zs[0])]
-    return F.prism_y(Polygon(ring), y0, y1)
+def plain_left_wall(src):
+    """The stretch of the left wall to rebuild (a box to clear) and the plain wall piece that replaces it."""
+    sec = src.section(plane_origin=[0, LEFT_WALL_SECTION_Y, 0], plane_normal=[0, 1, 0])
+    p2, _ = sec.to_planar(to_2D=np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], float), check=False)
+    x0, x1 = LEFT_WALL_X
+    profile = unary_union(list(p2.polygons_full)).intersection(shapely_box(x0, LEFT_WALL_Z0 - 0.05, x1, 10.0))
+    assert profile.geom_type == "Polygon", "the wall's cross-section should be one piece"
+    y0, y1 = LEFT_WALL_Y
+    clear = trimesh.creation.box(bounds=[[x0, y0, LEFT_WALL_Z0], [x1, y1, 10.0]])
+    wall = F.prism_y(profile, y0 - 0.05, y1 + 0.05)          # overlaps the unchanged wall by 0.05 at each end
+    return clear, wall
+
+
+def hold_bump(src):
+    """Alley Cat's bump that holds the T-Deck down, beside the reset opening: her front's solid in HOLD_BUMP_REGION."""
+    return trimesh.boolean.intersection([trimesh.creation.box(bounds=HOLD_BUMP_REGION), src], engine="manifold")
+
+
+def reset_opening(src):
+    """Alley Cat's reset opening and its recesses: the empty space of her front in RESET_REGION."""
+    return trimesh.boolean.difference([trimesh.creation.box(bounds=RESET_REGION), src], engine="manifold")
 
 
 def sim_slit():
@@ -227,7 +273,10 @@ def moved_speaker_space(front):
     mirror[1, 3] = SPEAKER_SHIFT_Y
     space.apply_transform(mirror)
     trimesh.repair.fix_normals(space)
-    return space
+    in_wall = trimesh.creation.box(bounds=[[SPEAKER_FLOOR_X - 0.05, 0.0, -5.5], [SPEAKER_FLOOR_X + 0.9, 60.0, -3.0]])
+    (_, y0, _), (_, y1, _) = trimesh.boolean.intersection([space, in_wall], engine="manifold").bounds   # the cavity
+    down = trimesh.creation.box(bounds=[[SPEAKER_FLOOR_X, y0, SNAP_RIDGE_TOP], [SPEAKER_FLOOR_X + 1.1, y1, -5.6]])
+    return trimesh.boolean.union([space, down], engine="manifold")
 
 
 def pocket_widening():
@@ -249,10 +298,14 @@ def main(src, dst, scale=1.0):
             F.sd_icon, F.replace_badge_with_cat = small_sd, cat_badge
         front = trimesh.load(base, force="mesh")
     assert front.is_watertight
+    src_front = trimesh.load(src, force="mesh")
     speaker = moved_speaker_space(front)
-    plugs = [wall_fill(front, *GRILLE_FILL), wall_fill(front, *SWITCH_FILL), trimesh.creation.box(bounds=CAVITY_FILL)]
-    out = trimesh.boolean.union([front] + plugs, engine="manifold")
-    cuts = trimesh.boolean.union([speaker, trimesh.creation.box(bounds=LIP_NOTCH), sim_scoop()] + sd_icon_big() + sim_slit() + sim_icon() + pocket_widening(), engine="manifold")
+    clear, wall = plain_left_wall(src_front)
+    out = trimesh.boolean.union([trimesh.boolean.difference([front, clear], engine="manifold"), wall, hold_bump(src_front)],
+                                engine="manifold")
+    cuts = trimesh.boolean.union([speaker, sim_scoop(), reset_opening(src_front)]
+                                 + sd_icon_big() + sim_slit() + sim_icon() + pocket_widening() + contact_notches(scale),
+                                 engine="manifold")
     out = trimesh.boolean.difference([out, cuts], engine="manifold")
     assert out.is_watertight, "result is not watertight"
     if scale != 1.0:
