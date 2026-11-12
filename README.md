@@ -59,6 +59,7 @@ fallback and GNSS.
 | [docs/bring-up.md](docs/bring-up.md) | First power-on checks and the modem commands |
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
+| [docs/build-log.md](docs/build-log.md) | Photos of the hardware as it was built, step by step |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
 | [docs/design-18650.md](docs/design-18650.md) | The slimmer 18650 version (designed, not printed yet): what changes, the parts, the wires and the files |
 | [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | The brainstorm that led to it: three options for a slimmer phone (option 3 chosen) |

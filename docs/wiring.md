@@ -75,7 +75,7 @@ circuit, overcharge and overdischarge (about 2.4–2.5 V). It sits at the cell's
   above the input with no reverse current, and its enable pin is low when nothing is on VCC.
 - **Before soldering:** with the multimeter, check that the pad you chose has continuity to the + pad of C11
   and **not** to VCC.
-- **C11 is the bulk capacitor** next to the modem chip. It was a 330 µF 50 V SMD can, 11 mm tall, which is too tall to
+- **C11 is the bulk capacitor** next to the modem chip. It was a 330 µF 35 V SMD can, 11 mm tall, which is too tall to
   fit under the battery. It gets replaced by a 470 µF 16 V radial capacitor laid flat (see
   [bring-up.md](bring-up.md), phase B).
 - The T-Deck's own charger charges the cell over USB-C and stops at 4.2 V, which suits this cell.
@@ -230,10 +230,14 @@ A 2-wire electret mic (Sunrom 6027) across **M+ and M−**, plus a **1 kΩ resis
 - **The resistor is required.** The module feeds M+ through its own 2.2 kΩ, but the resistor from M− to ground sits
   outside the module (SIMCom A7672S Hardware Design, figure 28, which shows 2.2 kΩ). KTRON's speaker/mic drawing
   doesn't show it. Without it no current can flow through the mic, and the other person hears silence.
-- **Where it goes:** between M− and the GND hole in the same row (right row, beside VCC), on the board's component
-  side, because the SIM side has too little room once the case is closed. Sleeve its legs, because they pass over
-  M+, S−, S+, SCL and SDA. On the bench that GND hole also holds the 5 V supply's negative wire. Only that wire
-  comes off in phase B; the resistor stays.
+- **Where it goes:** on the board's SIM-card side, lying flat, as built on 11 Nov 2026
+  ([build log](build-log.md#2-bench-tests-of-the-modem-511-nov-2026), second photo). One leg, bent into a long loop,
+  goes into the M− hole. The other is soldered to a ground point beside the SIM holder. Sleeve the long leg where it
+  passes over other holes.
+  - **18650 version:** this side faces the T-Deck, with about 3 mm of room above the board: enough for the resistor
+    lying flat (about 2.5 mm thick).
+  - **Current (X back) build:** the battery lies over this side, so check at the dry fit that the resistor doesn't
+    press into it.
 - **Tested 11 Nov 2026:** 1 kΩ, soldered on the modem board from M− to GND, gave clear, loud enough speech at
   `AT+CMICGAIN=4`. 2.2 kΩ, SIMCom's value, wasn't tried. 4.7 kΩ wasn't tried either, and would probably leave the
   mic too little voltage.

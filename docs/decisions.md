@@ -72,7 +72,7 @@ SGM6609).
 
 ## KTRON's tall capacitors swapped for radial ones laid flat (decided 3 Nov 2026)
 
-**Why:** the battery turned out to be 9 mm thick, not 5 mm. The board's two SMD electrolytics (C11 330 µF 50 V and
+**Why:** the battery turned out to be 9 mm thick, not 5 mm. The board's two SMD electrolytics (C11 330 µF 35 V and
 C17 100 µF 50 V) are 11 mm tall and hang below the board, so with them the stack would be
 12 + 1.6 + 1.5 + 9 = 24.1 mm, more than the 23 mm available.
 

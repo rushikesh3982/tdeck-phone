@@ -66,9 +66,9 @@ Solder only the holes in brackets, and leave the rest empty.
 | GND (left) | CP2102 GND | |
 | — | CP2102 5V | **Leave unconnected** |
 | VCC (right) | 5 V supply + | **Bench only**, removed in phase B. Check the supply's polarity with the multimeter first |
-| GND (right) | 5 V supply −, and the mic's resistor | The supply wire is bench only, removed in phase B. The resistor stays |
+| GND (right) | 5 V supply − | **Bench only**, removed in phase B |
 | S+ and S− | Earpiece, through a **47 µF capacitor in each wire** | Each capacitor's **+ leg goes to the board** (the + leg is the longer one; the − side has a stripe). The earpiece itself goes either way round. Nothing goes to ground. This is the final wiring, so it can be soldered in for good (see below) |
-| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can. **Also solder a 1 kΩ resistor from M− to the GND hole in this row:** the mic gets no power without it (shown in the picture; [wiring.md](wiring.md), section 4) |
+| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can. **Also solder a 1 kΩ resistor from M− to ground,** on the SIM-card side: the mic gets no power without it (shown in the picture; [wiring.md](wiring.md), section 4) |
 | U.FL1 (top edge) | LTE antenna cable | Press straight down until it clicks |
 | U.FL2 (beside L2) | GPS patch | |
 
@@ -216,8 +216,9 @@ KTRON's warranty doesn't cover short-circuited boards, so check every joint befo
 | SMS (send) | **Works.** `AT+CMGS="+91…"`, then the text ending in Ctrl-Z: `+CMGS: 61` and the phone received it |
 
 **Replacing the mic** (no work at the modem end, nothing near the earpiece capacitors):
-1. Cut the old mic off close to its body, keeping the orange and white wires.
-2. Solder the spare: orange to "+", white to the can pad. Tin the wire ends first, and keep the iron on each pad for
+1. Cut the old mic off close to its body, keeping its two wires. The mic that works (11 Nov 2026) is on a yellow wire
+   (+) and a green one (−); the first two mics were on orange and white.
+2. Solder the spare: yellow to "+", green to the can pad. Tin the wire ends first, and keep the iron on each pad for
    only 2–3 seconds.
 3. Check that the 1 kΩ resistor from M− to GND is in place.
 4. Test with a call before heat-shrinking or gluing, then set `AT+CMICGAIN=4` and adjust.
@@ -232,7 +233,7 @@ the modem was probably still powered at the time. A call is the test that counts
 2. **Swap the two tall capacitors** (done before the bench tests, and tested: see the results above). The stock
    ones are 11 mm tall SMD cans, too tall for the board to fit under the 9 mm battery. Before removing each one, note
    which pad is +.
-   - **C11** (330 µF 50 V, next to the modem chip): replace it with the **470 µF 16 V** radial capacitor, laid flat
+   - **C11** (330 µF 35 V, next to the modem chip): replace it with the **470 µF 16 V** radial capacitor, laid flat
      (about 7 mm high). Solder its leads flat onto the old pads.
    - **C17** (100 µF 50 V, next to the regulator): replace it with the **100 µF 16 V**, laid flat. If its + pad
      beeps to the VCC pin, you can leave it off instead, because VCC isn't used on battery power.

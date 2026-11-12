@@ -97,8 +97,8 @@ def draw_board(ax, used_left, used_right, sim_note="micro-SIM holder\n(on the ot
 
 
 def draw_mic(ax, pins, mx, my, steps=(60, 63)):
-    """Mic to the right of the board, with the 1 kOhm resistor from M- to the right row's GND, on the board's
-    component side. The resistor's legs pass between the pad labels."""
+    """Mic to the right of the board, with the 1 kOhm resistor from M- to GND. It is soldered on the board's
+    SIM-card side (the side not drawn), so it is drawn dashed. Its legs pass between the pad labels."""
     ax.add_patch(Circle((mx + 4, my), 5, fc="#bbb", ec="#555"))
     ax.text(mx + 4, my, "mic\n6027", ha="center", va="center", fontsize=8)
     for pin, yy, lab, xt in ((("R", "M-"), my + 2.5, "pin joined to the can → M−", steps[0]),
@@ -112,14 +112,14 @@ def draw_mic(ax, pins, mx, my, steps=(60, 63)):
     gx, gy = pins[("R", "GND")]
     y_top, y_bot = myp - PITCH / 2, gy + PITCH / 2          # between the labels
     rx = 41.0
-    leg = dict(color=COL["mic"], lw=1.4)
+    leg = dict(color=COL["mic"], lw=1.4, ls=(0, (3, 2)))
     ax.plot([mxp, mxp - 2.2, rx, rx], [myp, y_top, y_top, -27.0], **leg)
     ax.plot([gx, gx - 2.2, rx, rx], [gy, y_bot, y_bot, -33.0], **leg)
-    ax.add_patch(Rectangle((rx - 1.1, -33.0), 2.2, 6.0, fc="#e9d8a6", ec="#7a5c00", lw=1.2, zorder=4))
+    ax.add_patch(Rectangle((rx - 1.1, -33.0), 2.2, 6.0, fc="#e9d8a6", ec="#7a5c00", lw=1.2, ls="--", zorder=4))
     for k, c in enumerate(("#8b4513", "#000000", "#d62728")):          # brown black red = 1 kOhm
         ax.add_patch(Rectangle((rx - 1.1, -28.6 - k * 1.1), 2.2, 0.5, fc=c, ec=c, zorder=5))
-    ax.text(rx - 1.8, -35.2, "1 kΩ: M− to GND", ha="right", va="center", fontsize=7.5, weight="bold",
-            color="#5a3d00")
+    ax.text(rx - 1.8, -36.0, "1 kΩ: M− to GND,\non the other side", ha="right", va="center", fontsize=7.5,
+            weight="bold", color="#5a3d00")
 
 
 def draw_earpiece(ax, pins, ex, ey, cap_x, steps=(70, 72)):
@@ -194,8 +194,8 @@ def bench(path):
         ax.text(x + 1.8, y, name, va="center", fontsize=9, weight="bold")
     wire(ax, pins[("R", "GND")], sp["GND"], COL["gnd"], lw=3, via=[(63, pins[("R", "GND")][1]), (63, sp["GND"][1])])
     wire(ax, pins[("R", "VCC")], sp["+5V"], COL["bat+"], lw=3, via=[(60, pins[("R", "VCC")][1]), (60, sp["+5V"][1])])
-    ax.text(65, -47, "VCC and the GND beside it:\n24 AWG, bench only (removed in phase B).\n"
-                     "The mic's resistor stays in that GND hole.", fontsize=8, color="#444")
+    ax.text(65, -47, "VCC and the GND beside it:\n24 AWG, bench only (removed in phase B).", fontsize=8,
+            color="#444")
 
     # ---- antennas
     ufl1, ufl2 = pins["UFL1"], pins["UFL2"]

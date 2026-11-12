@@ -61,7 +61,7 @@ like a book while you work.
 |---|---|---|
 | T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: TX, RX, VDD, GND (back ⑤, red pads) | thin, about 12 cm: from the KTRON's holes, under the board to the free strip (⑫), then up the strip to the old Grove corner. TX goes to TX, RX to RX (straight across, tested on the bench) |
 | Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 12 cm, either way round |
-| Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M−. **Also a 1 kΩ resistor from M− to J3's GND**, on the component side, with its legs sleeved ([wiring.md](wiring.md), section 4) | thin, about 18 cm: it runs from the bottom of the phone to the top of the board, and the case must still open. Tuck spare wire under the board |
+| Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M−. **Also a 1 kΩ resistor from M− to ground**, on the SIM-card side, lying flat ([wiring.md](wiring.md), section 4) | thin, about 18 cm: it runs from the bottom of the phone to the top of the board, and the case must still open. Tuck spare wire under the board |
 | Protection board P+ | Modem switch, middle pin (front, left wall) | 24 AWG |
 | Modem switch, one outer pin | KTRON C11's + leg (470 µF) | 24 AWG. With the wire above, about 15 cm in total |
 | Protection board P− | KTRON GND (regulator tab) | 24 AWG, short |
