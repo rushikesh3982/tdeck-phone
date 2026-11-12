@@ -1,6 +1,6 @@
 # Bill of materials
 
-Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
+Prices are in rupees and include GST unless noted. Status as of 12 Nov 2026.
 
 ## To order from Robu (7 Nov 2026)
 
@@ -20,7 +20,8 @@ capacitors, and the protection board above (received 12 Nov 2026, two: one spare
 | **18650 cell: LG MJ1**, 3400 mAh | [Robu](https://robu.in/product/lg-18650-mj1-3400mah-3c-li-ion-battery/) | received (12 Nov 2026) | 65.2 × 18.5 mm. Genuine cells only, from a reputable seller. Replaces the 5000 mAh pouch |
 | **18650 battery holder, SMD** | [Robu](https://robu.in/product/18650-battery-holder-smd-smt/) | received (12 Nov 2026) | Only its two spring contacts are used (7 × 16 mm, spring 5 mm deep), held by ribs in the case. Their solder feet are cut off |
 | **GPS antenna: Eteily ET-GPL12-5L15C-U-184**, ×2 | [Eteily](https://www.eteilytechnologies.in/gps-active-ceramic-antennas.html) | ordered (quotation of 10 Nov 2026) | Active GPS/GLONASS ceramic patch, 18 × 18 × 4 mm, 15 cm cable, U.FL, 2.2–5 V. Replaces the KTRON patch. Its board is expected to be about 18.5 mm: check on arrival |
-| **4G antenna** | your choice | to choose | The full-band sticker doesn't fit. Free space: a 10.7 mm band along the bottom and up the right side to 52 mm, or the top-right SMA hole |
+| **4G antenna, inside (try first): 41 × 12 mm flexible LTE antenna** (RESMA-41) | [Rajiv Electronics](https://rajivelectronics.com/product/4g-2-4ghz-4dbi-lte-fpc-antenna-41x12mm-8cm-cable-ufl-connector) | to order | ₹47. Sticks on, U.FL plug, 8 cm cable. Lies on the floor along the bottom, below the modem board. No datasheet: the page says only "4G LTE and 2.4 GHz", 4 dBi. Keep it only if it passes the signal test ([docs/design-18650.md](docs/design-18650.md#4g-antenna)). The full-band sticker doesn't fit inside |
+| **4G antenna, outside (backup): "698–960 MHz & 1710–2690 MHz 1.2 / 2 dBi Gain Rubber Duck Antenna"** (Lambdoid LWC-4G-RD-RA-SMA-PLUG-02) | [Robu](https://robu.in/?p=1444585) | to order | 50 mm long, 10 mm across, right-angled, SMA male, VSWR under 2, covering every Indian 4G band (from its datasheet). Same maker as the LoRa stubby. Screws into the top-right SMA hole, with the KTRON IPX → SMA cable (owned) |
 | 4 × M3 heat-set inserts + M3 screws | owned | owned | For the 8 mm standoffs, as now |
 | 2 × M2 × 8 mm countersunk screws + nuts | any | check | For the modem switch, which sits deeper in the 18650 back: 6 mm screws are too short there |
 
@@ -33,7 +34,7 @@ capacitors, and the protection board above (received 12 Nov 2026, two: one spare
 | 1 | KTRON KSTM1548: SIMCom A7672S 4G + GNSS development board | [ktron.in](https://www.ktron.in/product/sim-a7672s-4g-lte-2g-gnss-development-board/) | ₹1,530 | owned, bench-tested | 54.33 × 57.23 mm, 28 g |
 | 2 | KTRON GPS active patch antenna KSTA1417 | [ktron.in](https://www.ktron.in/product/gps-antenna-with-ufl-female-connector/) | ₹105 | owned, works | 25 × 25 × ~8 mm, 4 corner holes, short u.FL lead |
 | 3 | KTRON IPX → SMA female antenna cable, 10 cm | [ktron.in](https://www.ktron.in/product/rf-cable-ipx-to-sma-female-10cm-length/) | ≈₹44 | owned | 10 cm for the top-right corner (recommended). The 15 cm version ([KSTA0380](https://www.ktron.in/product/rf-cable-ipx-to-sma-female/), ₹42) if the 4G antenna goes top-left. Comes with nut and washers |
-| 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | **not owned: fallback only** | The bench tests used the full-band sticker (below) instead. Buy one only if the sticker is too weak inside the case. **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
+| 4 | LTE antenna, SMA male, **rated 700–2700 MHz** | any | ~₹100–200 | **not owned: fallback only** | The bench tests used the full-band sticker (below) instead. Buy one only if the sticker is too weak inside the case. The Lambdoid 50 mm stubby in the 18650 list above would do. **Not** the KTRON "4G LTE 3.5 dBi foldable": out of stock, and its own spec says 2.4–5 GHz |
 | 5 | Sunrom 6027 electret microphone, 6 × 2.7 mm with pins, ×3 | [sunrom.com](https://www.sunrom.com/p/omnidirectional-electret-condenser-microphone-6x27mm-with-pins-6027-capacitive-sensitivity-60db) | ₹20.70 each | owned, with spares | Needs the 1 kΩ resistor below to work ([docs/wiring.md](docs/wiring.md), section 4) |
 | 6 | Multimeter | any | ~₹250 | owned | Needed **before** soldering the battery wire to the modem board |
 | 7 | Modem power switch: **SS-12F15** slide switch (owned, 4 mm knob) + 2 × M2 countersunk screws (6–8 mm) + 2 × M2 nuts | owned / any | ~₹10 | owned | Fits Alley Cat's left-side mount. Circuit in [docs/wiring.md](docs/wiring.md), section 2. The earlier two-MOSFET switch that follows the T-Deck (AO3401A + AO3400A + 2 × 100 kΩ) is documented there as an alternative, not used |

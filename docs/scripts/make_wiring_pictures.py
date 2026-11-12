@@ -285,7 +285,7 @@ def phone_18650(path):
     ax.text(sw_x + 1.6, sw["out"][1], "outer", va="center", fontsize=7.5)
 
     # ---- C11 and the regulator's tab: the modem's battery feed (component side; places only roughly drawn)
-    c11, reg = (40.0, -8.5), (19.0, -8.5)
+    c11, reg = (41.5, -8.5), (19.0, -8.5)
     for p, lab in ((c11, "C11 + leg\n(470 µF)"), (reg, "regulator's\nmetal tab (GND)")):
         ax.add_patch(Circle(p, 1.1, fc="white", ec="#222", lw=1.5, zorder=5))
         ax.text(p[0], p[1] - 1.9, lab, ha="center", va="top", fontsize=7.5, weight="bold")
@@ -342,8 +342,8 @@ def phone_18650(path):
     ufl1, ufl2 = pins["UFL1"], pins["UFL2"]
     ax.plot([ufl1[0], ufl1[0]], [ufl1[1] + 1.5, 7.5], color=COL["rf"], lw=2)
     ax.plot([ufl1[0] - 2, ufl1[0], ufl1[0] + 2], [10.0, 7.5, 10.0], color=COL["rf"], lw=2)
-    ax.text(ufl1[0] + 2.0, 4.0, "4G antenna\n(your choice)", ha="left", va="center", fontsize=8, color=COL["rf"],
-            weight="bold")
+    ax.text(ufl1[0] + 2.0, 4.0, "4G antenna:\n41 × 12 mm inside,\nor stubby outside", ha="left",
+            va="center", fontsize=7, color=COL["rf"], weight="bold")
     gx = -8.0
     ax.plot([ufl2[0] - 1.5, gx, gx], [ufl2[1], ufl2[1], -70.0], color=COL["rf"], lw=2)
     ax.add_patch(Rectangle((gx - 13, -84), 26, 14, fc="#e0d2b8", ec=COL["rf"]))

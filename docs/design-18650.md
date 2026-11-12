@@ -23,7 +23,7 @@ case/x-back-5000mah/stl/) still describe the current build: the X back with the 
 | **SIM slit** | Back, left side | Front, left side, in a finger scoop |
 | **Speaker grille** | Left side | Right side, below the T-Deck's switch (Alley Cat's same cavity and grille) |
 | **Top-edge badge** | Alley Cat's cat | The rushiWorks logo. Her cat stays on the back's inside floor |
-| **4G antenna** | Full-band sticker on the right side | Your choice. Space is kept free for it inside the back |
+| **4G antenna** | Full-band sticker on the right side | A 41 × 12 mm flexible antenna along the bottom, inside. Backup: a 50 mm stubby in the top-right hole |
 
 Sizes are at 100 %. The printed parts are 1 % larger (see [Printing](#printing)).
 
@@ -151,13 +151,38 @@ drawing yet.
 
 ## 4G antenna
 
-Your choice and your fitting. The free spaces inside the back are:
-- the 10.7 mm band along the bottom, under the modem board;
-- the right side, 17–52 mm up from the bottom, beside the board. The T-Deck's speaker sits about 6 mm above the
-  lower part of it (16–36 mm up), in the front, so only a flat antenna fits there.
+Two antennas, chosen on 12 Nov 2026: a small flexible one inside, tried first, and a stubby in the top-right hole as
+the backup. Only one of them goes on the modem's 4G socket (U.FL1). The full-band sticker used for the bench tests
+(110 × 20 mm) doesn't fit inside. Both are in the [parts list](../bom.md#18650-version-12-nov-2026).
 
-The full-band sticker used for the bench tests (110 × 20 mm) doesn't fit these. The SMA hole in the top-right corner
-is still there for an external antenna.
+**Inside, tried first: 41 × 12 mm flexible LTE antenna** (Rajiv Electronics, RESMA-41, ₹47)
+- **What it is:** a flexible printed antenna that sticks on, with an 8 cm cable and a U.FL plug. There's no
+  datasheet: the seller gives only "4G LTE and 2.4 GHz" and 4 dBi.
+- **Where:** on the floor along the bottom, between the two lower standoffs, just below the modem board's lower edge.
+  There are 45 mm of room there at its 12 mm width (checked on the back's model). Its lower edge lies on the curve
+  where the floor meets the bottom wall, up to 1 mm high, which is fine for a thin, flexible antenna. Put its cable
+  end on the right.
+- **Cable:** plug it into U.FL1 before screwing the modem board down. The socket is on the board's underside, 3.6 mm
+  in from its right edge. Lay any spare cable and other wires beside the antenna, not on it.
+- **What to expect:** it is less than half the length of the sticker, so the signal will be weaker, most on the low
+  bands (850 MHz, which Jio uses, and 900 MHz, which Airtel uses) and most indoors. A similar-sized antenna with a
+  datasheet (Taoglas FXP40) measures about 25 % efficiency at 824–960 MHz.
+- **Test it** after assembly, as in [bring-up.md](bring-up.md) ("Checking the sticker antenna inside the case"):
+  read the signal (RSRP) with `AT+CPSI?` with this antenna fitted. Then read it with the sticker lying in the open at
+  the same spot, on the same band. Within about 5 dB of the sticker: keep it. Much weaker: fit the stubby.
+
+**Outside, the backup: 50 mm right-angled stubby** (Lambdoid LWC-4G-RD-RA-SMA-PLUG-02, from Robu)
+- **What it is:** 50 mm long and 10 mm across, SMA male. Its datasheet gives 698–960 and 1710–2690 MHz, which covers
+  every Indian 4G band, and VSWR under 2. Same maker as the LoRa stubby.
+- **Where:** screwed into the top-right SMA hole. Being right-angled, it lies along the phone's top edge instead of
+  sticking up.
+- **Cable:** the KTRON IPX → SMA cable you have (10 cm), from U.FL1 past the cell's right end to the hole. It needs
+  roughly 9 cm, so check that it reaches at the dry fit. The 15 cm version (₹42) is the spare plan.
+- **What to expect:** the stronger signal of the two, because it sits outside, away from the T-Deck's board and the
+  cell.
+
+**The top-right hole:** with only the inside antenna, close it with the GSM antenna plug from
+[case/18650/stl/](../case/18650/stl/).
 
 ## Wiring
 
@@ -311,7 +336,7 @@ Everything else is tested after assembly, through the T-Deck's USB-C.
 ## Still to do
 
 1. **GPS antenna:** check its real size and where its amplifier sits (above).
-2. **4G antenna:** your choice. The free spaces are listed above.
+2. **4G antenna:** fit the 41 × 12 mm antenna and test its signal. The stubby is the backup ([above](#4g-antenna)).
 3. **Assembly steps:** write them for this version, after the back's test print.
 
 **Things to watch after assembly:**
