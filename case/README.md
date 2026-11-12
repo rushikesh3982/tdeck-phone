@@ -32,6 +32,22 @@ already scaled, so **print them at 100 % in the slicer**. [stl/test-prints/](stl
 **Assembly diagrams** (what every cut-out is for, and where each part goes) and the step-by-step assembly order are in
 [../docs/assembly.md](../docs/assembly.md).
 
+## 18650 version (print files ready in stl/18650/)
+
+A slimmer phone, 26.5 mm instead of 37, with one 18650 cell in a grip across the top of the back. Everything about it
+is in [../docs/design-18650.md](../docs/design-18650.md), including which files to print and how. Three scripts make
+its parts, and the 101 % print files are in [stl/18650/](stl/18650/): `back-18650.stl` (saved standing on its top
+edge, as it prints), `front-18650.stl` and `earpiece-holder-18650.stl`. Alley Cat's small parts are the same as for the
+current build.
+
+| Script | Part | Changed from |
+|---|---|---|
+| [scripts/make_back_18650.py](scripts/make_back_18650.py) | Back: the grip and the cell's channel, the modem board below it on 8 mm standoffs, the modem switch on the right wall (Alley Cat's slot and screw holes, copied from her front), the network-light window, the open GPS top slot, two ribs at each end of the cell to hold a battery contact, with + and − engraved beside them, and a thin wall along the cell that carries the protection board, with slits for its nickel strips. Grooves outside, no logo. Her cat and "Alley Chat TD1 S" stay inside | `Alley Chat TD1 S Inside Cat Edition.stl`, 0.5 mm deeper |
+| [scripts/make_front_18650.py](scripts/make_front_18650.py) | Front: the SIM slit in a finger scoop, Alley Cat's speaker cavity and grille moved to the right side, larger SIM and microSD pictures, the wider and lower earpiece pocket, a notch in each side wall for a battery contact's top, and the rushiWorks logo on the top badge | the front above (`make_front.py`) |
+| [scripts/make_earpiece_holder_18650.py](scripts/make_earpiece_holder_18650.py) | Low earpiece holder, with a flat roof for the GPS antenna to stand on | the earpiece holder below |
+
+The rest of this page describes the current build.
+
 ## Front: what changed
 
 Only these changes were made. The outer size and everything else are exactly as the original.
@@ -350,3 +366,15 @@ python scripts/make_diagrams.py build100/front-earpiece-mic.stl build100/back-mo
 ```
 
 The back script reads the logo from `logo/rushi-logo.jpg`, and also needs pillow and matplotlib to trace it.
+
+**The 18650 version,** at 101 %, into [stl/18650/](stl/18650/). The back also reads Alley Cat's switch slot from her
+front file, and the front script reads the logo:
+
+```
+python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/back-18650.stl
+python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/front-18650.stl
+python scripts/make_earpiece_holder_18650.py --scale 1.01 stl/18650/earpiece-holder-18650.stl
+```
+
+Its pictures are drawn by [../docs/scripts/make_18650_pictures.py](../docs/scripts/make_18650_pictures.py) from the
+100 % parts.

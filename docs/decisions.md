@@ -101,6 +101,9 @@ compromise.
 
 ## Modem power switch: SS-12F15 slide switch on the left side (decided 6 Nov 2026)
 
+*In the 18650 version, the same switch and the same slot move to the back's right wall
+([below](#slimmer-phone-one-18650-cell-in-a-grip-decided-9-nov-2026)).*
+
 **What:** a small SS-12F15 slide switch (owned, 4 mm knob) in the modem's battery + wire. It sits in Alley Cat's
 original slide-switch mount on the front's left side, which was drawn for exactly this switch: 15 mm screw spacing,
 2.2 mm holes, a 6.9 × 3.4 mm slot for its 3 × 3 mm knob. The mount is restored; it had been filled. Circuit in
@@ -204,6 +207,8 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 
 ## Case: Alley Cat TD1, Standard front (GPS inserts) + X back
 
+*The current build. The 18650 version uses her slim S back instead ([below](#slimmer-phone-one-18650-cell-in-a-grip-decided-9-nov-2026)).*
+
 **Why:** the Standard front keeps the T-Deck speaker pocket. The GPS version's module pocket becomes the earpiece
 pocket. The X back gives 23 mm of depth, enough for the
 modem board on 9 mm standoffs plus the 9 mm battery (22.1 mm stack).
@@ -211,3 +216,42 @@ modem board on 9 mm standoffs plus the 9 mm battery (22.1 mm stack).
 **Rejected:** Slim front (no speaker pocket), Nuts and TBall variants.
 
 Details in [case.md](case.md).
+
+## Slimmer phone: one 18650 cell in a grip (decided 9 Nov 2026)
+
+**What:** one 18650 cell (LG MJ1, about 3400 mAh) lies across the top of the back, inside a rounded grip. The modem
+board goes below it on 8 mm standoffs, in Alley Cat's slim S back made 0.5 mm deeper. The phone is 26.5 mm thick, and
+32.8 mm at the grip. Design in [design-18650.md](design-18650.md).
+
+**Why:**
+- **Too thick:** the current build is 37 mm, because the 9 mm pouch lies on top of the modem board.
+- **Same outline:** the case stays 110 × 76 mm. Option 2 would have made it 13 mm longer.
+- **Easy to buy:** genuine 18650 cells are sold in India, and one handles the modem's 2 A bursts easily. The 103565
+  pouch of option 1 was hard to find in the size needed.
+- **The grip helps:** your fingers rest on it when typing with both thumbs.
+
+**Rejected:** option 1 (103565 pouch beside the board) and option 2 (stretched case for the 5000 mAh pouch). See
+[slim-layout-plan.md](slim-layout-plan.md).
+
+**Accepted trade-offs:**
+- **Less battery:** about 3400 mAh, about two-thirds of the pouch.
+- **Wi-Fi and Bluetooth:** the cell's steel can sits behind the T-Deck's Wi-Fi/Bluetooth antenna, so their range may
+  drop. Calls, 4G and LoRa aren't affected.
+- **4G antenna:** the full-band sticker no longer fits. A smaller internal antenna or an external SMA one is needed.
+
+**Decided with it (10–12 Nov 2026):**
+- **GPS:** an Eteily 18 mm active antenna standing on its edge in the top slot, above the earpiece, in place of the
+  25 mm KTRON patch. It needs no window: GPS passes through plastic.
+- **Modem switch:** on the back's right wall, just below the grip, in Alley Cat's own slot and screw holes. It's set
+  so its knob stands out 0.1 mm, like Alley Cat's slider on the T-Deck's own switch, which also keeps the front's
+  lip whole.
+- **SIM slit:** in the front's left wall, in a finger scoop, because the board now sits at that height.
+- **Speaker:** Alley Cat's same cavity and grille, moved to the right side below the T-Deck's switch. The stretch
+  between the T-Deck's switch and the microSD slot is left alone: the notch that holds the T-Deck and the slot for
+  the switch's slider piece are there.
+- **Badge:** the rushiWorks logo on the top edge. Alley Cat's cat and "Alley Chat TD1 S" stay engraved inside the
+  back as her credit.
+- **Battery contacts:** taken from an 18650 holder and set into the case, instead of fitting the whole holder.
+- **No soldering at the battery (12 Nov 2026, the owner's idea):** a thin wall along the cell's modem side holds
+  the cell and carries the protection board. The board's own nickel strips pass through slits and are pressed
+  behind the contacts by the cell's springs. The contacts moved 2 mm toward the board so the strips reach.

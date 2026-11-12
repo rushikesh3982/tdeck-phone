@@ -5,6 +5,9 @@ are drawn from the actual case files ([case/scripts/make_diagrams.py](../case/sc
 
 This is the plan before the first dry fit. Expect small changes after it.
 
+> **18650 version:** these steps are for the current build. The 18650 version's assembly steps will be written once
+> its print files are built. Until then, see [design-18650.md](design-18650.md).
+
 ## The pictures
 
 **Front panel, outside:** every opening and what it's for. The four edges are unfolded around the screen side.

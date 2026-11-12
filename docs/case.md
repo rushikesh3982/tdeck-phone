@@ -7,6 +7,9 @@ shared under the same licence.
 
 The outside size of the case does not change.
 
+> **18650 version:** this page describes the current build (X back). The slimmer 18650 version uses Alley Cat's
+> S back, made 0.5 mm deeper, and changes both halves: see [design-18650.md](design-18650.md).
+
 ## Source files (Alley Cat's originals on Printables)
 
 You don't need to download anything to print: everything is in [case/stl/](../case/stl/). These are the

@@ -3,8 +3,11 @@
 A working mobile phone for India (voice calls, SMS, mobile data and GPS) built around a stock
 **LilyGO T-Deck**, a **SIMCom A7672S** 4G modem board and a modified 3D-printed case.
 
-**Status (7 Nov 2026):**
+**Status (12 Nov 2026):**
 - **Case:** printed and fits the T-Deck and all the parts (the files are built 1 % larger).
+- **Slimmer 18650 version:** designed, print files ready, not printed yet. 26.5 mm thick instead of 37, with one 18650 cell in a grip
+  across the top ([docs/design-18650.md](docs/design-18650.md)). The rest of these docs still describe the current
+  build.
 - **Modem, tested on the bench with a Jio SIM:**
   - registers on 4G with VoLTE;
   - makes and takes calls, with clear earpiece sound;
@@ -53,21 +56,22 @@ fallback and GNSS.
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
-| [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | Brainstorm (not designed yet): three options for a slimmer phone, about 27.5 mm instead of 37 |
+| [docs/design-18650.md](docs/design-18650.md) | The slimmer 18650 version (designed, not printed yet): what changes, the parts, the wires and the files |
+| [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | The brainstorm that led to it: three options for a slimmer phone (option 3 chosen) |
 | [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/](case/stl/) (built 1 % larger, which fits; print at 100 % in the slicer), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
 
 ## Next steps
 
 1. **Mic:** done. It works with a 1 kΩ resistor from M− to GND on the modem board
    ([docs/wiring.md](docs/wiring.md), section 4).
-2. **Antenna:** check that the full-band sticker antenna (used for 4G in all the bench tests) still works well
-   inside the closed case ([docs/wiring.md](docs/wiring.md), section 6).
-3. **Phase B:**
-   - Remove the 5 V bench wires.
-   - Feed the modem from the battery through the protection board and the slide switch.
-   - Move the data wires to the T-Deck's Grove pads ([docs/bring-up.md](docs/bring-up.md)).
-4. **Slimmer case (later):** see the brainstorm in [docs/slim-layout-plan.md](docs/slim-layout-plan.md).
-5. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and
+2. **18650 version** ([docs/design-18650.md](docs/design-18650.md)):
+   - Check the Eteily GPS antenna's real size when it arrives.
+   - Choose and fit the 4G antenna (the full-band sticker doesn't fit the free space).
+   - Print the back first ([case/stl/18650/](case/stl/18650/), ready), then the front and the earpiece holder.
+   - Write the assembly steps for this version.
+3. **Before assembly:** the battery-power checks and the data-wire continuity check
+   ([docs/design-18650.md](docs/design-18650.md#before-assembly)). Everything else is tested after assembly.
+4. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and
    a low-battery guard.
 
 ## Reference documents
@@ -94,7 +98,9 @@ fallback and GNSS.
   https://www.printables.com/model/741124-lilygo-t-deck-td1-case, licensed
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Modified case files from this project must be
   shared under the same licence, with this credit. Alley Cat's
-  cat-head logo, taken from her TD1 files, is on the front's top-edge badge as a visible credit.
+  cat-head logo, taken from her TD1 files, is on the front's top-edge badge as a visible credit. In the 18650
+  version the badge carries the rushiWorks logo instead, and her cat and "Alley Chat TD1 S" stay engraved on the
+  back's inside floor.
 - LilyGO T-Deck by LilyGO (Xinyuan-LilyGO).
 - KTRON for the published board drawings, reference circuit and Eagle library.
 
@@ -105,7 +111,7 @@ fallback and GNSS.
 - **Case files modified from Alley Cat's design.** These stay under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
 - **The rushiWorks name and logo** ([case/logo/rushi-logo.jpg](case/logo/rushi-logo.jpg), and the logo engraved on
-  the case's back cover).
+  the case: on the back cover, and on the front's top-edge badge in the 18650 version).
   These belong to Rushikesh Deshmukh. The MIT licence doesn't cover them, and CC BY-SA 4.0 doesn't license
   trademark rights, so neither licence lets anyone else use the name or logo.
 

@@ -2,12 +2,29 @@
 
 Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
 
-## Still to order (7 Nov 2026), both from Robu
+## To order from Robu (7 Nov 2026)
 
 | Part | Where | Notes |
 |---|---|---|
-| **1S Li-ion protection board, 3 A, two MOSFETs** ("1S 3.7V 3A 2MOS BMS") | [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/) | For the bare 5000 mAh cell. Why this one: see "Small parts" below. Cheap, so a spare is worth adding |
+| **1S Li-ion protection board, 3 A, two MOSFETs** ("1S 3.7V 3A 2MOS BMS") | [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/) | **Received 12 Nov 2026** (two, one spare). For the bare cell. Why this one: see "Small parts" below. Cheap, so a spare is worth adding |
 | **LoRa antenna: "865–868 MHz 1.8 dBi Gain Rubber Duck Antenna"** (Lambdoid LWC-868-RD-ST-SMA-PLUG-02) | [Robu](https://robu.in/product/865-868mhz-1-8-dbi-gain-rubber-duck-antenna/) | 50 × 10 mm stubby, SMA male, 865–868 MHz (India's LoRa band), **LoRa only** (no 4G). For the top-left hole, because the T-Deck's own antenna now serves 4G. **Not** Robu's "865–868 MHz 1 dBi" listing: that one is 210 mm long. Check first: the T-Deck must be the 868 MHz version, and the T-Deck's LoRa cable end must be plain SMA (a hole in the centre, not a pin) |
+
+## 18650 version (12 Nov 2026)
+
+Parts for the slimmer version ([docs/design-18650.md](docs/design-18650.md)). Everything else is the same as below:
+the KTRON board, earpiece, mic and its 1 kΩ resistor, the SS-12F15 switch with its M2 screws, the swapped
+capacitors, and the protection board above (received 12 Nov 2026, two: one spare; 32 × 4–5 mm with nickel strips).
+
+| Part | Where | Status | Notes |
+|---|---|---|---|
+| **18650 cell: LG MJ1**, 3400 mAh | [Robu](https://robu.in/product/lg-18650-mj1-3400mah-3c-li-ion-battery/) | received (12 Nov 2026) | 65.2 × 18.5 mm. Genuine cells only, from a reputable seller. Replaces the 5000 mAh pouch |
+| **18650 battery holder, SMD** | [Robu](https://robu.in/product/18650-battery-holder-smd-smt/) | received (12 Nov 2026) | Only its two spring contacts are used (7 × 16 mm, spring 5 mm deep), held by ribs in the case. Their solder feet are cut off |
+| **GPS antenna: Eteily ET-GPL12-5L15C-U-184**, ×2 | [Eteily](https://www.eteilytechnologies.in/gps-active-ceramic-antennas.html) | ordered (quotation of 10 Nov 2026) | Active GPS/GLONASS ceramic patch, 18 × 18 × 4 mm, 15 cm cable, U.FL, 2.2–5 V. Replaces the KTRON patch. Its board is expected to be about 18.5 mm: check on arrival |
+| **4G antenna** | your choice | to choose | The full-band sticker doesn't fit. Free space: a 10.7 mm band along the bottom and up the right side to 52 mm, or the top-right SMA hole |
+| 4 × M3 heat-set inserts + M3 screws | owned | owned | For the 8 mm standoffs, as now |
+| 2 × M2 × 8 mm countersunk screws + nuts | any | check | For the modem switch, which sits deeper in the 18650 back: 6 mm screws are too short there |
+
+**Not needed in the 18650 version:** the 5000 mAh pouch, the KTRON GPS patch, and the foam sheet.
 
 ## Version 1 parts (all owned now)
 
@@ -23,12 +40,12 @@ Prices are in rupees and include GST unless noted. Status as of 7 Nov 2026.
 | 8 | M3 heat-set inserts (4.5 mm hole), M3 screws, M2 self-tapping screws | any | — | owned | Case closure: 2× M3×5 inserts + 2× M3×8 screws. Modem board: 4 more M3 inserts + screws. GPS patch: M2 self-tappers |
 
 **Rough total** for items 1–7: about ₹2,100–2,200, before shipping and fasteners. The small parts below are owned too,
-except the protection board (to order, above).
+and the protection board has arrived.
 
 ### Small parts named in the plan
 
 - **1S Li-ion protection board, the 3 A two-MOSFET version:** "1S 3.7V 3A 2MOS BMS" (DW01A + two 8205A in parallel),
-  about 33 × 7 × 3 mm, e.g. [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/). The 5000 mAh cell is bare and has no protection circuit
+  measured 32 × 4–5 mm with a nickel strip on each end, e.g. [Robu](https://robu.in/product/1s-3-7v-3a-2mos-bms-li-ion-18650-battery-protection-board/). The 5000 mAh cell is bare and has no protection circuit
   of its own (see [docs/wiring.md](docs/wiring.md), section 2). The two MOSFETs in parallel halve the resistance, so the
   modem's 2 A bursts drop less voltage and stay well below the overcurrent trip. The 1-MOSFET boards trip at about 3 A, and
   sooner when the battery is low. Thresholds: overcharge about 4.25 V, overdischarge about 2.3–2.5 V.

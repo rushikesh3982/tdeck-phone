@@ -1,9 +1,8 @@
 # Slim layout plan
 
-**Status: brainstorm only (8 Nov 2026). Nothing here is designed yet.** The rest of the docs and the case files still
-describe the current build: the X back, the 5000 mAh battery over the modem board, and the GPS patch in the
-bottom-left corner. There are **three options** below. The redesign happens in one go once one is chosen and its
-open items are settled.
+**Status: option 3 chosen (9 Nov 2026) and designed. See [design-18650.md](design-18650.md).** This page is kept as
+the record of the brainstorm (8 Nov 2026). Some details of option 3 changed in the design: see
+[What the design changed](#what-the-design-changed) at the end of option 3.
 
 ## Why
 
@@ -17,10 +16,10 @@ All three stop stacking the battery on the modem board. That stack is what makes
 | | Now | Option 1 | Option 2 | Option 3 |
 |---|---|---|---|---|
 | **Idea** | Battery over the modem | 103565 battery beside the modem | Case 13 mm longer at the top, your 5000 mAh cell below the modem | One 18650 across the top, in a grip ridge |
-| **Size (mm)** | 110 × 76 × 37 | 110 × 76 × 27–28 | about 123 × 76 × 27.5 | 110 × 76 × 27.5, **33.5 at the grip** |
+| **Size (mm)** | 110 × 76 × 37 | 110 × 76 × 27–28 | about 123 × 76 × 27.5 | 110 × 76 × 27.5, **33.5 at the grip** (designed: 26.5, 32.8 at the grip) |
 | **Battery** | 5000 mAh | about 3000 mAh (to buy) | **5000 mAh (already owned)** | 3000–3500 mAh (to buy) |
 | **Case outline** | — | unchanged | 13 mm taller top bezel | unchanged |
-| **GPS** | 25 mm patch | small antenna, top pocket | in the taller top bezel | in the 15 mm strip at the bottom (to check) |
+| **GPS** | 25 mm patch | small antenna, top pocket | in the taller top bezel | in the 15 mm strip at the bottom (designed: in the top slot) |
 | **Main catch** | Too thick | Hard-to-find cell, less battery | Longer phone | Grip ridge; the cell sits behind the T-Deck's Wi-Fi/Bluetooth antenna |
 
 Common to all three: the modem board keeps its 9 mm standoffs for now; 4G uses an external SMA antenna (the internal
@@ -183,18 +182,31 @@ The old switch mount (55–76 mm) and the old speaker grille (32–48 mm) on thi
 The pictures are rough mock-ups built from the real print files: the back cut down to 8.5 mm, with a simple rounded
 ridge added.
 
-## Capacitors (to discuss later)
+### What the design changed
+
+The finished design is in [design-18650.md](design-18650.md). Compared with the idea above:
+
+- **Thinner:** 26.5 mm over most of the phone and 32.8 mm at the grip, built on Alley Cat's S back made 0.5 mm deeper.
+- **Grip:** round, 6.25 mm high, with sides blending in at 45° so the back prints standing up.
+- **Cell:** LG MJ1 (about 3400 mAh), held by contacts taken from an 18650 holder.
+- **Modem board:** on 8 mm standoffs, not 9.
+- **GPS:** an Eteily 18 mm active antenna standing on its edge in the top slot, over the earpiece, not in the bottom
+  strip. The bottom strip and the right side are kept free for the 4G antenna instead.
+- **Side-wall parts:** the SIM slit is in the front's left wall, the speaker on the right below the T-Deck's switch,
+  and the modem switch on the back's right wall.
+
+## Capacitors (not pursued)
 
 If the 470 µF capacitor C11 were replaced by flat polymer capacitors (about 3 mm tall), the tallest part under the
 board would be the regulator (about 4.5 mm). The standoffs could then drop to about 5 mm, and the modem stack to about
 10 mm. Everything would then fit inside Alley Cat's 7 mm S back (`Alley Chat TD1 S Inside Cat Edition.stl`), for a phone
-about 26 mm thick. **Left for later, once everything else is settled.**
+about 26 mm thick. **Not needed:** the 18650 design keeps the 470 µF laid flat, on 8 mm standoffs, in the S back made
+0.5 mm deeper.
 
-## Open items
+## Open items (closed)
 
-1. **Choose an option** (1, 2 or 3).
-2. **Option 1 only:** the battery seller's actual measured size, which must be 66 × 36 × 10 mm or less including the
-   tabs.
-3. **GPS antenna:** the Abracon APAM1866YA18 (active, 18 × 18 mm, 205 mm cable, element14 or DigiKey India). Its
-   amplifier needs **2.7–3.3 V**, so first measure the voltage on the KTRON's U.FL2 centre pin with GPS on.
-4. **Capacitors:** decide later whether to rework C11 to reach the S back's thickness.
+1. **Choose an option:** option 3, on 9 Nov 2026.
+2. **Option 1 only:** no longer needed.
+3. **GPS antenna:** the Eteily ET-GPL12-5L15C-U-184 (active, 18 × 18 mm, 15 cm cable, 2.2–5 V) was ordered instead of
+   the Abracon. The KTRON's GNSS socket gives 3.0 V (the modem's default, read back with `AT+CVAUXV?`).
+4. **Capacitors:** not reworked (above).
