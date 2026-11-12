@@ -68,7 +68,7 @@ Solder only the holes in brackets, and leave the rest empty.
 | VCC (right) | 5 V supply + | **Bench only**, removed in phase B. Check the supply's polarity with the multimeter first |
 | GND (right) | 5 V supply −, and the mic's resistor | The supply wire is bench only, removed in phase B. The resistor stays |
 | S+ and S− | Earpiece, through a **47 µF capacitor in each wire** | Each capacitor's **+ leg goes to the board** (the + leg is the longer one; the − side has a stripe). The earpiece itself goes either way round. Nothing goes to ground. This is the final wiring, so it can be soldered in for good (see below) |
-| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can. **Also solder a 1 kΩ resistor from M− to the GND hole in this row:** the mic gets no power without it (not shown in the picture; [wiring.md](wiring.md), section 4) |
+| M+ and M− | Mic (Sunrom 6027) | The pin in the insulating ring → M+. The pin joined to the metal can → M−. Check with the multimeter's continuity mode: the − pin beeps to the can. **Also solder a 1 kΩ resistor from M− to the GND hole in this row:** the mic gets no power without it (shown in the picture; [wiring.md](wiring.md), section 4) |
 | U.FL1 (top edge) | LTE antenna cable | Press straight down until it clicks |
 | U.FL2 (beside L2) | GPS patch | |
 

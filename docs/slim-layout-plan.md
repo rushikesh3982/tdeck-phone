@@ -153,10 +153,6 @@ The old switch mount (55–76 mm) and the old speaker grille (32–48 mm) on thi
   a natural home for the GPS antenna (the 18 mm Abracon patch fits beside the earpiece), and the earpiece can sit
   wherever feels best in that bezel.
 
-![Option 2, inside the back: the 5000 mAh battery across the bottom, the modem board above it](images/slim-option2-layout.png)
-
-![Option 2, front view: today's phone and the stretched one, with the taller top bezel](images/slim-option2-front.png)
-
 ## Option 3: one 18650 at the top, in a grip ridge
 
 - **The idea:** one 18650 cell (18.5 × 65 mm, about 67 mm with welded tabs) lies **across the top** of the back, just
@@ -177,10 +173,8 @@ The old switch mount (55–76 mm) and the old speaker grille (32–48 mm) on thi
   - **GPS** would go in the 15 mm strip at the bottom, which points down when the phone is in your hand.
   - **The side-wall parts** (SIM slit, modem switch, speaker) all move again, because the board sits lower.
 
-![Option 3: today's phone and the 18650 version from behind and from the side, at the same scale](images/slim-option3-18650-grip.png)
-
-The pictures are rough mock-ups built from the real print files: the back cut down to 8.5 mm, with a simple rounded
-ridge added.
+The rough mock-up pictures drawn for this brainstorm have been removed, now that the design is finished. The real
+pictures of option 3 are in [design-18650.md](design-18650.md).
 
 ### What the design changed
 

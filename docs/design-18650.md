@@ -1,6 +1,6 @@
 # 18650 version
 
-**Status (12 Nov 2026): designed, and the print files are ready in [case/stl/18650/](../case/stl/18650/). Not printed
+**Status (12 Nov 2026): designed, and the print files are ready in [case/18650/stl/](../case/18650/stl/). Not printed
 yet.** This is option 3 of the
 [slim layout plan](slim-layout-plan.md), chosen on 9 Nov 2026. The scripts that make its three new parts are in
 [case/scripts/](../case/scripts/). The battery contacts' holders were added on 12 Nov 2026, from the real contacts.
@@ -8,7 +8,7 @@ The GPS antenna hasn't arrived, so its slot is sized for the board we expect (se
 antenna can go in later: the case opens with its two screws.
 
 Until then, the other docs ([wiring.md](wiring.md), [assembly.md](assembly.md), [case.md](case.md) and the files in
-case/stl/) still describe the current build: the X back with the 5000 mAh pouch over the modem board.
+case/x-back-5000mah/stl/) still describe the current build: the X back with the 5000 mAh pouch over the modem board.
 
 ## At a glance
 
@@ -27,13 +27,13 @@ case/stl/) still describe the current build: the X back with the 5000 mAh pouch 
 
 Sizes are at 100 %. The printed parts are 1 % larger (see [Printing](#printing)).
 
-![Side view of today's phone and the 18650 version at the same scale](images/18650-side-view.png)
+![Side view of today's phone and the 18650 version at the same scale](../case/18650/images/18650-side-view.png)
 
 ## The back
 
-![The 18650 back from inside, with dashed outlines where each part sits](images/18650-back-inside.png)
+![The 18650 back from inside, with dashed outlines where each part sits](../case/18650/images/18650-back-inside.png)
 
-![The 18650 back from outside: the grip across the top holds the cell](images/18650-back-outside.png)
+![The 18650 back from outside: the grip across the top holds the cell](../case/18650/images/18650-back-outside.png)
 
 **Based on:** Alley Cat's slim S back (`Alley Chat TD1 S Inside Cat Edition.stl`), made **0.5 mm deeper**. That
 gives 12.7 mm behind the T-Deck: 8 mm standoffs, the 1.6 mm board, the 1.5 mm SIM holder, and about 1.6 mm for the
@@ -75,11 +75,11 @@ wire joints on top.
 
 ## The front
 
-![The 18650 front from inside, with what each cut-out is for](images/18650-front-inside.png)
+![The 18650 front from inside, with what each cut-out is for](../case/18650/images/18650-front-inside.png)
 
-![Left and right sides of the 18650 front from outside](images/18650-side-walls.png)
+![Left and right sides of the 18650 front from outside](../case/18650/images/18650-side-walls.png)
 
-![Right side with front and back together: the speaker grille, the T-Deck's switch, microSD and the modem switch](images/18650-right-side.png)
+![Right side with front and back together: the speaker grille, the T-Deck's switch, microSD and the modem switch](../case/18650/images/18650-right-side.png)
 
 **Based on:** the current front (`make_front.py`), so the earpiece grille, mic pocket and antenna cut-outs are as
 now.
@@ -116,7 +116,7 @@ now.
 - **Badge:** 19.5 × 12 mm, the width of the GPS slot. It stops where the top edge starts to curve and stands 1 mm
   proud. It carries the rushiWorks logo (14.9 × 10.4 mm, engraved 0.5 mm deep).
 
-![The top edge with the rushiWorks badge, screen up and screen down](images/18650-top-edge.png)
+![The top edge with the rushiWorks badge, screen up and screen down](../case/18650/images/18650-top-edge.png)
 
 ## The low earpiece holder
 
@@ -127,7 +127,7 @@ it, and the GPS antenna stands on them.
 - **Earpiece wires:** come up the holder's grooves, then pass between the T-Deck's top edge and the antenna's board
   to the space behind the T-Deck.
 
-![Cut through the top slot: earpiece, low holder, GPS antenna and cell](images/18650-top-slot.png)
+![Cut through the top slot: earpiece, low holder, GPS antenna and cell](../case/18650/images/18650-top-slot.png)
 
 ## GPS antenna
 
@@ -158,6 +158,14 @@ Your choice and your fitting. The free spaces inside the back are:
 
 The full-band sticker used for the bench tests (110 × 20 mm) doesn't fit these. The SMA hole in the top-right corner
 is still there for an external antenna.
+
+## Wiring
+
+![Every wire in the 18650 version: cell, protection board, modem switch, T-Deck, earpiece, mic and antennas](images/wiring-18650.png)
+
+The connections are the same as in the current build ([wiring.md](wiring.md)). Only the battery side and the modem
+switch's place change: they are explained under [Battery and power](#battery-and-power), and where each wire runs
+under [Wires inside](#wires-inside).
 
 ## Battery and power
 
@@ -195,7 +203,7 @@ the floor beside the channel's ends.
 
 ## Battery contacts
 
-![How a battery contact sits at the cell's end](images/18650-battery-contact.png)
+![How a battery contact sits at the cell's end](../case/18650/images/18650-battery-contact.png)
 
 **The contacts:** the two spring contacts from Robu's SMD 18650 holder. Each is a plate 7 mm wide and 16 mm tall. Its
 top is folded down into a spring, 5 mm deep with the plate, that reaches 10 mm down. A 7 mm solder foot is bent out
@@ -246,17 +254,21 @@ no grooves. Keep them clear of the spring and of the nickel strip.
 
 ## Printing
 
-**What to print:** built 1 % larger for ASA, like the current set. **Print them at 100 % in the slicer.** Each file is
-already turned the way it prints.
+> **Print it in ASA only.** The files are built 1 % larger to allow for ASA's shrinkage; in PLA, PLA+ or PETG the
+> parts would come out too large. ASA also takes the heat of a pocket or a car.
+
+**What to print:** every piece is in [case/18650/stl/](../case/18650/stl/), built 1 % larger for ASA like the current
+set. **Print them at 100 % in the slicer.** Each file is already turned the way it prints.
 
 | File | What it is | How it prints |
 |---|---|---|
-| [case/stl/18650/back-18650.stl](../case/stl/18650/back-18650.stl) | Back, with the grip | Standing on its top edge (111 mm tall), with a brim. The outside needs no supports. Inside, the standoffs, the channel under the cell and the support wall need a few supports, which stay hidden |
-| [case/stl/18650/front-18650.stl](../case/stl/18650/front-18650.stl) | Front | Screen side down, no supports |
-| [case/stl/18650/earpiece-holder-18650.stl](../case/stl/18650/earpiece-holder-18650.stl) | Low earpiece holder | On its T-Deck-side face, no supports |
-| [case/stl/alley-chat-td1-switch.stl](../case/stl/alley-chat-td1-switch.stl) | Alley Cat's slider for the T-Deck's switch | As in the current set |
-| [case/stl/alley-chat-td1-reset-button.stl](../case/stl/alley-chat-td1-reset-button.stl) | Alley Cat's reset button | As in the current set |
-| [case/stl/alley-chat-td1-x-antenna-plug.stl](../case/stl/alley-chat-td1-x-antenna-plug.stl) | Alley Cat's antenna plug | Only if the top-right antenna hole stays empty |
+| [case/18650/stl/back-18650.stl](../case/18650/stl/back-18650.stl) | Back, with the grip | Standing on its top edge (111 mm tall), with a brim. The outside needs no supports. Inside, the standoffs, the channel under the cell and the support wall need a few supports, which stay hidden |
+| [case/18650/stl/front-18650.stl](../case/18650/stl/front-18650.stl) | Front | Screen side down, no supports |
+| [case/18650/stl/earpiece-holder-18650.stl](../case/18650/stl/earpiece-holder-18650.stl) | Low earpiece holder | On its T-Deck-side face, no supports |
+| [case/18650/stl/alley-chat-td1-switch.stl](../case/18650/stl/alley-chat-td1-switch.stl) | Alley Cat's slider for the T-Deck's switch | As in the current set |
+| [case/18650/stl/alley-chat-td1-reset-button.stl](../case/18650/stl/alley-chat-td1-reset-button.stl) | Alley Cat's reset button | As in the current set |
+| [case/18650/stl/alley-chat-td1-x-antenna-plug-gsm.stl](../case/18650/stl/alley-chat-td1-x-antenna-plug-gsm.stl) | Alley Cat's antenna plug, for the 4G (GSM) hole, top-right | Only if that hole stays empty (an internal 4G antenna) |
+| [case/18650/stl/alley-chat-td1-x-antenna-plug-lora.stl](../case/18650/stl/alley-chat-td1-x-antenna-plug-lora.stl) | The same plug, for the LoRa hole, top-left | Only if that hole stays empty |
 
 **Print the back first.** It's the part most worth testing early: the grip, standing up on the bed, and the fit of
 the cell, contacts and protection board. First layer standing up: about 64 × 4 mm, so use a brim of 5–8 mm.
@@ -267,9 +279,9 @@ Run these from the `case/` folder, with Alley Cat's original files beside it (se
 [case/README.md](../case/README.md#making-the-files-again)):
 
 ```
-python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/back-18650.stl
-python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/front-18650.stl
-python scripts/make_earpiece_holder_18650.py --scale 1.01 stl/18650/earpiece-holder-18650.stl
+python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
+python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
+python scripts/make_earpiece_holder_18650.py --scale 1.01 18650/stl/earpiece-holder-18650.stl
 ```
 
 Without `--scale 1.01` they make the 100 % parts. `--stand` saves the back standing on its top edge, as it prints;
@@ -277,7 +289,8 @@ without it, the back keeps the design's position, which the pictures and checks 
 Cat's switch slot from her front file, which is why it needs both.
 
 The pictures on this page are drawn from the 100 % parts by
-[scripts/make_18650_pictures.py](scripts/make_18650_pictures.py).
+[case/scripts/make_18650_pictures.py](../case/scripts/make_18650_pictures.py). The wiring picture is drawn by
+[docs/scripts/make_wiring_pictures.py](scripts/make_wiring_pictures.py), which also draws the bench wiring picture.
 
 ## Before assembly
 

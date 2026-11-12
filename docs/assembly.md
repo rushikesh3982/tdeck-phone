@@ -12,25 +12,25 @@ This is the plan before the first dry fit. Expect small changes after it.
 
 **Front panel, outside:** every opening and what it's for. The four edges are unfolded around the screen side.
 
-![Front panel, outside](../case/images/assembly-front-outside.png)
+![Front panel, outside](../case/x-back-5000mah/images/assembly-front-outside.png)
 
 **Front panel, inside:** earpiece and mic pockets, antenna hex pockets, screw inserts.
 
-![Front panel, inside](../case/images/assembly-front-inside.png)
+![Front panel, inside](../case/x-back-5000mah/images/assembly-front-inside.png)
 
 **Back panel, inside:** where the modem board, SIM, GPS patch, capacitors, battery and cables go.
 
-![Back panel, inside](../case/images/assembly-back-inside.png)
+![Back panel, inside](../case/x-back-5000mah/images/assembly-back-inside.png)
 
 **Cut through the assembled phone:** how the layers stack, from the screen to the back cover.
 
-![How the layers stack](../case/images/assembly-stack.png)
+![How the layers stack](../case/x-back-5000mah/images/assembly-stack.png)
 
 ## Before you start
 
-- **Printed parts:** all in [case/stl/](../case/stl/), already built 1 % larger (print them at 100 % in the slicer): the [front](../case/stl/front-earpiece-mic.stl), the
-  [back](../case/stl/back-modem-gps.stl), the [earpiece holder](../case/stl/earpiece-holder.stl), and Alley Cat's
-  [Switch](../case/stl/alley-chat-td1-switch.stl) and [Reset Button](../case/stl/alley-chat-td1-reset-button.stl).
+- **Printed parts:** all in [case/x-back-5000mah/stl/](../case/x-back-5000mah/stl/), already built 1 % larger (print them at 100 % in the slicer): the [front](../case/x-back-5000mah/stl/front-earpiece-mic.stl), the
+  [back](../case/x-back-5000mah/stl/back-modem-gps.stl), the [earpiece holder](../case/x-back-5000mah/stl/earpiece-holder.stl), and Alley Cat's
+  [Switch](../case/x-back-5000mah/stl/alley-chat-td1-switch.stl) and [Reset Button](../case/x-back-5000mah/stl/alley-chat-td1-reset-button.stl).
 - **Fasteners:**
   - 6 × M3 × 5 heat-set inserts: 2 for the front, 4 for the back.
   - 2 × M3 × 8 screws for closing the case.
@@ -135,12 +135,12 @@ Details and checks are in [wiring.md](wiring.md).
 
      End-to-end, it still clicks in but isn't read (`SIM REMOVED`).
 
-     ![SIM slit and picture](../case/images/sim-picture.png)
+     ![SIM slit and picture](../case/x-back-5000mah/images/sim-picture.png)
    - Insert it with the modem off, or restart the modem afterwards: it only reads the SIM at start-up.
 2. **microSD (if used)**: follow the picture beside the slot on the phone's right side. With the phone screen-up,
    the gold contacts face up and the contacts end goes in first.
 
-   ![microSD slot and picture](../case/images/sd-picture.png)
+   ![microSD slot and picture](../case/x-back-5000mah/images/sd-picture.png)
 3. **Antennas**: screw the LoRa antenna onto the top-left connector, and the 4G antenna (700–2700 MHz) onto the
    top-right one. With the internal LTE sticker, push the printed antenna plug into the top-right hole instead.
 4. **Power**: switch on the T-Deck with its own switch (right side) and the modem with its switch (left side).

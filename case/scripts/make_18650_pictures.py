@@ -1,4 +1,4 @@
-"""Pictures of the 18650 version for docs/design-18650.md, drawn from the case files.
+"""Pictures of the 18650 version (case/18650/images/, shown in docs/design-18650.md), drawn from the case files.
 
 Usage:
     python make_18650_pictures.py <back.stl> <front.stl> <old back.stl> <old front.stl> <output folder>
@@ -18,7 +18,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Circle, Polygon as MPoly, Rectangle  # noqa: E402
 
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "case", "scripts"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import make_back_18650 as B  # noqa: E402
 import make_front_18650 as FF  # noqa: E402
 import make_earpiece_holder as H  # noqa: E402

@@ -4,8 +4,9 @@ Everything is soldered. The only plug is the battery's JST plug into the T-Deck.
 arrives without pin headers, and wires are soldered straight into its holes.
 
 > **18650 version:** the circuit is the same, with the 18650 cell in place of the pouch, the modem switch on the
-> back's right wall, and the Eteily GPS antenna in the top slot. The changes, and where the wires run, are in
-> [design-18650.md](design-18650.md).
+> back's right wall, and the Eteily GPS antenna in the top slot. Every wire of that version is in one picture,
+> [images/wiring-18650.png](images/wiring-18650.png). The changes, and where the wires run, are in
+> [design-18650.md](design-18650.md#wiring).
 
 ## KTRON board pads
 

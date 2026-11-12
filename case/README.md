@@ -6,39 +6,47 @@ https://www.printables.com/model/741124-lilygo-t-deck-td1-case, licensed
 changed versions of that design and are shared under the same licence, CC BY-SA 4.0. The originals are on
 Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
 
+> **Print these cases in ASA only.** Every file here is built 1 % larger to allow for how much ASA shrinks as it
+> cools, and that is what fits the T-Deck and the parts. PLA, PLA+ and PETG shrink less, so in those the parts come
+> out too large and the T-Deck sits loose. ASA also stands up to the heat of a pocket or a car far better than PLA.
+
+**Folders:** one per version of the case, each with `stl/` (every piece to print, already 1 % larger: print them at
+100 % in the slicer) and `images/` (the pictures in its notes):
+- [x-back-5000mah/](x-back-5000mah/): the build described on this page, the X back with the 5000 mAh pouch.
+- [18650/](18650/): the slimmer 18650 version, described in [../docs/design-18650.md](../docs/design-18650.md).
+
+Shared by both: [scripts/](scripts/) (the programs that make the STL files and pictures) and [logo/](logo/) (the
+logos they engrave).
+
 | File | What it is | Changed from |
 |---|---|---|
-| [stl/front-earpiece-mic.stl](stl/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, a microSD-direction picture beside the microSD opening, Alley Cat's left-side switch mount kept for the modem's SS-12F15 switch, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
-| [stl/test-prints/test-mic-coupon.stl](stl/test-prints/test-mic-coupon.stl) | Small test print: 18 mm of the bottom wall around the mic pocket | the front above |
-| [stl/test-prints/test-fit-ring-100.stl](stl/test-prints/test-fit-ring-100.stl), [test-fit-ring-101.stl](stl/test-prints/test-fit-ring-101.stl) | Test prints for the T-Deck's fit: the front's screen frame and walls, 9 mm tall, at 100 % and 101 % | the front above |
-| [stl/earpiece-holder.stl](stl/earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
-| [stl/back-modem-gps.stl](stl/back-modem-gps.stl) | Back with modem standoffs, SIM slit (with a picture showing which way the card goes), GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
+| [x-back-5000mah/stl/front-earpiece-mic.stl](x-back-5000mah/stl/front-earpiece-mic.stl) | Front, with earpiece grille, mic pocket, a second SMA antenna cut-out, a microSD-direction picture beside the microSD opening, Alley Cat's left-side switch mount kept for the modem's SS-12F15 switch, and Alley Cat's cat-head logo on the top-edge badge | `Alley Chat TD1 Standard Front GPS Inserts.stl` |
+| [x-back-5000mah/stl/earpiece-holder.stl](x-back-5000mah/stl/earpiece-holder.stl) | Small block that fills the earpiece pocket and holds the earpiece on the grille slot | new part, sized to the front's pocket |
+| [x-back-5000mah/stl/back-modem-gps.stl](x-back-5000mah/stl/back-modem-gps.stl) | Back with modem standoffs, SIM slit (with a picture showing which way the card goes), GPS patch cradle, network-LED window, the back's half of the old GPS-module slot filled, and the rushiWorks logo on the outside (first version: print and dry-fit) | `Alley Chat TD1 X Back Outside Cat Edition.stl` |
 
 Alley Cat's small parts are included **unchanged**, copied from the same Printables download (same licence and
-credit). They're only scaled by 1 % like the rest of the set (see the folder note below), so everything to print is in
-[stl/](stl/):
+credit). They're only scaled by 1 % like the rest of the set (see the folder note below), and copied into each
+version's folder, so everything to print for this build is in [x-back-5000mah/stl/](x-back-5000mah/stl/):
 
 | File | What it is | Original file |
 |---|---|---|
-| [stl/alley-chat-td1-switch.stl](stl/alley-chat-td1-switch.stl) | Slider for the T-Deck's own power switch (right side). Needed | `Alley Chat TD1 Switch.stl` |
-| [stl/alley-chat-td1-reset-button.stl](stl/alley-chat-td1-reset-button.stl) | Button for the T-Deck's reset (left side). Needed if you want to reach reset from outside | `Alley Chat TD1 Reset Button.stl` |
-| [stl/alley-chat-td1-x-antenna-plug.stl](stl/alley-chat-td1-x-antenna-plug.stl) | Blanks off an SMA hole that has no connector in it. **Needed only with the internal LTE sticker antenna**, which leaves the 4G (top-right) hole empty. With SMA antennas, both holes carry a connector (LoRa top-left, 4G top-right) | `Alley Chat TD1 X Antenna Plug.stl` |
+| [x-back-5000mah/stl/alley-chat-td1-switch.stl](x-back-5000mah/stl/alley-chat-td1-switch.stl) | Slider for the T-Deck's own power switch (right side). Needed | `Alley Chat TD1 Switch.stl` |
+| [x-back-5000mah/stl/alley-chat-td1-reset-button.stl](x-back-5000mah/stl/alley-chat-td1-reset-button.stl) | Button for the T-Deck's reset (left side). Needed if you want to reach reset from outside | `Alley Chat TD1 Reset Button.stl` |
+| [x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl](x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl), [...-lora.stl](x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-lora.stl) | Blanks off an SMA hole that has no connector in it: two identical copies, one for the 4G (GSM) hole (top-right) and one for the LoRa hole (top-left). **Needed only for a hole left empty**, for example the 4G hole with an internal antenna. With SMA antennas, both holes carry a connector (LoRa top-left, 4G top-right) | `Alley Chat TD1 X Antenna Plug.stl` |
 
-**Folders:** [stl/](stl/) has the six parts to print. They're **built 1 % larger** than Alley Cat's originals,
-because that's what fitted our T-Deck (see [Fit and scale](#fit-and-scale-print-the-test-ring-first)). They're
-already scaled, so **print them at 100 % in the slicer**. [stl/test-prints/](stl/test-prints/) has the small test pieces. [images/](images/) holds the pictures in these notes, [logo/](logo/) the two logos the scripts engrave, and
-[scripts/](scripts/) the programs that make the STL files and pictures.
+**Size:** the files are **built 1 % larger** than Alley Cat's originals, because that's what fits our T-Deck in ASA
+(see [Fit and scale](#fit-and-scale-asa-101-)). They're already scaled, so **print them at 100 % in the slicer**.
 
 **Assembly diagrams** (what every cut-out is for, and where each part goes) and the step-by-step assembly order are in
 [../docs/assembly.md](../docs/assembly.md).
 
-## 18650 version (print files ready in stl/18650/)
+## 18650 version (print files ready in 18650/stl/)
 
 A slimmer phone, 26.5 mm instead of 37, with one 18650 cell in a grip across the top of the back. Everything about it
 is in [../docs/design-18650.md](../docs/design-18650.md), including which files to print and how. Three scripts make
-its parts, and the 101 % print files are in [stl/18650/](stl/18650/): `back-18650.stl` (saved standing on its top
-edge, as it prints), `front-18650.stl` and `earpiece-holder-18650.stl`. Alley Cat's small parts are the same as for the
-current build.
+its parts, and the 101 % print files are in [18650/stl/](18650/stl/): `back-18650.stl` (saved standing on its top
+edge, as it prints), `front-18650.stl` and `earpiece-holder-18650.stl`, with copies of Alley Cat's small parts (the
+switch slider, the reset button and two antenna plugs), so the folder has every piece to print.
 
 | Script | Part | Changed from |
 |---|---|---|
@@ -91,7 +99,7 @@ that points toward your mouth when the phone is at your right ear.
   0.35 mm, the closed eyes and nose 0.7 mm deep.
 - **Orientation:** it reads upright when the phone lies screen-up, with the ears toward the screen side.
 
-![Top edge with the phone screen-up: 4G SMA cut-out, Alley Cat's cat-head badge, LoRa SMA cut-out](images/front-top-edge.png)
+![Top edge with the phone screen-up: 4G SMA cut-out, Alley Cat's cat-head badge, LoRa SMA cut-out](x-back-5000mah/images/front-top-edge.png)
 
 **Modem switch mount (Alley Cat's original, kept).** The GPS version's slide-switch mount on the left side holds
 the modem's on/off switch, an **SS-12F15**. That's the switch the mount was drawn for, with the same 15 mm screw
@@ -140,16 +148,16 @@ SIM picture on the back.
 - **Where the direction comes from:** the owner's photo of a card beside the T-Deck's slot, 7 Nov 2026. LilyGO's
   documentation doesn't say which way it goes.
 
-![The microSD opening and the picture beside it, on the phone's right side](images/sd-picture.png)
+![The microSD opening and the picture beside it, on the phone's right side](x-back-5000mah/images/sd-picture.png)
 
 ## Earpiece holder
 
-[stl/earpiece-holder.stl](stl/earpiece-holder.stl) is a new printed part, 16.0 × 6.9 × 16.5 mm. It fills the front's old
+[x-back-5000mah/stl/earpiece-holder.stl](x-back-5000mah/stl/earpiece-holder.stl) is a new printed part, 16.0 × 6.9 × 16.5 mm. It fills the front's old
 GPS-module pocket and keeps the earpiece pressed onto the grille slot. In the GPS version of the case, the
 module's slot ran from the front up into the back. The back's half is now filled solid (see the back changes
 below), so the holder only fills the front's part.
 
-![Earpiece holder: views, and a cut through the closed case](images/earpiece-holder.png)
+![Earpiece holder: views, and a cut through the closed case](x-back-5000mah/images/earpiece-holder.png)
 
 - **Cup:** the earpiece sits in a 12.4 mm long cup on the holder's underside, over the slot.
   - **Sides:** the holder is only 6.9 mm wide, too narrow for a wall on both sides of a 6 mm earpiece. So the cup
@@ -182,9 +190,9 @@ it. The cat is filled flush, and the **rushiWorks logo** is engraved in its plac
 - **Inside floor:** Alley Cat's engraved cat head and "Alley Chat TD1 X" text (hidden once assembled) are filled
   flat. The designer is credited by the badge kept on the front's top edge and in the README.
 
-![Back cover from outside: Outside Cat groove layout with the rushiWorks logo](images/back-outside.png)
+![Back cover from outside: Outside Cat groove layout with the rushiWorks logo](x-back-5000mah/images/back-outside.png)
 
-![Back from inside: layout of the modem board and GPS patch](images/back-layout.png)
+![Back from inside: layout of the modem board and GPS patch](x-back-5000mah/images/back-layout.png)
 
 **Old GPS-module slot filled.** The GPS version's module slot continued from the front's pocket up into the back:
 16.4 × 6.1 mm, 10 mm tall, in the thick block between the two case-screw holes. Only the earpiece uses the
@@ -212,7 +220,7 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
   The two left columns' feet used to poke up to 1.5 mm out through that curve. Everything added to the back is now
   trimmed to the original cover's outer shape, so nothing shows outside (fixed 6 Nov 2026).
 
-  ![Left side of the back from outside, before and after the fix](images/back-left-edge-fix.png)
+  ![Left side of the back from outside, before and after the fix](x-back-5000mah/images/back-left-edge-fix.png)
 - **Inserts:** each column has a 4.5 mm hole, 6 mm deep, for an M3 × 5 heat-set insert. The board is held with
   M3 × 6 screws from its solder side.
 - **Board orientation:** component side down toward the back cover. The SIM edge faces the phone's left side,
@@ -242,7 +250,7 @@ the slot, so the block now runs unbroken between the screw holes and caps the ea
   - **Why beside the slit:** a first version sat under the slit, but the wall there is flat for only about 3 mm
     before it curves into the back's rounded edge, which spoiled it.
 
-  ![The SIM slit and the picture beside it, on the phone's left side](images/sim-picture.png)
+  ![The SIM slit and the picture beside it, on the phone's left side](x-back-5000mah/images/sim-picture.png)
 
 The SIM slit is also shown from outside in the "after" half of the picture under *Modem standoffs* above (drawn
 before the SIM picture was added).
@@ -275,12 +283,11 @@ in [../docs/wiring.md](../docs/wiring.md), section 6. With it, the top-right SMA
 holder + 1 foam + 9 battery = 22.1 mm. The battery (65 × 55 × 9 mm) lies over the board, its long side running top
 to bottom, with its connector end toward the bottom, over the patch.
 
-## Fit and scale: print the test ring first
+## Fit and scale (ASA, 101 %)
 
 **Our result (7 Nov 2026):** the parts built at **101 %**, printed in **ASA**, fit the T-Deck and all the parts
 well. That matches other builders' reports: ASA shrinks a little more than PLA or PETG as it cools. So the
-files in [stl/](stl/) are the 101 % set. The 100 % set was removed (it's in the git history, and the scripts can
-rebuild it).
+files in each version's `stl/` folder are the 101 % set, for ASA only.
 
 **The T-Deck's fit is tight on purpose.** For the first 5 mm above the screen face, the front's inside is exactly
 68.00 mm wide. That's LilyGO's width for the T-Deck, with no clearance. Above that, a 1.5 mm tall ridge narrows it to
@@ -296,16 +303,8 @@ millimetre.
 - It does **not** fit the T-Deck Plus, which is a different, larger device (115 × 72 × 20 mm). This case is for the
   original T-Deck (100 × 68 × 11 mm).
 
-**If you're building one on a different printer or filament:**
-1. **Print the 101 % ring:** `stl/test-prints/test-fit-ring-101.stl`, screen side down, in the filament you'll use
-   for the case. It takes about an hour.
-2. **Try the fit:** clean the inside edges, then press the T-Deck in screen first, without forcing it.
-   - **Right:** it needs a firm push, the ring flexes slightly, it clicks in, and it doesn't rattle.
-   - **Too tight:** it won't go in without a lot of force.
-   - **Too loose:** it drops in or wobbles.
-3. **If it's right:** print the files in [stl/](stl/) as they are.
-4. **If it's loose:** print `stl/test-prints/test-fit-ring-100.stl`. If that one is right, rebuild the parts at
-   100 % with the scripts (see [Making the files again](#making-the-files-again)).
+**Only ASA:** the case is designed and sized for ASA. PLA, PLA+ and PETG shrink less, so their parts would come out
+about 1 % too large and the T-Deck would sit loose.
 
 **Don't scale files in the slicer.** Scaling in the slicer would also move the parts we added. At 101 %, the modem standoffs would be 0.5 mm further apart than
 the board's holes, and the M3 screws only have 0.2 mm of play in them. The 101 % set is built with the scripts'
@@ -318,21 +317,21 @@ the board's holes, and the M3 screws only have 0.2 mm of play in them. The 101 %
 - **Earpiece holder:** its outside grows with the pocket, but the earpiece cup stays true to size. Checked: it touches
   neither half.
 - **Switch, Reset Button, Antenna Plug:** scaled by 1 %, because they fit openings in the case.
+- **18650 version:** the parts that must match real parts are built at their true size in the scaled case too: the
+  standoffs, the cell's channel, the battery contacts' holders and the modem switch's mount.
 
 ## Printing
 
 - Print the files as they are oriented, outer face down on the bed (the screen side for the front), with no
   supports. The earpiece slot is vertical, the mic pocket has a 45° roof, and the back's standoffs and cradle grow
   straight up.
-- **ASA** (ours), PLA+ or PETG; 0.2 mm layers, 3 perimeters, 20 % infill. The files are sized for ASA. PLA+ or PETG
-  shrink less, so with those, print the fit-test ring first.
-- **Heat-set inserts:** iron at about 240–255 °C in ASA (about 220 °C in PLA+, 240–250 °C in PETG). Let the insert
-  sink under light pressure and stop when it's flush. Ventilate when heating ASA.
+- **ASA only**; 0.2 mm layers, 3 perimeters, 20 % infill.
+- **Heat-set inserts:** iron at about 240–255 °C. Let the insert sink under light pressure and stop when it's flush.
+  Ventilate when heating ASA.
 - The earpiece holder is the exception: lay it on its wire-groove face (see [Earpiece holder](#earpiece-holder)).
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
-- **On a different printer or filament, print the fit-test ring first** (see [Fit and scale](#fit-and-scale-print-the-test-ring-first)).
-- **Print `stl/test-prints/test-mic-coupon.stl` before the front** (a few minutes). Check that the mic slides in and sits against the skin. If
-  it's too tight or too loose, the pocket size can be changed in the script.
+- **The 18650 version** prints differently (its back stands on its top edge): see
+  [../docs/design-18650.md](../docs/design-18650.md#printing).
 
 ## Making the files again
 
@@ -340,41 +339,49 @@ The scripts make every part from Alley Cat's original Printables files. All size
 script. They need Python with numpy, trimesh, shapely and manifold3d. Run them from this `case/` folder, with the
 original files beside it.
 
-The print set in [stl/](stl/), at 101 %:
+The print set in [x-back-5000mah/stl/](x-back-5000mah/stl/), at 101 %:
 
 ```
-python scripts/make_front.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/front-earpiece-mic.stl
-python scripts/make_back.py --scale 1.01 "Alley Chat TD1 X Back Outside Cat Edition.stl" stl/back-modem-gps.stl
-python scripts/make_earpiece_holder.py --scale 1.01 stl/earpiece-holder.stl "" stl/front-earpiece-mic.stl stl/back-modem-gps.stl
-python scripts/scale_stl.py "Alley Chat TD1 Switch.stl" stl/alley-chat-td1-switch.stl 1.01
-python scripts/scale_stl.py "Alley Chat TD1 Reset Button.stl" stl/alley-chat-td1-reset-button.stl 1.01
-python scripts/scale_stl.py "Alley Chat TD1 X Antenna Plug.stl" stl/alley-chat-td1-x-antenna-plug.stl 1.01
+python scripts/make_front.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" x-back-5000mah/stl/front-earpiece-mic.stl
+python scripts/make_back.py --scale 1.01 "Alley Chat TD1 X Back Outside Cat Edition.stl" x-back-5000mah/stl/back-modem-gps.stl
+python scripts/make_earpiece_holder.py --scale 1.01 x-back-5000mah/stl/earpiece-holder.stl "" x-back-5000mah/stl/front-earpiece-mic.stl x-back-5000mah/stl/back-modem-gps.stl
+python scripts/scale_stl.py "Alley Chat TD1 Switch.stl" x-back-5000mah/stl/alley-chat-td1-switch.stl 1.01
+python scripts/scale_stl.py "Alley Chat TD1 Reset Button.stl" x-back-5000mah/stl/alley-chat-td1-reset-button.stl 1.01
+python scripts/scale_stl.py "Alley Chat TD1 X Antenna Plug.stl" x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl 1.01
+cp x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-lora.stl
 ```
 
-**For a 100 % set**, run the same commands with `--scale 1.01` left out, and copy the three small parts unchanged.
+The 101 % files always come from the scripts' `--scale 1.01`, never from scaling 100 % files, so the parts that must
+match real parts keep their true size.
 
-The pictures and the two fit-test rings are drawn from a **100 %** front and back. Those go in a scratch folder,
-`build100/`, which isn't kept in git:
+The pictures are drawn from **100 %** parts (the same scripts without `--scale`), built into a scratch folder that
+isn't kept, for example `/tmp/tdeck100`:
 
 ```
-mkdir -p build100
-python scripts/make_front.py "Alley Chat TD1 Standard Front GPS Inserts.stl" build100/front-earpiece-mic.stl
-python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" build100/back-modem-gps.stl images/back-layout.png
-python scripts/make_earpiece_holder.py build100/earpiece-holder.stl images/earpiece-holder.png build100/front-earpiece-mic.stl build100/back-modem-gps.stl
-python scripts/make_fit_test.py build100/front-earpiece-mic.stl stl/test-prints
-python scripts/make_diagrams.py build100/front-earpiece-mic.stl build100/back-modem-gps.stl images
+mkdir -p /tmp/tdeck100
+python scripts/make_front.py "Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/front-earpiece-mic.stl
+python scripts/make_back.py "Alley Chat TD1 X Back Outside Cat Edition.stl" /tmp/tdeck100/back-modem-gps.stl x-back-5000mah/images/back-layout.png
+python scripts/make_earpiece_holder.py /tmp/tdeck100/earpiece-holder.stl x-back-5000mah/images/earpiece-holder.png /tmp/tdeck100/front-earpiece-mic.stl /tmp/tdeck100/back-modem-gps.stl
+python scripts/make_diagrams.py /tmp/tdeck100/front-earpiece-mic.stl /tmp/tdeck100/back-modem-gps.stl x-back-5000mah/images
 ```
 
 The back script reads the logo from `logo/rushi-logo.jpg`, and also needs pillow and matplotlib to trace it.
 
-**The 18650 version,** at 101 %, into [stl/18650/](stl/18650/). The back also reads Alley Cat's switch slot from her
+**The 18650 version,** at 101 %, into [18650/stl/](18650/stl/). The back also reads Alley Cat's switch slot from her
 front file, and the front script reads the logo:
 
 ```
-python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/back-18650.stl
-python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" stl/18650/front-18650.stl
-python scripts/make_earpiece_holder_18650.py --scale 1.01 stl/18650/earpiece-holder-18650.stl
+python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
+python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
+python scripts/make_earpiece_holder_18650.py --scale 1.01 18650/stl/earpiece-holder-18650.stl
+cp x-back-5000mah/stl/alley-chat-td1-switch.stl x-back-5000mah/stl/alley-chat-td1-reset-button.stl x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-*.stl 18650/stl/
 ```
 
-Its pictures are drawn by [../docs/scripts/make_18650_pictures.py](../docs/scripts/make_18650_pictures.py) from the
-100 % parts.
+Its pictures, in [18650/images/](18650/images/), from 100 % parts (with the X back's 100 % parts above, for the
+side-by-side view):
+
+```
+python scripts/make_back_18650.py "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/back-18650.stl
+python scripts/make_front_18650.py "Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/front-18650.stl
+python scripts/make_18650_pictures.py /tmp/tdeck100/back-18650.stl /tmp/tdeck100/front-18650.stl /tmp/tdeck100/back-modem-gps.stl /tmp/tdeck100/front-earpiece-mic.stl 18650/images
+```

@@ -12,31 +12,31 @@ The outside size of the case does not change.
 
 ## Source files (Alley Cat's originals on Printables)
 
-You don't need to download anything to print: everything is in [case/stl/](../case/stl/). These are the
+You don't need to download anything to print: everything for this build is in [case/x-back-5000mah/stl/](../case/x-back-5000mah/stl/). These are the
 originals the scripts start from, and where the unchanged small parts were copied from.
 
 | File | Use |
 |---|---|
 | `Alley Chat TD1 Standard Front GPS Inserts.stl` | Front |
 | `Alley Chat TD1 X Back Outside Cat Edition.stl` | Back (gives 23 mm behind the T-Deck). The Outside Cat edition is the source for our back, with its cat replaced by the rushiWorks logo |
-| `Alley Chat TD1 Switch.stl` | Slider for the T-Deck's own power switch (right side). Copied unchanged to case/stl/ |
-| `Alley Chat TD1 Reset Button.stl` | Button for the T-Deck's reset (left side). Copied unchanged to case/stl/ |
-| `Alley Chat TD1 X Antenna Plug.stl` | Only for an SMA hole left empty. Needed only if the internal LTE sticker antenna replaces the 4G SMA antenna (top-right hole). Copied unchanged to case/stl/ |
+| `Alley Chat TD1 Switch.stl` | Slider for the T-Deck's own power switch (right side). Copied unchanged to each version's folder |
+| `Alley Chat TD1 Reset Button.stl` | Button for the T-Deck's reset (left side). Copied unchanged to each version's folder |
+| `Alley Chat TD1 X Antenna Plug.stl` | Only for an SMA hole left empty. Copied unchanged to each version's folder, twice: one for the 4G (GSM) hole and one for the LoRa hole |
 | `Alley Cat TDeck Back Cover Custom.step` | "S" back, used only for its mating edge when drawing the new back |
 
-Print the modified front and back from this repository ([case/stl/](../case/stl/)), not the downloaded ones.
+Print the modified front and back from this repository ([case/x-back-5000mah/stl/](../case/x-back-5000mah/stl/)), not the downloaded ones.
 
 Fasteners: 2× M3×5 heat-set inserts (4.5 mm hole) + 2× M3×8 screws.
 
-Printing: ASA (ours), PLA+ or PETG; 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
+Printing: **ASA only**; 0.2 mm layers, 3 perimeters, 20 % infill, no supports.
 
 **Fit:** the T-Deck's fit is deliberately tight. The inside of Alley Cat's front is exactly the T-Deck's 68 mm,
 with a snap ridge. We print in **ASA**, which shrinks a little more as it cools. The parts built **1 % larger** fit
-our T-Deck and everything else well (7 Nov 2026), so [case/stl/](../case/stl/) holds that 101 % set.
+our T-Deck and everything else well (7 Nov 2026), so [case/x-back-5000mah/stl/](../case/x-back-5000mah/stl/) holds that 101 % set.
 - **Already scaled:** print the files at 100 % in the slicer.
 - **Don't scale them in the slicer:** scaling there would move the modem standoffs off the board's holes.
-- **On a different printer or filament:** print the 9 mm fit-test ring first. See "Fit and scale" in
-  [case/README.md](../case/README.md).
+- **ASA only:** the 1 % is ASA's shrinkage. In PLA, PLA+ or PETG the parts would come out too large. See "Fit and
+  scale" in [case/README.md](../case/README.md#fit-and-scale-asa-101-).
 
 ## Why these variants
 
@@ -63,13 +63,13 @@ Rejected: the Slim front (no speaker pocket), and the Nuts and TBall variants.
 
 ## Front changes
 
-The earpiece and mic cuts are done (3 Nov 2026): [case/stl/front-earpiece-mic.stl](../case/stl/front-earpiece-mic.stl).
+The earpiece and mic cuts are done (3 Nov 2026): [case/x-back-5000mah/stl/front-earpiece-mic.stl](../case/x-back-5000mah/stl/front-earpiece-mic.stl).
 Full details are in [case/README.md](../case/README.md).
 
 - **Earpiece (done):** a 1 × 6 mm slot through the 3.6 mm face above the screen, centred under the GPS pocket.
   - The receiver lies on the pocket floor facing the slot. It is 12 × 6 mm. It is 2 mm thick with its rubber
     gasket, and 3 mm with its two contacts folded over its back.
-  - **Earpiece holder (done, 4 Nov 2026):** [case/stl/earpiece-holder.stl](../case/stl/earpiece-holder.stl). It is a printed
+  - **Earpiece holder (done, 4 Nov 2026):** [case/x-back-5000mah/stl/earpiece-holder.stl](../case/x-back-5000mah/stl/earpiece-holder.stl). It is a printed
     block that fills the pocket and presses on the middle of the receiver's back (a 1.7 mm cup, 3.5 mm deep at
     both ends for the folded contacts). The cup is open on its far side, where the pocket wall holds the 6 mm
     receiver. Each wire goes up its own groove toward the T-Deck, and the back closes 0.1 mm above the holder.
@@ -98,7 +98,7 @@ Full details are in [case/README.md](../case/README.md).
 
 ## Back changes
 
-**First version ready to print and dry-fit (3 Nov 2026):** [case/stl/back-modem-gps.stl](../case/stl/back-modem-gps.stl),
+**First version ready to print and dry-fit (3 Nov 2026):** [case/x-back-5000mah/stl/back-modem-gps.stl](../case/x-back-5000mah/stl/back-modem-gps.stl),
 made by [case/scripts/make_back.py](../case/scripts/make_back.py) from the X back. Details and pictures are in
 [case/README.md](../case/README.md).
 
@@ -147,7 +147,7 @@ Measured from the inside floor of the back. The T-Deck (11 mm thick, LilyGO's fi
 
 ## Order of work
 
-1. Print the front, the back, the earpiece holder and Alley Cat's small parts from [case/stl/](../case/stl/) (done: the
+1. Print the front, the back, the earpiece holder and Alley Cat's small parts from [case/x-back-5000mah/stl/](../case/x-back-5000mah/stl/) (done: the
    101 % set fits).
 2. Swap the KTRON's two tall capacitors (done before the bench tests: [bring-up.md](bring-up.md), phase B).
 3. Dry-fit the T-Deck, modem board, battery, patch and antennas, and check that a SIM goes in through the slit.

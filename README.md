@@ -3,6 +3,10 @@
 A working mobile phone for India (voice calls, SMS, mobile data and GPS) built around a stock
 **LilyGO T-Deck**, a **SIMCom A7672S** 4G modem board and a modified 3D-printed case.
 
+> **The case is designed to be printed in ASA only.** Its files are built 1 % larger to allow for how much ASA shrinks
+> as it cools. In PLA, PLA+ or PETG the parts come out too large and the T-Deck sits loose. See
+> [case/README.md](case/README.md).
+
 **Status (12 Nov 2026):**
 - **Case:** printed and fits the T-Deck and all the parts (the files are built 1 % larger).
 - **Slimmer 18650 version:** designed, print files ready, not printed yet. 26.5 mm thick instead of 37, with one 18650 cell in a grip
@@ -58,7 +62,7 @@ fallback and GNSS.
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
 | [docs/design-18650.md](docs/design-18650.md) | The slimmer 18650 version (designed, not printed yet): what changes, the parts, the wires and the files |
 | [docs/slim-layout-plan.md](docs/slim-layout-plan.md) | The brainstorm that led to it: three options for a slimmer phone (option 3 chosen) |
-| [case/](case/) | The case (CC BY-SA 4.0): every file to print is in [case/stl/](case/stl/) (built 1 % larger, which fits; print at 100 % in the slicer), test pieces in [case/stl/test-prints/](case/stl/test-prints/) |
+| [case/](case/) | The case (CC BY-SA 4.0): one folder per version, each with every piece to print in its `stl/` and its pictures in `images/`: [x-back-5000mah/](case/x-back-5000mah/) (the current build) and [18650/](case/18650/). Built 1 % larger for ASA: print at 100 % in the slicer, **in ASA only** |
 
 ## Next steps
 
@@ -67,7 +71,7 @@ fallback and GNSS.
 2. **18650 version** ([docs/design-18650.md](docs/design-18650.md)):
    - Check the Eteily GPS antenna's real size when it arrives.
    - Choose and fit the 4G antenna (the full-band sticker doesn't fit the free space).
-   - Print the back first ([case/stl/18650/](case/stl/18650/), ready), then the front and the earpiece holder.
+   - Print the back first ([case/18650/stl/](case/18650/stl/), ready), then the front and the earpiece holder.
    - Write the assembly steps for this version.
 3. **Before assembly:** the battery-power checks and the data-wire continuity check
    ([docs/design-18650.md](docs/design-18650.md#before-assembly)). Everything else is tested after assembly.
