@@ -8,7 +8,7 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
   floor below it as beside it on the right: an L-shaped band, along the bottom and up the right side, kept empty for
   the 4G sticker antenna;
 - the battery protection board (about 33 x 7 x 3 mm) lies flat on tape in the gap between the board and the cell;
-- the 18 x 18 mm active GPS antenna standing on its edge in the top slot, facing the phone's top edge, above the
+- the active GPS antenna (18 x 18 mm ceramic, its board likely about 18.5 mm) standing on its edge in the top slot, facing the phone's top edge, above the
   earpiece: the S back's gap between its two screw blocks is kept open for it, with a 0.9 mm-deep pocket in the floor
   for its top edge (0.9 mm of plastic left outside). The earpiece holder's roof is the separator below it;
 - the modem's power switch (SS-12F15) on the back's right wall, just below the cell, using Alley Cat's switch slot
@@ -105,12 +105,17 @@ GROOVE_NEW_BOTTOM = [10.52, 5.48, 4.0, 4.0, 4.0, 5.48, 10.52]
 # ---- GPS antenna in the top slot ------------------------------------------------------------------------
 # Alley Cat made this slot for a GPS module (15 x 15 mm antenna, e.g. the M100 Mini). The ~200 comments on her
 # Printables page (read 10 Nov 2026) report it working there, with no complaints about reception.
-# Height budget (front file's z): earpiece pocket floor -11.1, earpiece 2.0 (gasket pressed 0.3) and its folded
-# contacts 1.0 + 0.5 for solder -> -7.9; holder roof 0.6 -> -7.3; antenna 18.0 -> 10.7; 0.2 spare -> 10.9, which is
-# z = 0.8 - 10.9 = -10.1 here: 0.9 mm above the outside face. The antenna's ceramic faces the top wall (y 106.1).
+# Size: Eteily quotes only the ceramic (18 x 18 x 4 mm). Like the old KTRON patch (sold as 25 x 25, measured
+# 26 x 26 board) and FONCON's 18 mm patch (18.5 x 18.5 x 6.5 mm unit), its board is likely about 18.5 mm square.
+# Height budget (front file's z): earpiece pocket floor -11.6 (lowered 0.5 mm in the 18650 front), earpiece 2.0
+# (gasket pressed 0.3) and its folded contacts 1.0 + 0.2 for solder -> -8.7; holder roof 0.5 -> -8.2; up to this
+# pocket's floor -> 10.9, which is z = 0.8 - 10.9 = -10.1 here: 0.9 mm above the outside face. That is 19.1 mm for
+# the antenna: 0.6 mm to spare with an 18.5 mm board, 0.1 mm with a 19 mm one. The ceramic faces the
+# top wall (y 106.1); the skin is not thinned further because the back's top edge is rounded right at the antenna's
+# top corner (about 0.5 mm of plastic there already).
 # The S back's gap between its screw blocks (x 25.8-42.2, like the front's pocket) has a shelf up to z -7.85: the
-# pocket goes 2.25 mm down through it, and the gap is widened 1.1 mm into each block (3.6 mm left to the screw holes).
-TOPGPS_X = (24.7, 43.3)                     # 18 mm antenna + 0.3 each side
+# pocket goes 2.25 mm down through it, and the gap is widened 1.55 mm into each block (3.1 mm left to the screw holes).
+TOPGPS_X = (24.25, 43.75)                   # 19.5 mm: an 18.5 mm board + 0.5 each side (a slightly crooked ceramic)
 TOPGPS_Y = (98.6, 106.1)                    # ceramic 4 + board 1, then 2.4 mm for its amplifier; 1.1 mm wall to the cell
 TOPGPS_FLOOR = OUTER_Z + 0.9                # -10.1
 # Above the grip, three outside grooves run on to y 101.5 as short stubs: the middle one (over the antenna's pocket) and

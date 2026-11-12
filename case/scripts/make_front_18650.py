@@ -9,7 +9,8 @@ Done here:
   T-Deck's switch (the stretch between the T-Deck's switch and the microSD slot is left alone: the notch that holds
   the T-Deck and the slot for the switch's slider piece are there). The modem switch goes on the back's right wall,
   so the front's lip is notched there for the switch's plate;
-- earpiece pocket widened from 16.4 to 18.6 mm above the earpiece, for the GPS antenna standing on its edge;
+- earpiece pocket widened from 16.4 to 19.5 mm above the earpiece, and its floor lowered 0.5 mm (the face under it
+  is 3.1 mm instead of 3.6), for the GPS antenna standing on its edge;
 - the top-edge badge carries the owner's rushiWorks logo instead of Alley Cat's cat. Her cat and "Alley Chat TD1 S"
   are kept on the back's inside floor, and she is credited in the README and case files.
 
@@ -93,10 +94,14 @@ LIP_NOTCH = [[-80.3, B.SWITCH_AT[0] - B.SWITCH_PLATE[0] / 2 - 1.0, 4.2],
              [-78.6, B.SWITCH_AT[0] + B.SWITCH_PLATE[0] / 2 + 1.0, 5.6]]
 
 # Earpiece pocket, widened above the earpiece to match the back's slot (x 24.7-43.3 there).
-POCKET_NEW_X = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0)                # -53.3 .. -34.7
+POCKET_NEW_X = (-B.TOPGPS_X[1] - 10.0, -B.TOPGPS_X[0] - 10.0)                # -53.75 .. -34.25
 POCKET_OLD_X = (-52.2, -35.8)
 POCKET_Y = (100.2, 106.4)
-POCKET_Z = (-7.6, 5.4)
+POCKET_Z = (-8.4, 5.4)             # from just below the holder's roof (-8.2)
+# The pocket's floor (z -11.1, over the earpiece's grille slot) is lowered 0.5 mm, and the small fillet where it met
+# the far wall is cleared with it, so the low earpiece holder sits 0.5 mm lower.
+FLOOR_CUTS = [[[POCKET_OLD_X[0], 100.2, -11.6], [POCKET_OLD_X[1], 107.55, -11.1 + 0.01]],
+              [[POCKET_OLD_X[0], 106.9, -11.2], [POCKET_OLD_X[1], 107.55, -10.5]]]
 
 
 def badge_with_logo(front, _cat_json=None):
@@ -229,7 +234,8 @@ def pocket_widening():
     y0, y1 = POCKET_Y
     z0, z1 = POCKET_Z
     return [trimesh.creation.box(bounds=[[POCKET_NEW_X[0], y0, z0], [POCKET_OLD_X[0] + 0.1, y1, z1]]),
-            trimesh.creation.box(bounds=[[POCKET_OLD_X[1] - 0.1, y0, z0], [POCKET_NEW_X[1], y1, z1]])]
+            trimesh.creation.box(bounds=[[POCKET_OLD_X[1] - 0.1, y0, z0], [POCKET_NEW_X[1], y1, z1]])] + \
+        [trimesh.creation.box(bounds=b) for b in FLOOR_CUTS]
 
 
 def main(src, dst, scale=1.0):
