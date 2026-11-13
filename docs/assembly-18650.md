@@ -221,6 +221,8 @@ Leave the cell out until step 9.
    - Solder the four wires: Grove TX to KTRON TX, RX to RX, VCC (the switched 3.3 V) to VDD, GND to GND.
      Straight across, not crossed (tested on the bench).
    - Sleeve the joints ([wiring.md](wiring.md), section 1).
+   - **Check with the meter,** no power: each Grove pad beeps to its KTRON hole, and no two of the four beep to each
+     other.
 2. **Into the front:**
    - Switch the T-Deck off.
    - Lower it into the front, screen down, its switch lined up with the slider.
@@ -267,9 +269,8 @@ Leave the cell out until step 9.
    - Once the modem is on, the network light shows through the back's window. It stays lit steadily while it
      searches, and blinks quickly once it's registered.
    - Switch both off together. A modem left on drains the cell in about a week.
-5. **Signal test** for the inside 4G antenna ([design-18650.md](design-18650.md#4g-antenna)). It needs the T-Deck's
-   first program, which passes modem commands from the Mac. Until then, the network light shows whether the modem
-   registers.
+5. **Testing:** follow [test-18650.md](test-18650.md). It loads the test program, which shows the modem's state on
+   the screen, and checks everything from the battery to calls, SMS, GPS and the 4G antenna's signal.
 
 ## Things to check at the first dry fit
 

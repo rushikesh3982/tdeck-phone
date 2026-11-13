@@ -18,7 +18,8 @@ A working mobile phone for India (voice calls, SMS, mobile data and GPS) built a
   - sends and receives SMS;
   - gets a GPS fix.
 - **Mic:** works, clear in a call. It needed a resistor from M− to GND that the first wiring left out.
-- **Firmware:** none yet.
+- **Firmware:** a test program for the assembled phone is written ([firmware/test-program/](firmware/test-program/README.md)).
+  The phone software itself isn't started.
 
 ## How it works
 
@@ -60,6 +61,8 @@ fallback and GNSS.
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
 | [docs/assembly-18650.md](docs/assembly-18650.md) | Step-by-step assembly of the 18650 version (a draft, to check at the first dry fit) |
+| [docs/test-18650.md](docs/test-18650.md) | Testing the assembled 18650 phone, step by step, with what to expect |
+| [firmware/test-program/](firmware/test-program/README.md) | The T-Deck test program those tests use: the modem's state on the screen, and the Mac's terminal passed through to the modem |
 | [docs/build-log.md](docs/build-log.md) | Photos of the hardware as it was built, step by step |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
 | [docs/design-18650.md](docs/design-18650.md) | The slimmer 18650 version (designed, not printed yet): what changes, the parts, the wires and the files |
@@ -76,8 +79,9 @@ fallback and GNSS.
      the backup.
    - Print the back first ([case/18650/stl/](case/18650/stl/), ready), then the front and the earpiece holder.
    - Check the assembly steps ([docs/assembly-18650.md](docs/assembly-18650.md), a draft) at the first dry fit.
-3. **Before assembly:** the battery-power checks and the data-wire continuity check
-   ([docs/design-18650.md](docs/design-18650.md#before-assembly)). Everything else is tested after assembly.
+3. **Testing:** one round after assembly, with the test program
+   ([firmware/test-program/](firmware/test-program/README.md), written, not run yet) and the checklist
+   [docs/test-18650.md](docs/test-18650.md).
 4. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and
    a low-battery guard.
 

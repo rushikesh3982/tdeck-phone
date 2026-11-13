@@ -167,9 +167,9 @@ the backup. Only one of them goes on the modem's 4G socket (U.FL1). The full-ban
 - **What to expect:** it is less than half the length of the sticker, so the signal will be weaker, most on the low
   bands (850 MHz, which Jio uses, and 900 MHz, which Airtel uses) and most indoors. A similar-sized antenna with a
   datasheet (Taoglas FXP40) measures about 25 % efficiency at 824–960 MHz.
-- **Test it** after assembly, as in [bring-up.md](bring-up.md) ("Checking the sticker antenna inside the case"):
-  read the signal (RSRP) with `AT+CPSI?` with this antenna fitted. Then read it with the sticker lying in the open at
-  the same spot, on the same band. Within about 5 dB of the sticker: keep it. Much weaker: fit the stubby.
+- **Test it** after assembly ([test-18650.md](test-18650.md), step 5): at the bench spot where the sticker lying in
+  the open read −91 dBm on band 5 (7 Nov 2026), the average of 5 readings with this antenna fitted. Within about
+  5 dB (−96 dBm or better): keep it. Much weaker: fit the stubby.
 
 **Outside, the backup: 50 mm right-angled stubby** (Lambdoid LWC-4G-RD-RA-SMA-PLUG-02, from Robu)
 - **What it is:** 50 mm long and 10 mm across, SMA male. Its datasheet gives 698–960 and 1710–2690 MHz, which covers
@@ -334,21 +334,15 @@ The pictures on this page are drawn from the 100 % parts by
 [case/scripts/make_18650_pictures.py](../case/scripts/make_18650_pictures.py). The wiring picture is drawn by
 [docs/scripts/make_wiring_pictures.py](scripts/make_wiring_pictures.py), which also draws the bench wiring picture.
 
-## Before assembly
+## Testing
 
 The modem's main functions (SIM, 4G with VoLTE, calls, SMS, GPS, earpiece and mic) are already proven on the bench,
-and the capacitor swap is done. Only the checks that would mean opening the phone again come before assembly:
+and the capacitor swap is done. Everything else is tested in one round after assembly (decided 13 Nov 2026), through
+the T-Deck's USB-C with the [test program](../firmware/test-program/README.md): see
+[test-18650.md](test-18650.md). The meter checks happen during assembly: the power wiring before it goes in, the
+contacts, the data wires once soldered, and the switch before closing.
 
-1. **Battery power** (the cell, holder and protection board have arrived):
-   - **With the meter:** 3.6–4.2 V at the protection board's output, the right way round, and continuity from the
-     modem's feed point to C11's + leg (not to VCC).
-   - **Then on the battery,** through the switch: the modem answers `AT`, gives a battery reading (`AT+CBC`), and
-     holds a call for about a minute without restarting.
-2. **The four data wires,** with the meter and no power: each beeps from its Grove pad to its KTRON pad, and no two
-   beep to each other.
-3. **Optional:** the Eteily antenna gets a GPS fix near a window before it goes into the top slot.
-
-Everything else is tested after assembly, through the T-Deck's USB-C.
+The case opens with its two screws, so a problem found in testing means opening it again, not reprinting.
 
 ## Still to do
 
