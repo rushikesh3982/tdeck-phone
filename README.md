@@ -19,7 +19,9 @@ A working mobile phone for India (voice calls, SMS, mobile data and GPS) built a
   - gets a GPS fix.
 - **Mic:** works, clear in a call. It needed a resistor from M− to GND that the first wiring left out.
 - **Firmware:** a test program for the assembled phone is written ([firmware/test-program/](firmware/test-program/README.md)).
-  The phone software itself isn't started.
+  The phone software will be Meshtastic with calls and SMS added, in its own repository:
+  [meshtastic-phone](https://github.com/rushikesh3982/meshtastic-phone) (set up 13 Nov 2026, from Meshtastic 2.7.26;
+  nothing added yet).
 
 ## How it works
 
@@ -82,8 +84,9 @@ fallback and GNSS.
 3. **Testing:** one round after assembly, with the test program
    ([firmware/test-program/](firmware/test-program/README.md), written, not run yet) and the checklist
    [docs/test-18650.md](docs/test-18650.md).
-4. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and
-   a low-battery guard.
+4. **Firmware**, in [meshtastic-phone](https://github.com/rushikesh3982/meshtastic-phone), a copy (fork) of
+   Meshtastic's firmware, so LoRa messaging keeps working alongside the phone: a modem driver, dialer and SMS screens,
+   ringtone, sleep with wake-on-call, and a low-battery guard.
 
 ## Reference documents
 
@@ -125,5 +128,9 @@ fallback and GNSS.
   the case: on the back cover, and on the front's top-edge badge in the 18650 version).
   These belong to Rushikesh Deshmukh. The MIT licence doesn't cover them, and CC BY-SA 4.0 doesn't license
   trademark rights, so neither licence lets anyone else use the name or logo.
+
+The phone software lives in a separate repository,
+[meshtastic-phone](https://github.com/rushikesh3982/meshtastic-phone): a fork of Meshtastic's firmware, under
+Meshtastic's licence, [GPL-3.0](https://www.gnu.org/licenses/gpl-3.0.html).
 
 By Rushikesh Deshmukh · [rushiworks](https://sites.google.com/view/rushikeshdeshmukh/rushiworks)
