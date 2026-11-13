@@ -54,14 +54,14 @@ The modem's own messages (`RING`, `+CLIP:`, `VOICE CALL: BEGIN`, a new SMS) appe
 
 ## Loading it, and putting Meshtastic back
 
-Loading this program replaces Meshtastic on the T-Deck, and can wipe Meshtastic's saved settings. So, on test day:
+Loading this program replaces Meshtastic's program on the T-Deck, but not Meshtastic's saved settings: both use the
+same storage layout (`default_16MB.csv`), and this program never writes to the settings' part (`spiffs`, at
+0xC90000). So, on test day:
 
-1. **Back up Meshtastic's settings** over USB with the Meshtastic command-line tool (`meshtastic --export-config`),
-   to a file kept on the Mac. It holds the node's private key, so it never goes into this repository.
-2. **Load the test program:** from this folder, `pio run -t upload` (PlatformIO).
-3. **Run the tests.**
-4. **Put Meshtastic back:** flasher.meshtastic.org in Chrome, choosing the T-Deck, then restore the settings with
-   `meshtastic --configure <the backup file>`.
+1. **Load the test program:** from this folder, `pio run -t upload` (PlatformIO).
+2. **Run the tests.**
+3. **Put Meshtastic back** (the phone version, from rushikesh3982/meshtastic-phone): write only its program, at
+   0x10000, the way Meshtastic's own update does. Its old name and channels are still there.
 
 ## How it works
 
