@@ -230,50 +230,53 @@ def grip_z(y):
     return (OUTER_Z - GRIP_BLEND_R) + np.sqrt(max(GRIP_BLEND_R ** 2 - (d - c) ** 2, 0.0))
 
 
-def _ray_hits(poly, c, angles):
-    """Where rays from c (inside the convex polygon) leave it, one point per angle."""
-    xy = np.asarray(poly.exterior.coords)[:-1]
-    a, b = xy, np.roll(xy, -1, axis=0)
-    e = b - a                                            # edges
-    d = np.c_[np.cos(angles), np.sin(angles)]            # ray directions
-    w = a - c
-    den = d[:, None, 0] * e[None, :, 1] - d[:, None, 1] * e[None, :, 0]
-    with np.errstate(divide="ignore", invalid="ignore"):
-        t = (w[None, :, 0] * e[None, :, 1] - w[None, :, 1] * e[None, :, 0]) / den      # along the ray
-        u = (w[None, :, 0] * d[:, None, 1] - w[None, :, 1] * d[:, None, 0]) / den      # along the edge
-    ok = (np.abs(den) > 1e-12) & (u >= -1e-9) & (u <= 1 + 1e-9) & (t > 0)
-    t = np.where(ok, t, np.inf).min(axis=1)
-    return c + d * t[:, None]
+def _resample(line, k):
+    """k points evenly spaced along a polyline, both ends included."""
+    seg = np.linalg.norm(np.diff(line, axis=0), axis=1)
+    t = np.r_[0.0, np.cumsum(seg)]
+    u = np.linspace(0.0, t[-1], k)
+    return np.c_[np.interp(u, t, line[:, 0]), np.interp(u, t, line[:, 1])]
+
+
+def _edge_profiles(back, y, k=16):
+    """The cover's outside edges at y, from 1 mm above its outside face down to where each edge meets the face:
+    (top-left corner, left edge, right edge, top-right corner), each edge as k points in (x, z)."""
+    sec = back.section(plane_origin=[0, y, 0], plane_normal=[0, 1, 0])
+    base = MultiPoint(sec.vertices[:, [0, 2]]).convex_hull.intersection(
+        box(-20, OUTER_Z - 1.0, 100, OUTER_Z + 1.0))
+    ring = np.asarray(orient(base).exterior.coords)[:-1]         # counter-clockwise in (x, z)
+    top, face = ring[:, 1].max(), ring[:, 1].min()
+    on_top = np.nonzero(np.isclose(ring[:, 1], top, atol=1e-6))[0]
+    lt, rt = on_top[np.argmin(ring[on_top, 0])], on_top[np.argmax(ring[on_top, 0])]
+    n = len(ring)
+    chain = ring[[(lt + i) % n for i in range((rt - lt) % n + 1)]]  # down the left edge, along the face, up the right
+    on_face = np.nonzero(np.isclose(chain[:, 1], face, atol=1e-4))[0]
+    left, right = chain[:on_face[0] + 1], chain[on_face[-1]:]
+    return chain[0], _resample(left, k), _resample(right, k), chain[-1]
 
 
 def grip_ridge(back, outline):
     """Solid grip under the outside face across the top. Each slice across the phone is the cover's own cross-section
-    pushed out by the grip's local height, so the rounded side edges move out with the grip and blend away with it."""
-    sec = back.section(plane_origin=[0, CELL_Y, 0], plane_normal=[0, 1, 0])
-    base = MultiPoint(sec.vertices[:, [0, 2]]).convex_hull.intersection(
-        box(-20, OUTER_Z - 1.0, 100, OUTER_Z + 1.0))
-    ys = np.linspace(GRIP_Y[0], GRIP_Y[1], 151)
-    angles = np.linspace(0, 2 * np.pi, 720, endpoint=False)
-    c = np.array([34.0, OUTER_Z + 0.5])
-    rings = []
-    sx = 8.0      # rays are spread evenly in a space squeezed 8x across the phone, so the narrow ends get as many as the faces
+    at that point (from its outside face to 1 mm above it, its rounded side edges included) pushed out by the grip's
+    local height: its sides run straight down and its rounded edges move out with it. Near the top the slices follow
+    the cover's corners as they start to round off, so the grip never stands out past them. Each rounded edge is
+    sampled at the same 16 points along it in every slice, so the surfaces run clean from one slice to the next."""
+    ys = np.linspace(GRIP_Y[0] + 0.2, GRIP_Y[1] - 0.2, 151)   # from where the grip is 0.002 mm proud (it meets the
+    rings = []                                                # flat back tangentially)
     for y in ys:
-        depth = OUTER_Z - grip_z(y)
-        poly = unary_union([base, translate(base, 0, -depth)]).convex_hull
-        squeezed = Polygon([((x - c[0]) / sx, z - c[1]) for x, z in poly.exterior.coords])
-        hits = _ray_hits(squeezed, np.zeros(2), angles)
-        rings.append(np.c_[hits[:, 0] * sx + c[0], hits[:, 1] + c[1]])
-    n, k = len(angles), len(ys)
-    verts = np.vstack([np.c_[r[:, 0], np.full(n, y), r[:, 1]] for r, y in zip(rings, ys)])
-    verts = np.vstack([verts, [c[0], ys[0], c[1]], [c[0], ys[-1], c[1]]])
+        depth = max(OUTER_Z - grip_z(y), 0.002)
+        tl, left, right, tr = _edge_profiles(back, y)
+        pts = np.vstack([tl, left - [0.0, depth], right - [0.0, depth], tr])  # top corners stay; the rest moves out
+        rings.append(np.c_[pts[:, 0], np.full(len(pts), y), pts[:, 1]])
+    m, k = len(rings[0]), len(ys)
+    verts = np.vstack(rings)
     faces = []
     for i in range(k - 1):
-        for j in range(n):
-            a, b = i * n + j, i * n + (j + 1) % n
-            faces += [[a, b, b + n], [a, b + n, a + n]]
-    c0, c1 = k * n, k * n + 1
-    for j in range(n):
-        faces += [[c0, (j + 1) % n, j], [c1, (k - 1) * n + j, (k - 1) * n + (j + 1) % n]]
+        for j in range(m):
+            a, b = i * m + j, i * m + (j + 1) % m
+            faces += [[a, b, b + m], [a, b + m, a + m]]
+    for j in range(1, m - 1):                                       # end caps (each slice is convex)
+        faces += [[0, j + 1, j], [(k - 1) * m, (k - 1) * m + j, (k - 1) * m + j + 1]]
     grip = trimesh.Trimesh(verts, np.array(faces), process=True)
     trimesh.repair.fix_normals(grip)
     assert grip.is_watertight, "grip loft is not watertight"
@@ -281,11 +284,12 @@ def grip_ridge(back, outline):
     return trimesh.boolean.intersection([grip, foot], engine="manifold")
 
 
-def cell_channel(scale=1.0):
-    """The cell's channel at true size, centred where the scaled case puts it."""
-    r = CELL_D / 2 + CELL_GAP
-    x0, x1 = CHANNEL_X[0] * scale, CHANNEL_X[1] * scale
-    cyl = trimesh.creation.cylinder(radius=r, height=x1 - x0, sections=96)
+def cell_channel(scale=1.0, grow=0.0, longer=0.0):
+    """The cell's channel at true size, centred where the scaled case puts it. grow widens its radius; longer
+    carries it on into each end wall."""
+    r = CELL_D / 2 + CELL_GAP + grow
+    x0, x1 = CHANNEL_X[0] * scale - longer, CHANNEL_X[1] * scale + longer
+    cyl = trimesh.creation.cylinder(radius=r, height=x1 - x0, sections=96 if grow == 0 else 192)
     cyl.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [0, 1, 0]))
     cyl.apply_translation([(x0 + x1) / 2, CELL_Y * scale, CELL_Z * scale])
     return cyl
@@ -304,6 +308,7 @@ def contact_parts(scale=1.0):
     sy0, sy1 = yc - CELL_D / 2 - SUPPORT_GAP - SUPPORT_T, yc - CELL_D / 2 - SUPPORT_GAP
     z0, z1 = STRIP_Z[0] * scale - 0.1, STRIP_Z[1] * scale + 0.3
     adds, cuts = [], []
+    holders = []                    # the ribs, bar, seat and pad: they end 0.4 mm into the channel's floor (below)
     lines = []
     for wall, inward in ((WALL_IN[0] * scale, 1.0), (WALL_IN[1] * scale, -1.0)):
         line = wall + pad * inward                               # where the plate's back sits
@@ -317,19 +322,25 @@ def contact_parts(scale=1.0):
                  (X(0.3), g1 + RIB_W), (xa, g1 + RIB_W)]                    # 45-degree face toward the phone's top
         bottom = min(floor_at(g0 - RIB_W), floor_at(g1 + RIB_W)) - 0.4      # 0.4 into the channel's floor
         for ring in (lower, upper):
-            adds.append(prism_z(orient(Polygon(ring)), bottom, top))
+            holders.append(prism_z(orient(Polygon(ring)), bottom, top))
         # the bar across the front at the top of the ribs, and the seat under the plate (to the lips' front)
         x0, x1 = sorted((xg, xf))
-        adds.append(trimesh.creation.box(bounds=[[x0, g0, top - TOP_BAR_H], [x1, g1, top]]))
+        holders.append(trimesh.creation.box(bounds=[[x0, g0, top - TOP_BAR_H], [x1, g1, top]]))
         x0, x1 = sorted((xa, xf))
-        adds.append(trimesh.creation.box(bounds=[[x0, g0, floor_at(g1) - 0.4], [x1, g1, seat]]))
+        holders.append(trimesh.creation.box(bounds=[[x0, g0, floor_at(g1) - 0.4], [x1, g1, seat]]))
         if pad > 0.01:
             x0, x1 = sorted((wall - 0.3 * inward, line))
-            adds.append(trimesh.creation.box(bounds=[[x0, yp - RIB_GAP / 2 - 0.1, seat - 0.1],
-                                                     [x1, yp + RIB_GAP / 2 + 0.1, top]]))
+            holders.append(trimesh.creation.box(bounds=[[x0, yp - RIB_GAP / 2 - 0.1, seat - 0.1],
+                                                        [x1, yp + RIB_GAP / 2 + 0.1, top]]))
         # the strip's path: from the support wall's back face, along the end wall, through the lower rib
         x0, x1 = sorted((line - 0.01 * inward, line + STRIP_SLOT * inward))
         cuts.append(trimesh.creation.box(bounds=[[x0, sy0 - 0.6, z0], [x1, yp - CONTACT_W / 2 + 0.1, z1]]))
+    # The holders' flat bottoms are set by the deepest point of the channel's floor they cross, which is lower than the
+    # grip's outside where it curves away toward the phone's bottom: there they reached through the outside face (up to
+    # 0.7 mm, at the lower rib). So each holder ends on a copy of the channel's curve 0.4 mm below its floor, which
+    # leaves 1.1 mm of plastic under it everywhere.
+    under = cell_channel(scale, grow=0.4, longer=2.0)
+    adds += [trimesh.boolean.intersection([h, under], engine="manifold") for h in holders]
     # the support wall, with a gap at each end for the strip and a mark on its top at each end of the board. Its face
     # toward the cell is the channel's own surface carried on up (the wall is cut by the channel), so the channel's
     # curve runs straight into it with no shelf, and the cell has the channel's 0.25 mm gap all the way up.
