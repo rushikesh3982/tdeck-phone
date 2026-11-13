@@ -132,7 +132,7 @@ IPX → SMA-female cable (KSTA0380):
 - **Which antenna where:** see below.
 
 Both top corners now have identical SMA cut-outs, so either antenna can go in either corner. **Recommended:** 4G
-in the top-right (old Grove corner), and the T-Deck's LoRa connector staying top-left, where it already sits.
+in the top-right, and the T-Deck's LoRa connector staying top-left, where it already sits.
 From the top-right, the 4G cable drops straight into the empty strip beside the modem board, to its 4G socket on
 that side (about 5 cm; the 10 cm cable is plenty). From the top-left, it would have to get around the battery,
 which covers the board with only about 1 mm to spare (about 11 cm, so use the 15 cm cable).

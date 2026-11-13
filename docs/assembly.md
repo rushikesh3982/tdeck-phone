@@ -5,8 +5,8 @@ are drawn from the actual case files ([case/scripts/make_diagrams.py](../case/sc
 
 This is the plan before the first dry fit. Expect small changes after it.
 
-> **18650 version:** these steps are for the current build. The 18650 version's assembly steps will be written once
-> its print files are built. Until then, see [design-18650.md](design-18650.md).
+> **18650 version:** these steps are for the current build. The 18650 version has its own steps in
+> [assembly-18650.md](assembly-18650.md).
 
 ## The pictures
 
@@ -59,13 +59,13 @@ like a book while you work.
 
 | From | To | Wire |
 |---|---|---|
-| T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: TX, RX, VDD, GND (back ⑤, red pads) | thin, about 12 cm: from the KTRON's holes, under the board to the free strip (⑫), then up the strip to the old Grove corner. TX goes to TX, RX to RX (straight across, tested on the bench) |
+| T-Deck Grove pads: TX, RX, 3.3 V, GND | KTRON J1: TX, RX, VDD, GND (back ⑤, red pads) | thin: from the KTRON's holes to the Grove pads, on the T-Deck's back near its left edge (seen from the screen), about 15 mm below its top edge (LilyGO's pin map). Measure the length at the dry fit. TX goes to TX, RX to RX (straight across, tested on the bench) |
 | Earpiece (Micromax receiver) | KTRON J3: S+, S− (back ⑥), through a 47 µF capacitor in each wire (+ leg to the board) | thin, about 12 cm, either way round |
 | Mic | KTRON J3: M+, M− (back ⑥). The pin connected to the mic's can goes to M−. **Also a 1 kΩ resistor from M− to ground**, on the SIM-card side, lying flat ([wiring.md](wiring.md), section 4) | thin, about 18 cm: it runs from the bottom of the phone to the top of the board, and the case must still open. Tuck spare wire under the board |
 | Protection board P+ | Modem switch, middle pin (front, left wall) | 24 AWG |
 | Modem switch, one outer pin | KTRON C11's + leg (470 µF) | 24 AWG. With the wire above, about 15 cm in total |
 | Protection board P− | KTRON GND (regulator tab) | 24 AWG, short |
-| Protection board P+ / P− | T-Deck battery socket, through the cell's JST lead | as it is |
+| Protection board P+ / P− | T-Deck battery socket (JST GH 1.25 mm), through the cell's JST lead | as it is |
 
 Details and checks are in [wiring.md](wiring.md).
 
@@ -148,7 +148,7 @@ Details and checks are in [wiring.md](wiring.md).
 
 ## Things to check at the first dry fit
 
-- **4G connector clearance:** the connector's tail clears the T-Deck in the old Grove corner (3–8 mm past the
+- **4G connector clearance:** the connector's tail clears the T-Deck in the top-right corner (3–8 mm past the
   T-Deck's top edge).
 - **SIM:** the card lines up with the slit and clicks into the holder.
 - **Battery:** it sits flat over the board with about 1 mm to spare under the T-Deck.

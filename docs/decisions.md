@@ -189,8 +189,8 @@ The A7672S has Bluetooth built in. It stays off: never send `AT+BTPOWER=1`.
 
 - **LTE:** an external SMA antenna **rated 700–2700 MHz**, through a short IPX → SMA female cable to U.FL1.
   Rejected: the KTRON "4G LTE 3.5 dBi foldable" antenna. It is out of stock, and its own spec says 2.4–5 GHz,
-  which misses most of the Indian LTE bands (B1, B3, B5, B8, B40). Both top corners of the front have identical SMA cut-outs. The 4G antenna goes top-right
-  (old Grove corner), close to the modem's 4G socket, and away from the T-Deck's Wi-Fi/BT antenna at the top centre.
+  which misses most of the Indian LTE bands (B1, B3, B5, B8, B40). Both top corners of the front have identical SMA cut-outs. The 4G antenna goes top-right,
+  close to the modem's 4G socket, and away from the T-Deck's Wi-Fi/BT antenna at the top centre.
 - **GNSS:** KTRON KSTA1417 active ceramic patch, ₹105, on U.FL2, which powers active antennas. At least 60 mm from
   the LTE antenna.
 - **LoRa:** the T-Deck's own cable and the case's existing top-left hole. Its antenna is now a 50 mm 865–868 MHz

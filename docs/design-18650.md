@@ -205,9 +205,9 @@ the floor beside the channel's ends.
 ```
  Cell contacts ──► nickel strips ──► protection board B+ / B−   (glued to the support wall)
 
- P+ ──┬── JST PH2.0 plug ────────────────────────────► T-Deck battery socket (+)
+ P+ ──┬── JST GH 1.25 mm plug ───────────────────────► T-Deck battery socket (+)
       └── modem switch (right wall): middle → outer pin ─► KTRON: + leg of C11 (470 µF)
- P− ──┬── JST PH2.0 plug ────────────────────────────► T-Deck battery socket (−)
+ P− ──┬── JST GH 1.25 mm plug ───────────────────────► T-Deck battery socket (−)
       └──────────────────────────────────────────────► KTRON GND
 ```
 
@@ -265,15 +265,32 @@ at the bottom.
 
 ## Wires inside
 
-**Data wires:** the four wires (TX, RX, 3.3 V, GND) run from the modem board up the right side, past the cell's right
-end, to the T-Deck's Grove pads. About 15 cm.
+![Every wire, with the case open like a book along the phone's left side](../case/18650/images/18650-wiring-open.png)
 
-**Earpiece wires and the GPS cable:** from the top slot, past one end of the cell, to the modem board. The GPS cable
-(15 cm) reaches the GNSS socket with plenty to spare.
+The T-Deck's connectors are placed from LilyGO's own board drawing (`shell/T-Deck.dxf` in their
+[T-Deck repository](https://github.com/Xinyuan-LilyGO/T-Deck)) and its pin map
+([wiki.lilygo.cc](https://wiki.lilygo.cc/products/t-deck-series/t-deck/)). Its reset button lands on the front's
+reset opening, which confirms the placing.
 
-**Room past the cell's ends:** about 3.4 mm in the back, plus 1.5–1.9 mm behind the T-Deck. At each contact, the
-wires pass below its spring, in front of the lips that hold the contact. There's about 2.4 mm there, so they need
-no grooves. Keep them clear of the spring and of the nickel strip.
+**Data wires:** the four wires (TX, RX, 3.3 V, GND) leave their holes on the modem board's lower edge, go round that
+edge and under the board, come up at its top-left corner, and run along the T-Deck's back to its Grove pads. The pads
+are near the T-Deck's left edge, about 15 mm below its top edge, once its Grove socket is off. Cut to 13 cm each
+(every wire's length is in [assembly-18650.md](assembly-18650.md#the-pictures)).
+
+**Battery lead:** the T-Deck's battery socket is low on its back, near its right edge, beside the speaker's socket.
+It's a **JST GH 1.25 mm** socket (LilyGO's pin map). The lead (12 cm) runs from it down the free strip on the right
+side of the back, to P+ and P−. It crosses between the halves far from the side the case opens on, so it's plugged
+in last, just before closing.
+
+**Earpiece wires and the GPS cable:** from the top pocket, down the T-Deck's back to the left of its ESP32 module,
+and into the back just below the cell. The earpiece wires go to S+ and S−. The GPS cable goes under the modem board
+to its GNSS socket, using about 10 cm of its 15 cm.
+
+**On the T-Deck's back:** lay the wires flat on its board, between its parts, never over them. The cell sits only
+0.5 mm under the T-Deck's tallest parts.
+
+**Past the cell's ends:** only the 4G stubby's cable, if it's used, passes the cell's right end. There's about
+3.4 mm there; at the contact it passes below the spring, in front of the lips.
 
 **Mic:** as now. The pocket is in the front's bottom wall, and its wires go through the groove in the lip.
 
@@ -337,7 +354,8 @@ Everything else is tested after assembly, through the T-Deck's USB-C.
 
 1. **GPS antenna:** check its real size and where its amplifier sits (above).
 2. **4G antenna:** fit the 41 × 12 mm antenna and test its signal. The stubby is the backup ([above](#4g-antenna)).
-3. **Assembly steps:** write them for this version, after the back's test print.
+3. **Assembly steps:** drafted in [assembly-18650.md](assembly-18650.md). Check them at the dry fit after the back's
+   test print.
 
 **Things to watch after assembly:**
 - **Wi-Fi and Bluetooth range:** the cell's steel can sits behind the T-Deck's Wi-Fi/Bluetooth antenna (top centre

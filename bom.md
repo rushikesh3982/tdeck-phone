@@ -51,7 +51,8 @@ and the protection board has arrived.
   modem's 2 A bursts drop less voltage and stay well below the overcurrent trip. The 1-MOSFET boards trip at about 3 A, and
   sooner when the battery is low. Thresholds: overcharge about 4.25 V, overdischarge about 2.3–2.5 V.
 
-- JST PH2.0 2-pin plug for the T-Deck battery socket
+- JST GH 1.25 mm 2-pin lead for the T-Deck's battery socket (the type is on LilyGO's T-Deck pin map). Leads
+  are sold wired both ways: check which wire lands on the socket's + before soldering
 - 24 AWG wire for the modem's battery feed (≤10 cm), thinner wire for the data and audio wires
 - Thin foam sheet (between battery and modem board)
 - Filament for the case: **ASA only** (the files are built 1 % larger for ASA's shrinkage)

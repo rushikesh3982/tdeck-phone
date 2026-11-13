@@ -1,4 +1,5 @@
-"""Pictures of the 18650 version (case/18650/images/, shown in docs/design-18650.md), drawn from the case files.
+"""Pictures of the 18650 version (case/18650/images/, shown in docs/design-18650.md and docs/assembly-18650.md),
+drawn from the case files.
 
 Usage:
     python make_18650_pictures.py <back.stl> <front.stl> <old back.stl> <old front.stl> <output folder>
@@ -100,6 +101,247 @@ def inside_layout(back, path):
     ax.set_ylim(-3, 117)
     ax.set_title("18650 back, inside, looking in from the T-Deck's side (the phone's left side is on the left)\n"
                  "where each part that goes into the back sits", fontsize=10)
+    fig.savefig(path); plt.close(fig)
+
+
+# ---- the T-Deck's back, from LilyGO's own board drawing (shell/T-Deck.dxf in github.com/Xinyuan-LilyGO/T-Deck, where
+# the parts on the back carry "_B_" in their names) and its pin map (wiki.lilygo.cc). Positions are in the phone's
+# frame, as the back's coordinates (x toward the phone's right, y up; the board's top edge at 100.2, where the
+# front's earpiece pocket begins). Drawing to here: x + 69.37, y - 10.35. Check: its reset button lands on the
+# front's reset opening (y 65.5-72.3).
+TD_BOARD = (0.47, 1.26, 67.53, 100.2)          # 67.06 x 98.94, the keyboard end rounded over its last 14.3 mm
+TD_PARTS = {                                    # (x0, y0, x1, y1)
+    "ESP32-S3 module": (26.0, 71.0, 44.0, 96.5),
+    "microSD slot": (57.0, 73.5, 67.5, 85.6),
+    "LoRa module": (10.0, 9.5, 24.0, 22.5),
+}
+TD_GROVE = (9.6, {"RX": 88.0, "TX": 86.0, "VCC": 84.0, "GND": 82.0})   # pads, top to bottom as on the pin map
+TD_GROVE_SOCKET = (0.6, 81.0, 7.6, 89.0)       # the HY2.0 socket that comes off
+TD_BAT = (56.55, 24.78)                         # battery socket: JST GH 1.25 mm, 2 pins (pin map)
+TD_SPK = (44.12, 24.60)                         # speaker socket
+TD_LORA_JACK = (2.44, 22.26)
+TD_RESET = (1.83, 69.16)
+SPEAKER_AT = (58.0, 15.0, 67.5, 35.5)           # the T-Deck's speaker, moved to face the right-side grille
+SMA = {"LoRa": (9.0, 102.5), "4G": (59.0, 102.5)}
+
+
+def wiring_open(back, front, path):
+    """Every wire, with the case lying open like a book along the phone's left side: the front half on the left
+    (seen from inside: the T-Deck's back, the phone's left side on the right) and the back half on the right (the
+    phone's left side on the left). Letters mark where a wire passes from one half to the other."""
+    imgF, extF, _, _ = render(front, (0, 0, -1), (0, 1, 0), res=0.12)
+    imgB, extB, _, _ = render(back, (0, 0, -1), (0, 1, 0), res=0.12)
+    fig = plt.figure(figsize=(21, 11.4), dpi=100)
+    axF = fig.add_axes([0.005, 0.02, 0.495, 0.86]); show(axF, imgF, extF)
+    axB = fig.add_axes([0.5, 0.02, 0.495, 0.86]); show(axB, imgB, extB)
+    F = lambda x, y: (-x - 10.0, y)            # phone frame -> the front's own coordinates (seen mirrored)
+    Bk = lambda x, y: (x, y)
+    C = {"data": "#e67e22", "ear": "#1f77b4", "gps": "#8c564b", "mic": "#7b4fb3", "pos": "#d62728", "neg": "#222222",
+         "spk": "#16a085", "lora": "#7f8c8d"}
+
+    def route(ax, T, pts, col, lw=2.6, under=(), ls="-"):
+        P = [T(*p) for p in pts]
+        for i, (a, b) in enumerate(zip(P[:-1], P[1:])):
+            ax.plot([a[0], b[0]], [a[1], b[1]], color=col, lw=lw, ls=(0, (3, 2)) if i in under else ls,
+                    solid_capstyle="round", dash_capstyle="round", zorder=6)
+
+    def box(ax, T, b, fc, ec, alpha=0.35, ls="-", lw=1.2, z=3):
+        (x0, y0), (x1, y1) = T(b[0], b[1]), T(b[2], b[3])
+        ax.add_patch(Rectangle((min(x0, x1), min(y0, y1)), abs(x1 - x0), abs(y1 - y0), fc=fc, ec=ec, alpha=alpha,
+                               ls=ls, lw=lw, zorder=z))
+
+    def letter(ax, T, xy, t, col):
+        x, y = T(*xy)
+        ax.add_patch(Circle((x, y), 2.1, fc="white", ec=col, lw=2.0, zorder=9))
+        ax.text(x, y, t, ha="center", va="center", fontsize=9, weight="bold", color=col, zorder=10)
+
+    # ---------------- front half: the T-Deck's back and what lies on it
+    x0, y0, x1, y1 = TD_BOARD
+    ring = [(x0, 15.5), (x0, y1), (x1, y1), (x1, 15.5)]
+    ring += [(34.0 + 33.53 * np.cos(t), 15.5 + 14.24 * np.sin(t)) for t in np.linspace(0, -np.pi, 40)]
+    axF.add_patch(MPoly([F(*p) for p in ring], closed=True, fc="#d6e4f0", ec="#1f3a5f", lw=1.5, alpha=0.75, zorder=2))
+    for name, b in TD_PARTS.items():
+        box(axF, F, b, "#9fb3c8", "#1f3a5f", 0.8)
+        cx, cy = F((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
+        axF.text(cx, cy, name.replace(" ", "\n", 1), ha="center", va="center", fontsize=7.5, color=NAVY, zorder=4)
+    box(axF, F, TD_GROVE_SOCKET, "white", C["data"], 0.9, "--", 1.2)
+    gx, pads = TD_GROVE
+    for nm, y in pads.items():
+        px, py = F(gx, y)
+        axF.add_patch(Rectangle((px - 0.6, py - 0.6), 1.2, 1.2, fc=C["data"], ec=C["data"], zorder=7))
+        axF.text(px - 1.3, py, nm, ha="right", va="center", fontsize=6.5, color=C["data"], weight="bold", zorder=7)
+    for xy, nm in ((TD_BAT, "BAT"), (TD_SPK, "SPK")):
+        px, py = F(*xy)
+        axF.add_patch(Rectangle((px - 2.7, py - 2.1), 5.4, 4.2, fc="white", ec="#555", lw=1.2, zorder=7))
+        axF.text(px, py, nm, ha="center", va="center", fontsize=6.5, weight="bold", zorder=8)
+    box(axF, F, SPEAKER_AT, "#2c3e50", "#2c3e50", 0.85)
+    box(axF, F, (25.8, 100.2, 42.2, 107.5), COL["patch"], COL["patch"], 0.5)           # earpiece, holder, GPS
+    box(axF, F, (17.4, -1.6, 20.6, 1.4), "#c0392b", "#c0392b", 0.8)                     # mic
+    for nm, xy in SMA.items():
+        axF.add_patch(Circle(F(*xy), 2.2, fc="#b8860b", ec="#7a5c00", zorder=5))
+    # wires on the front half
+    route(axF, F, [(8.0, 74.5), (8.6, 80.0), (gx, 81.0)], C["data"], 3.2)
+    for y in pads.values():
+        route(axF, F, [(gx, 81.0), (gx - 0.1, y)], C["data"], 1.3)
+    bx, by = TD_BAT
+    route(axF, F, [(bx - 0.6, by + 2.1), (bx - 0.6, 31.0), (58.4, 38.0), (58.4, 40.0)], C["pos"], 2.0)
+    route(axF, F, [(bx + 0.6, by + 2.1), (bx + 0.6, 30.5), (59.6, 37.5), (59.6, 40.0)], C["neg"], 2.0)
+    sx, sy = TD_SPK
+    route(axF, F, [(sx, sy + 2.1), (sx, 29.0), (54.0, 29.0), (58.0, 26.5)], C["spk"], 2.0)
+    route(axF, F, [(26.6, 100.2), (23.5, 96.5), (22.0, 74.5)], C["ear"])                    # both down the left
+    route(axF, F, [(41.4, 100.2), (41.0, 98.3), (24.8, 98.3), (24.3, 96.5), (23.0, 74.5)], C["ear"])  # of the module
+    route(axF, F, [(27.5, 103.5), (16.0, 97.0), (15.0, 74.5)], C["gps"], 2.0)
+    lx, ly = TD_LORA_JACK
+    route(axF, F, [(lx, ly), (1.4, 30.0), (1.4, 95.5), SMA["LoRa"]], C["lora"], 2.0)
+    route(axF, F, [SMA["4G"], (66.5, 97.0)], C["gps"], 2.0, ls=":")
+    route(axF, F, [(19.0, 0.4), (19.0, 2.5)], C["mic"], 2.6)
+    for xy, t, col in (((8.0, 74.5), "A", C["data"]), ((58.9, 40.5), "B", C["pos"]), ((22.5, 74.5), "C", C["ear"]),
+                       ((15.0, 74.5), "D", C["gps"]), ((19.0, 3.4), "E", C["mic"]), ((66.5, 97.0), "F", C["gps"])):
+        letter(axF, F, xy, t, col)
+    # labels, front half (its right-hand margin is the phone's left side, the book's spine)
+    LF, RF = F(86.0, 0)[0], F(-19.0, 0)[0]
+    def labF(xy, text, ty, col, side="L", size=8):
+        x, y = F(*xy)
+        lab(axF, x, y, text, LF if side == "L" else RF, ty, col, size)
+    labF((gx, 85.0), "Grove pads (its socket\ncomes off): the 4 data\nwires from A, 13 cm each", 88, C["data"], "R")
+    labF(TD_BAT, "battery socket (BAT):\nJST GH 1.25 mm, 2 pins;\nits lead to B, 12 cm:\nplugged in last, at closing", 30, C["pos"])
+    labF(((SPEAKER_AT[0] + SPEAKER_AT[2]) / 2, 33.0), "T-Deck's speaker, moved\nhere to face the right-side\n"
+         "grille; its own lead to SPK", 47, C["spk"])
+    labF((34.0, 104.0), "earpiece, low holder and\nGPS antenna (top pocket):\nearpiece wires to C, 13 cm;\n"
+         "GPS cable to D (its own 15 cm)", 110, COL["patch"])
+    labF((1.4, 60.0), "LoRa: the T-Deck's own\ncable, from its jack to\nthe top-left connector\n(needs about 8.5 cm)", 64,
+         C["lora"], "R")
+    labF(SMA["4G"], "top-right hole: 4G stubby and\nits 10 cm cable to F, or a plug", 96, C["gps"])
+    labF((19.0, 0.0), "mic, in the bottom wall:\nits wires up the groove\nto E, 14 cm each", 8, C["mic"], "R")
+    labF(TD_RESET, "reset button", 74, NAVY, "R")
+    for nm, col, ls in (("data wires (4): 13 cm each", C["data"], "-"),
+                        ("battery lead (JST GH): 12 cm", C["pos"], "-"),
+                        ("earpiece wires: 13 cm each", C["ear"], "-"),
+                        ("GPS cable (its own 15 cm), 4G cables", C["gps"], "-"),
+                        ("mic wires: 14 cm each", C["mic"], "-"),
+                        ("speaker lead (the T-Deck's own)", C["spk"], "-"),
+                        ("LoRa cable (the T-Deck's own)", C["lora"], "-")):
+        axF.plot([], [], color=col, lw=2.6, ls=ls, label=nm)
+    axF.legend(loc="lower left", fontsize=8, framealpha=0.95, title="wires", title_fontsize=8)
+    axF.set_xlim(F(101.0, 0)[0], F(-32.0, 0)[0]); axF.set_ylim(-5, 117)    # the same scale as the back half
+    axF.set_title("FRONT HALF, from inside: the T-Deck's back (the phone's left side on the right)", fontsize=11)
+
+    # ---------------- back half
+    X0, Y0 = B.X0, B.Y0
+    pad = lambda u, v: B.board_to_back(u, v)
+    row = lambda name, left: pad(2.45 if left else 51.8, 13.07 + (["STA", "NET", "DTR", "RI", "VDD", "GND", "RX", "TX"]
+                                  if left else ["CLK", "CS", "MOSI", "MISO", "M-", "M+", "S-", "S+", "SCL", "SDA",
+                                                "GND", "VCC"]).index(name) * 2.55)
+    axB.add_patch(Rectangle((X0 - B.BOARD_H, Y0 - B.BOARD_W), B.BOARD_H, B.BOARD_W, fc=COL["board"], alpha=0.10,
+                            ec=COL["board"], lw=2.0, ls="--"))
+    axB.add_patch(Rectangle((34 - B.CELL_L / 2, B.CELL_Y - B.CELL_D / 2), B.CELL_L, B.CELL_D, fc=COL["battery"],
+                            alpha=0.18, ec=COL["battery"], lw=1.5, ls="--"))
+    sy0 = B.CELL_Y - B.CELL_D / 2 - B.SUPPORT_GAP - B.SUPPORT_T
+    yp = B.CELL_Y + B.CONTACT_DY
+    axB.add_patch(Rectangle((34 - B.BOARD_L / 2, sy0 - 2.0), B.BOARD_L, 2.0, fc=COL["cable"], alpha=0.7,
+                            ec=COL["cable"]))
+    for xc in (-2.0, 66.6):
+        axB.add_patch(Rectangle((xc, yp - 3.5), 3.4, 7.0, fc=GOLD, alpha=0.7, ec="#8a6d10", lw=1.0))
+    yc, _ = B.SWITCH_AT
+    face = B.SWITCH_PAD_X[0]
+    axB.add_patch(Rectangle((face - 8.5, yc - 5.75), 8.5, 11.5, fc="#c0392b", alpha=0.25, ec="#c0392b", lw=1.5,
+                            ls="--"))
+    axB.add_patch(Rectangle((8.0, 4.5), 41.0, 12.0, fc="#8c564b", alpha=0.22, ec="#8c564b", lw=1.2))
+    ufl1, ufl2 = pad(24.8, 3.6), pad(2.2, 41.5)
+    reg, c11 = (8.4, 37.0), (30.3, 61.2)                          # from photos of the board: approximate
+    pm, pp = 29.6, 38.4                                            # P- and P+ on the protection board (drawn)
+    d0, e0, e1, m0 = row("RX", True), row("S+", False), row("S-", False), row("M-", False)
+    route(axB, Bk, [(8.0, 74.5), (8.0, 71.0), (d0[0], d0[1] + 2.5), d0], C["data"], 3.2, under={1})
+    route(axB, Bk, [(22.0, 74.5), e0], C["ear"]); route(axB, Bk, [(23.0, 74.5), (e1[0] + 0.5, 72.0), e1], C["ear"])
+    route(axB, Bk, [(15.0, 74.5), (15.0, 71.0), ufl2], C["gps"], 2.0, under={1})
+    route(axB, Bk, [(19.0, 3.4), (19.0, 15.0), (m0[0] - 1.0, 66.0), (m0[0] - 1.0, m0[1])], C["mic"], under={1})
+    route(axB, Bk, [(pp, sy0 - 2.0), (pp, 73.2), (57.0, 73.2), (58.6, 71.0), (58.6, yc), (face - 8.5, yc)], C["pos"])
+    route(axB, Bk, [(face - 8.5, yc - 2.5), (57.5, yc - 2.5), c11], C["pos"], under={1})
+    route(axB, Bk, [(pm, sy0 - 2.0), (pm, 73.8), (11.0, 73.8), (9.5, 71.0), reg], C["neg"], under={3})
+    route(axB, Bk, [(pp + 0.9, sy0 - 2.0), (pp + 0.9, 74.4), (60.6, 74.4), (60.6, 41.2), (58.9, 40.5)], C["pos"], 2.0)
+    route(axB, Bk, [(pm - 0.9, sy0 - 2.0), (pm - 0.9, 74.95), (61.5, 74.95), (61.5, 41.2), (58.9, 40.5)], C["neg"],
+          2.0)
+    route(axB, Bk, [(49.0, 10.5), (52.5, 10.5), (53.5, 17.0), ufl1], C["gps"], 2.0, under={2})
+    route(axB, Bk, [(66.5, 97.0), (68.3, 92.5), (68.3, 79.0), (63.5, 72.0), (59.5, 52.0), (57.5, 44.0), ufl1],
+          C["gps"], 2.0, ls=":")
+    for (x, y) in (ufl1, ufl2):
+        axB.add_patch(Rectangle((x - 1.2, y - 1.2), 2.4, 2.4, fc="white", ec=C["gps"], lw=1.5, ls="--", zorder=7))
+    for (x, y) in (reg, c11):
+        axB.add_patch(Circle((x, y), 1.2, fc="white", ec="#222", lw=1.5, ls="--", zorder=7))
+    for xy, t, col in (((8.0, 74.5), "A", C["data"]), ((58.9, 40.5), "B", C["pos"]), ((22.5, 74.5), "C", C["ear"]),
+                       ((15.0, 74.5), "D", C["gps"]), ((19.0, 3.4), "E", C["mic"]), ((66.5, 97.0), "F", C["gps"])):
+        letter(axB, Bk, xy, t, col)
+    L, R = -19.0, 88.0
+    lab(axB, 8.0, 71.0, "A: data wires, round the board's\nlower edge from TX, RX, VDD,\nGND and under it", L, 46,
+        C["data"], 8)
+    lab(axB, reg[0], reg[1], "P− to the regulator's\nmetal tab, 8 cm (under\nthe board; approx.)", L, 28, C["neg"], 8)
+    lab(axB, ufl2[0], ufl2[1], "D: GPS cable to U.FL2\n(under the board)", L, 13, C["gps"], 8)
+    lab(axB, 19.0, 3.4, "E: mic wires, under\nthe board to M+ / M−", L, 1, C["mic"], 8)
+    lab(axB, 22.5, 74.5, "C: earpiece wires to\nS+ and S− (the board's\ntop side)", L, 84, C["ear"], 8)
+    lab(axB, 63.8, yc, "modem switch: P+ in (middle\npin, 5 cm), out to C11 (5 cm)", R, 66, "#c0392b", 8)
+    lab(axB, 60.6, 56.0, "B: battery lead, 12 cm (red\n+, black −) up the free\nstrip to P+ and P−", R, 50,
+        C["pos"], 8)
+    lab(axB, c11[0], c11[1], "C11's + leg (under\nthe board; approx.)", R, 36, C["pos"], 8)
+    lab(axB, ufl1[0], ufl1[1], "4G socket U.FL1 (under the\nboard): the antenna's own\n8 cm cable", R, 24, C["gps"], 8)
+    lab(axB, 68.3, 86.0, "F (4G stubby only): its\n10 cm cable past the cell's\nright end; its connector\ngoes in at closing", R, 92, C["gps"], 8)
+    lab(axB, 28.5, 10.5, "4G antenna (41 x 12 mm), on the floor", 28.5, 10.5, C["gps"], 8)
+    lab(axB, 34.0, sy0 - 1.0, "protection board: P− (left), P+ (right)", 34, 81.0, COL["cable"], 8)
+    lab(axB, 34.0, 89.0, "18650 cell", 34, 89.0, COL["battery"], 9)
+    axB.plot([], [], color="#555", lw=2.6, label="on top")
+    axB.plot([], [], color="#555", lw=2.6, ls=(0, (3, 2)), label="under the modem board")
+    axB.plot([], [], color="#555", lw=2.0, ls=":", label="4G stubby only")
+    axB.legend(loc="lower right", fontsize=8, framealpha=0.95)
+    axB.set_xlim(-32, 101); axB.set_ylim(-5, 117)
+    axB.set_title("BACK HALF, from inside (the phone's left side on the left)", fontsize=11)
+    fig.suptitle("18650 version, every wire, with the case open like a book along the phone's left side.\n"
+                 "Letters mark where a wire passes from one half to the other (A data, B battery lead, C earpiece, "
+                 "D GPS, E mic, F 4G stubby). T-Deck parts placed from LilyGO's board drawing and pin map.\n"
+                 "Lengths are what to cut: the route, enough to lay the case open flat like this, and 1 cm for "
+                 "the joints.", fontsize=11.5)
+    fig.savefig(path); plt.close(fig)
+
+
+def _clip(mesh, lo, hi):
+    for ax_ in range(3):
+        for v, sgn in ((lo[ax_], 1.0), (hi[ax_], -1.0)):
+            o = np.zeros(3); n = np.zeros(3); o[ax_] = v; n[ax_] = sgn
+            mesh = mesh.slice_plane(o, n)
+    return mesh
+
+
+def battery_corner(back, path):
+    """The left (\u2212) end of the cell's channel from above (the T-Deck's side): the protection board on the
+    support wall, its nickel strip's path to behind the contact, and the contact, in the order they go in."""
+    sub = _clip(back, [-4.5, 69.0, -18.0], [27.0, 96.0, 0.0])
+    img, ext, _, _ = render(sub, (0, 0, -1), (0, 1, 0), res=0.03)
+    fig = plt.figure(figsize=(12.5, 9.6), dpi=110)
+    ax = fig.add_axes([0.01, 0.01, 0.98, 0.9]); show(ax, img, ext)
+    sy0 = B.CELL_Y - B.CELL_D / 2 - B.SUPPORT_GAP - B.SUPPORT_T          # the support wall's back face
+    yp = B.CELL_Y + B.CONTACT_DY
+    x0 = 34 - B.BOARD_L / 2
+    xw = B.WALL_IN[0]
+    ax.add_patch(Rectangle((x0, sy0 - 2.0), 27.0 - x0, 2.0, fc=COL["cable"], alpha=0.8, ec="#1f5a30", lw=1.5, zorder=5))
+    ax.add_patch(Rectangle((34 - B.CELL_L / 2, B.CELL_Y - B.CELL_D / 2), 27.0 - (34 - B.CELL_L / 2), B.CELL_D,
+                           fill=False, ec=COL["battery"], lw=2, ls="--", zorder=5))
+    xs = xw + 0.3                                                          # the strip, flat against the walls
+    strip = [(x0, sy0 - 0.25), (xs, sy0 - 0.25), (xs, yp - B.CONTACT_W / 2 + 2.0)]
+    ax.plot(*zip(*strip), color="#7f8c8d", lw=7, solid_joinstyle="miter", zorder=6)
+    ax.plot(*zip(*strip), color="#e5e8e8", lw=2, zorder=7)
+    xp = xw + B.GROOVE_D - 0.15                                            # the plate, in its grooves
+    ax.plot([xp, xp], [yp - B.CONTACT_W / 2, yp + B.CONTACT_W / 2], color=GOLD, lw=6, solid_capstyle="butt",
+            zorder=8)
+    lab(ax, 22.0, sy0 - 1.0, "1  protection board, stuck to the\nwall's back face, chips toward the wall,\n"
+        "its end at the mark on the wall's top", 16.0, 72.0, COL["cable"], 9.5)
+    lab(ax, 9.0, sy0 - 0.25, "2  strip along the wall\nto the gap at its end", 5.0, 73.5, "#5d6d7e", 9.5)
+    lab(ax, xs, 80.0, "3  along the end wall and through\nthe slit in the lower rib; its end\n"
+        "lies flat against the wall", -10.5, 77.5, "#5d6d7e", 9.5)
+    lab(ax, xp, yp + 1.0, "4  contact plate, pushed down\nbehind the lips and the bar,\nin front of the strip, "
+        "onto\nits seat; spring toward the cell", -10.5, 89.0, "#8a6d10", 9.5)
+    lab(ax, 14.0, 91.0, "5  the cell, last of all\n(\u2212 end here)", 14.0, 91.0, COL["battery"], 9.5)
+    ax.text(-15.0, 94.5, "Left (\u2212) end. The right (+) end is its mirror image.", fontsize=9, color="#333")
+    ax.set_xlim(-16.5, 27.0); ax.set_ylim(69.0, 96.5)
+    ax.set_title("Battery corner, seen from the T-Deck's side: the order the parts go in\n"
+                 "(how the plate sits in its grooves: see the battery-contact picture)", fontsize=10)
     fig.savefig(path); plt.close(fig)
 
 
@@ -395,6 +637,8 @@ def main(back_p, front_p, old_back_p, old_front_p, out):
     top_edge(phone, os.path.join(out, "18650-top-edge.png"))
     top_slot_cut(front, back_f, os.path.join(out, "18650-top-slot.png"))
     battery_contact(back, placed(front, TO_FRONT), os.path.join(out, "18650-battery-contact.png"))
+    wiring_open(back, front, os.path.join(out, "18650-wiring-open.png"))
+    battery_corner(back, os.path.join(out, "18650-battery-corner.png"))
     print("pictures written to", out)
 
 

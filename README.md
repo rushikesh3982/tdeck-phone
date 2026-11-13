@@ -59,6 +59,7 @@ fallback and GNSS.
 | [docs/bring-up.md](docs/bring-up.md) | First power-on checks and the modem commands |
 | [docs/case.md](docs/case.md) | Which case files to print and what to change in them |
 | [docs/assembly.md](docs/assembly.md) | Diagrams of every cut-out and part, and step-by-step assembly |
+| [docs/assembly-18650.md](docs/assembly-18650.md) | Step-by-step assembly of the 18650 version (a draft, to check at the first dry fit) |
 | [docs/build-log.md](docs/build-log.md) | Photos of the hardware as it was built, step by step |
 | [docs/decisions.md](docs/decisions.md) | Why each part was chosen and what was rejected |
 | [docs/design-18650.md](docs/design-18650.md) | The slimmer 18650 version (designed, not printed yet): what changes, the parts, the wires and the files |
@@ -74,7 +75,7 @@ fallback and GNSS.
    - Fit and test the 4G antenna: a 41 × 12 mm flexible one inside, with a 50 mm stubby in the top-right hole as
      the backup.
    - Print the back first ([case/18650/stl/](case/18650/stl/), ready), then the front and the earpiece holder.
-   - Write the assembly steps for this version.
+   - Check the assembly steps ([docs/assembly-18650.md](docs/assembly-18650.md), a draft) at the first dry fit.
 3. **Before assembly:** the battery-power checks and the data-wire continuity check
    ([docs/design-18650.md](docs/design-18650.md#before-assembly)). Everything else is tested after assembly.
 4. **Firmware:** a T-Deck app with dialer and SMS screens, a modem driver, ringtone, sleep with wake-on-call, and

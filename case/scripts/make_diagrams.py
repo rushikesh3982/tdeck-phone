@@ -181,7 +181,7 @@ def front_outside(front, path):
     key(ax_key, [
         (1, "Earpiece grille (1 × 6 mm slot). The earpiece\nsits in the pocket right behind it."),
         (2, "SMA cut-out, top-left: the T-Deck's LoRa\nantenna (where it is now)."),
-        (3, "SMA cut-out, top-right (old Grove corner):\n4G antenna, recommended. Nut and washer go\nin the round recess outside."),
+        (3, "SMA cut-out, top-right:\n4G antenna, recommended. Nut and washer go\nin the round recess outside."),
         (4, "Alley Cat's cat-head logo on the badge: a\nvisible credit to the case's designer. Reads\nupright with the phone screen-up (upside\ndown in this unfolded view). The earpiece\npocket is behind it."),
         (5, "USB-C: charging and programming."),
         (6, "Mic sound hole (1.5 mm). The mic sits in a\npocket right behind it."),

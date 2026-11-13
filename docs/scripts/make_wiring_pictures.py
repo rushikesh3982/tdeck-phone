@@ -298,7 +298,7 @@ def phone_18650(path):
             color="#1f4e8c")
     sock = {"+": (tx1, 23.0), "−": (tx1, 19.0)}
     ax.add_patch(Rectangle((tx1 - 9, 16.5), 9, 9, fc="white", ec="#1f4e8c"))
-    ax.text(tx1 - 10, 21.0, "battery\nsocket\n(JST PH2.0)", ha="right", va="center", fontsize=8, color="#1f4e8c")
+    ax.text(tx1 - 10, 21.0, "battery\nsocket (JST\nGH 1.25 mm)", ha="right", va="center", fontsize=8, color="#1f4e8c")
     for name, (x, y) in sock.items():
         ax.add_patch(Circle((x, y), 0.9, fc=COL["bat+"] if name == "+" else COL["gnd"], ec="#333", zorder=5))
         ax.text(x - 1.8, y, name, ha="right", va="center", fontsize=10, weight="bold")
