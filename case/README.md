@@ -4,8 +4,8 @@ Modified from **"Lilygo T-Deck TD1 Case" by Alley Cat**, Printables model 741124
 https://www.printables.com/model/741124-lilygo-t-deck-td1-case, licensed
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The STL files and images in this folder are
 changed versions of that design and are shared under the same licence, CC BY-SA 4.0. The originals are on
-Printables; the two that the 18650 version is built from are kept here unchanged, in
-[alley-cat-originals/](alley-cat-originals/). (The script in `scripts/` is MIT, like the rest of the repository.)
+Printables; the ones the 18650 version is built from (back, front and the three small parts) are kept here
+unchanged, in [alley-cat-originals/](alley-cat-originals/). (The script in `scripts/` is MIT, like the rest of the repository.)
 
 > **Print these cases in ASA only.** Every file here is built 1 % larger to allow for how much ASA shrinks as it
 > cools, and that is what fits the T-Deck and the parts. PLA, PLA+ and PETG shrink less, so in those the parts come
@@ -348,9 +348,9 @@ The print set in [x-back-5000mah/stl/](x-back-5000mah/stl/), at 101 %:
 python scripts/make_front.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" x-back-5000mah/stl/front-earpiece-mic.stl
 python scripts/make_back.py --scale 1.01 "Alley Chat TD1 X Back Outside Cat Edition.stl" x-back-5000mah/stl/back-modem-gps.stl
 python scripts/make_earpiece_holder.py --scale 1.01 x-back-5000mah/stl/earpiece-holder.stl "" x-back-5000mah/stl/front-earpiece-mic.stl x-back-5000mah/stl/back-modem-gps.stl
-python scripts/scale_stl.py "Alley Chat TD1 Switch.stl" x-back-5000mah/stl/alley-chat-td1-switch.stl 1.01
-python scripts/scale_stl.py "Alley Chat TD1 Reset Button.stl" x-back-5000mah/stl/alley-chat-td1-reset-button.stl 1.01
-python scripts/scale_stl.py "Alley Chat TD1 X Antenna Plug.stl" x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl 1.01
+python scripts/scale_stl.py "alley-cat-originals/Alley Chat TD1 Switch.stl" x-back-5000mah/stl/alley-chat-td1-switch.stl 1.01
+python scripts/scale_stl.py "alley-cat-originals/Alley Chat TD1 Reset Button.stl" x-back-5000mah/stl/alley-chat-td1-reset-button.stl 1.01
+python scripts/scale_stl.py "alley-cat-originals/Alley Chat TD1 X Antenna Plug.stl" x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl 1.01
 cp x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-gsm.stl x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-lora.stl
 ```
 
