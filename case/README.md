@@ -4,7 +4,8 @@ Modified from **"Lilygo T-Deck TD1 Case" by Alley Cat**, Printables model 741124
 https://www.printables.com/model/741124-lilygo-t-deck-td1-case, licensed
 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The STL files and images in this folder are
 changed versions of that design and are shared under the same licence, CC BY-SA 4.0. The originals are on
-Printables. (The script in `scripts/` is MIT, like the rest of the repository.)
+Printables; the two that the 18650 version is built from are kept here unchanged, in
+[alley-cat-originals/](alley-cat-originals/). (The script in `scripts/` is MIT, like the rest of the repository.)
 
 > **Print these cases in ASA only.** Every file here is built 1 % larger to allow for how much ASA shrinks as it
 > cools, and that is what fits the T-Deck and the parts. PLA, PLA+ and PETG shrink less, so in those the parts come
@@ -44,14 +45,16 @@ version's folder, so everything to print for this build is in [x-back-5000mah/st
 
 A slimmer phone, 26.5 mm instead of 37, with one 18650 cell in a grip across the top of the back. Everything about it
 is in [../docs/design-18650.md](../docs/design-18650.md), including which files to print and how. Three scripts make
-its parts, and the 101 % print files are in [18650/stl/](18650/stl/): `back-18650.stl` (saved standing on its top
-edge, as it prints), `front-18650.stl` and `earpiece-holder-18650.stl`, with copies of Alley Cat's small parts (the
+its parts, with a fourth for the GPS bump they share, and the 101 % print files are in [18650/stl/](18650/stl/):
+`back-18650.stl` (saved lying on its outside face, as it prints), `front-18650.stl` and `earpiece-holder-18650.stl`,
+with copies of Alley Cat's small parts (the
 switch slider, the reset button and two antenna plugs), so the folder has every piece to print.
 
 | Script | Part | Changed from |
 |---|---|---|
-| [scripts/make_back_18650.py](scripts/make_back_18650.py) | Back: the grip and the cell's channel, the modem board below it on 8 mm standoffs, the modem switch on the right wall (Alley Cat's slot and screw holes, copied from her front), the network-light window, the open GPS top slot, two ribs at each end of the cell to hold a battery contact, with + and − engraved beside them, and a thin wall along the cell that carries the protection board, with slits for its nickel strips. Grooves outside, no logo. Her cat and "Alley Chat TD1 S" stay inside | `Alley Chat TD1 S Inside Cat Edition.stl`, 0.5 mm deeper |
-| [scripts/make_front_18650.py](scripts/make_front_18650.py) | Front: the SIM slit in a finger scoop, Alley Cat's speaker cavity and grille moved to the right side, larger SIM and microSD pictures, the wider and lower earpiece pocket, a notch in each side wall for a battery contact's top, and the rushiWorks logo on the top badge | the front above (`make_front.py`) |
+| [scripts/make_back_18650.py](scripts/make_back_18650.py) | Back: the grip and the cell's channel, the modem board below it on 8 mm standoffs, the modem switch on the right wall (Alley Cat's slot and screw holes, copied from her front), the network-light window, the GPS top slot opening into the GPS bump's back part (with "rushiworks" engraved on it), two ribs at each end of the cell to hold a battery contact, with + and − engraved beside them, and a thin wall along the cell that carries the protection board, with slits for its nickel strips. Grooves outside, no logo. Her cat and "Alley Chat TD1 S" stay inside | `Alley Chat TD1 S Inside Cat Edition.stl`, 0.5 mm deeper |
+| [scripts/make_front_18650.py](scripts/make_front_18650.py) | Front: the SIM slit in a finger scoop, Alley Cat's speaker cavity and grille moved to the right side, larger SIM and microSD pictures, the wider and lower earpiece pocket, a notch in each side wall for a battery contact's top, and the GPS bump's front part where Alley Cat's badge was, with the rushiWorks logo engraved on it, and a 1 mm notch in the slot's left wall for the GPS antenna's cable | the front above (`make_front.py`) |
+| [scripts/gps_bump_18650.py](scripts/gps_bump_18650.py) | The GPS bump, shared by the two scripts above: the block in the middle of the top edge that houses the 9 mm GPS antenna, the antenna's room, the joint's groove across it, the two engravings, and the notch for the antenna's cable | — |
 | [scripts/make_earpiece_holder_18650.py](scripts/make_earpiece_holder_18650.py) | Low earpiece holder, with a flat roof for the GPS antenna to stand on | the earpiece holder below |
 
 The rest of this page describes the current build.
@@ -330,7 +333,7 @@ the board's holes, and the M3 screws only have 0.2 mm of play in them. The 101 %
   Ventilate when heating ASA.
 - The earpiece holder is the exception: lay it on its wire-groove face (see [Earpiece holder](#earpiece-holder)).
 - In the slicer preview, check that the 1 mm slot and the 1.5 mm sound hole are open.
-- **The 18650 version** prints differently (its back stands on its top edge): see
+- **The 18650 version** prints differently: see
   [../docs/design-18650.md](../docs/design-18650.md#printing).
 
 ## Making the files again
@@ -367,12 +370,13 @@ python scripts/make_diagrams.py /tmp/tdeck100/front-earpiece-mic.stl /tmp/tdeck1
 
 The back script reads the logo from `logo/rushi-logo.jpg`, and also needs pillow and matplotlib to trace it.
 
-**The 18650 version,** at 101 %, into [18650/stl/](18650/stl/). The back also reads Alley Cat's switch slot from her
-front file, and the front script reads the logo:
+**The 18650 version,** at 101 %, into [18650/stl/](18650/stl/), from the originals kept in
+[alley-cat-originals/](alley-cat-originals/). The back also reads Alley Cat's switch slot from her front file, and
+the scripts read the logo:
 
 ```
-python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
-python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
+python scripts/make_back_18650.py --scale 1.01 "alley-cat-originals/Alley Chat TD1 S Inside Cat Edition.stl" "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
+python scripts/make_front_18650.py --scale 1.01 "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
 python scripts/make_earpiece_holder_18650.py --scale 1.01 18650/stl/earpiece-holder-18650.stl
 cp x-back-5000mah/stl/alley-chat-td1-switch.stl x-back-5000mah/stl/alley-chat-td1-reset-button.stl x-back-5000mah/stl/alley-chat-td1-x-antenna-plug-*.stl 18650/stl/
 ```
@@ -381,7 +385,7 @@ Its pictures, in [18650/images/](18650/images/), from 100 % parts (with the X ba
 side-by-side view):
 
 ```
-python scripts/make_back_18650.py "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/back-18650.stl
-python scripts/make_front_18650.py "Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/front-18650.stl
+python scripts/make_back_18650.py "alley-cat-originals/Alley Chat TD1 S Inside Cat Edition.stl" "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/back-18650.stl
+python scripts/make_front_18650.py "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" /tmp/tdeck100/front-18650.stl
 python scripts/make_18650_pictures.py /tmp/tdeck100/back-18650.stl /tmp/tdeck100/front-18650.stl /tmp/tdeck100/back-modem-gps.stl /tmp/tdeck100/front-earpiece-mic.stl 18650/images
 ```

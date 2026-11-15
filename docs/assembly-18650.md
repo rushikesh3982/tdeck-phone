@@ -99,6 +99,10 @@ To open the case again later, unplug the battery lead first.
 Set 2 inserts in the front's top screw holes and 4 in the back's standoffs. Press them in straight, and let them cool
 before loading them.
 
+**The front's insert on the left** (the SIM slit's side) has only 1.25 mm of plastic between it and the GPS cable's
+notch in the top slot. Use the iron's low end (about 240 °C), let it sink slowly, and stop when it's flush. Then check
+that the notch, in the slot's left wall, is still clear.
+
 ### 3. Dry fit, and check the wire lengths
 
 1. Set the modem board on its standoffs (no screws yet). Hold the protection board against the support wall between
@@ -202,9 +206,14 @@ Leave the cell out until step 9.
 
    ![Cut through the top slot: earpiece, low holder, GPS antenna and cell](../case/18650/images/18650-top-slot.png)
 4. **GPS antenna:**
-   - Stand it on its edge on the holder's roof and the steps beside it, ceramic toward the phone's top edge.
-   - Turn it so its amplifier is at the end toward the back cover.
-   - A dab of hot glue at its foot holds it. Its cable goes down past the cell's left end to U.FL2.
+   - **Which way round:** ceramic toward the phone's top edge, so it goes out into the GPS bump, and the metal cap
+     toward the T-Deck. Turn it so the side its cable leaves from faces the phone's left (the SIM slit's side).
+   - **Bend the cable first,** once and gently, right where it leaves the board, so it runs back along the antenna's
+     side toward the T-Deck. Don't bend it back and forth.
+   - Stand it on its edge on the holder's roof and the steps beside it, **pushed against the slot's right-hand side**
+     (the speaker grille's side). The cable then lies in the 1 mm notch in the slot's left-hand wall.
+   - A dab of hot glue at its foot holds it. From the notch, the cable runs over the T-Deck's back and down past the
+     cell's left end to U.FL2.
 5. **Antenna connectors:**
    - **Top-left:** the T-Deck's own LoRa cable. From inside, push the SMA thread out through the hole, so its hex
      collar sits in the hex pocket. Fit the lock washer and nut outside.

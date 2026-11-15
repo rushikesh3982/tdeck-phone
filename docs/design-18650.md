@@ -1,11 +1,11 @@
 # 18650 version
 
-**Status (15 Nov 2026): designed, not printed yet. The print files in [case/18650/stl/](../case/18650/stl/) are on
-hold:** the GPS antenna arrived on 15 Nov 2026 and works well, but at 9 mm thick it doesn't fit the top slot as drawn
-(see [GPS antenna](#gps-antenna)). Don't print the front, back or earpiece holder until its room is settled. This is
-option 3 of the
+**Status (15 Nov 2026): designed, and the print files are ready in [case/18650/stl/](../case/18650/stl/). Not
+printed yet.** The GPS antenna arrived on 15 Nov 2026 9 mm thick, and now has its room in a bump in the middle of the
+top edge (see [GPS antenna](#gps-antenna)). This is option 3 of the
 [slim layout plan](slim-layout-plan.md), chosen on 9 Nov 2026. The scripts that make its three new parts are in
-[case/scripts/](../case/scripts/). The battery contacts' holders were added on 12 Nov 2026, from the real contacts.
+[case/scripts/](../case/scripts/), built from Alley Cat's originals kept in
+[case/alley-cat-originals/](../case/alley-cat-originals/). The battery contacts' holders were added on 12 Nov 2026, from the real contacts.
 
 Until then, the other docs ([wiring.md](wiring.md), [assembly.md](assembly.md), [case.md](case.md) and the files in
 case/x-back-5000mah/stl/) still describe the current build: the X back with the 5000 mAh pouch over the modem board.
@@ -14,15 +14,15 @@ case/x-back-5000mah/stl/) still describe the current build: the X back with the 
 
 | | Current build | 18650 version |
 |---|---|---|
-| **Size** | 110 × 76 × 37 mm | 110 × 76 × **26.5 mm**, and **32.8 mm at the grip** |
+| **Size** | 110 × 76 × 37 mm | 110 × 76 × **26.5 mm**, and **32.8 mm at the grip**. The GPS bump stands 3.5 mm out from the top edge's middle |
 | **Battery** | 5000 mAh pouch, lying on the modem board | One 18650 cell (LG MJ1, about 3400 mAh) across the top, inside a rounded grip |
 | **Back** | Alley Cat's deep X back | Her slim S back, 0.5 mm deeper, with the grip added |
 | **Modem board** | At the top, on 9 mm standoffs | Below the cell, on 8 mm standoffs |
-| **GPS antenna** | KTRON 25 mm patch, bottom-left | Eteily 18 mm active antenna, standing on its edge in the top slot |
+| **GPS antenna** | KTRON 25 mm patch, bottom-left | Eteily 18 mm active antenna (9 mm thick), standing on its edge in the top slot and the GPS bump |
 | **Modem switch** | Front, left side | Back, right wall, just below the grip |
 | **SIM slit** | Back, left side | Front, left side, in a finger scoop |
 | **Speaker grille** | Left side | Right side, below the T-Deck's switch (Alley Cat's same cavity and grille) |
-| **Top-edge badge** | Alley Cat's cat | The rushiWorks logo. Her cat stays on the back's inside floor |
+| **Top edge** | Alley Cat's badge with her cat | The GPS bump, with the rushiWorks logo on the front's part and "rushiworks" on the back's. Her cat stays on the back's inside floor |
 | **4G antenna** | Full-band sticker on the right side | A 41 × 12 mm flexible antenna along the bottom, inside. Backup: a 50 mm stubby in the top-right hole |
 
 Sizes are at 100 %. The printed parts are 1 % larger (see [Printing](#printing)).
@@ -69,8 +69,10 @@ wire joints on top.
   - **Thin spot:** there's about 1.4 mm of plastic between the knob slot and the joint, along the switch only.
 - **Network light:** the same light tube and window as now. The window sits in an outside groove.
 - **GPS top slot:** the gap between the two case-screw blocks is kept open, 19.5 mm wide, for the GPS antenna's top
-  end. A 0.9 mm pocket in the floor gives it more height, leaving 0.9 mm of plastic outside.
-- **Outside:** Alley Cat's grooves, each ending 2 mm short of the grip and 2 mm short of the bottom edge. No logo.
+  end. A 0.9 mm pocket in the floor gives it more height, leaving 0.9 mm of plastic outside. The slot runs on out
+  through the top wall into the back's part of the GPS bump (see [GPS antenna](#gps-antenna)).
+- **Outside:** Alley Cat's grooves, each ending 2 mm short of the grip and 2 mm short of the bottom edge. "rushiworks"
+  is engraved on the GPS bump's back part.
 - **Inside:** Alley Cat's engraved cat and "Alley Chat TD1 S" stay on the floor, as her credit.
 
 ## The front
@@ -111,12 +113,12 @@ now.
 - **Earpiece pocket:** Alley Cat's own pocket, 16.4 mm wide, whose side walls hold the earpiece holder. Its floor is
   0.5 mm lower, so the face under it is 3.1 mm instead of 3.6.
 - **GPS slot above it:** one clean slot, 19.5 mm wide (as wide as the back's slot), running the full depth of the
-  pocket and straight up through the top. On each side, a flat step level with the holder's roof, so the antenna
-  stands on one flat surface.
-- **Badge:** 19.5 × 12 mm, the width of the GPS slot. It stops where the top edge starts to curve and stands 1 mm
-  proud. It carries the rushiWorks logo (14.9 × 10.4 mm, engraved 0.5 mm deep).
+  pocket and straight up through the top, then on out through the top wall into the GPS bump. On each side, a flat
+  step level with the holder's roof, so the antenna stands on one flat surface.
+- **GPS bump** (where Alley Cat's badge was): the front has its larger part, 14 mm of its 21.5 mm height, with the
+  rushiWorks logo engraved on it (about 16 × 11 mm, 0.5 mm deep). See [GPS antenna](#gps-antenna).
 
-![The top edge with the rushiWorks badge, screen up and screen down](../case/18650/images/18650-top-edge.png)
+![The top edge with the GPS bump, its logo and name: lying screen-up, and standing seen from the grip side](../case/18650/images/18650-top-edge.png)
 
 ## The low earpiece holder
 
@@ -124,8 +126,8 @@ The current holder, cut down, with the same cup and wire grooves. Its roof is fl
 it, and the GPS antenna stands on them.
 
 - **Roof:** 0.5 mm over the earpiece's folded contacts, leaving 0.2 mm for their solder.
-- **Earpiece wires:** come up the holder's grooves, then pass between the T-Deck's top edge and the antenna's board
-  to the space behind the T-Deck.
+- **Earpiece wires:** come up the holder's grooves, then pass between the T-Deck's top edge and the antenna's metal
+  cap (0.9 mm) to the space behind the T-Deck.
 
 ![Cut through the top slot: earpiece, low holder, GPS antenna and cell](../case/18650/images/18650-top-slot.png)
 
@@ -136,21 +138,13 @@ U.FL plug, 2.2–5 V, 5–15 mA, 28 dB gain. Two were ordered (quotation of 10 N
 Its supply comes from the
 modem's GNSS socket (U.FL2): 3.0 V, the modem's default (`AT+CVAUXV?` reads 3000).
 
-**It stands on its edge:** on the holder's roof, ceramic facing the phone's top edge. GPS passes through plastic, so
-it needs no window.
-
-**Room for it, as drawn on 12 Nov 2026,** before the antenna arrived:
-- **Width:** 19.5 mm, for a board expected to be about 18.5 mm (by the same rule as the KTRON patch, whose board is
-  larger than its "25 × 25" ceramic).
-- **Height:** 19.1 mm, from the roof to the pocket in the back.
-- **Thickness:** about 6 mm in all. The ceramic and board take about 5 mm.
-  - **Amplifier on the back of the board:** turn the antenna so its amplifier is at the end toward the back cover.
-    There's 2.4 mm there, but only about 1 mm beside the T-Deck's top edge, which the earpiece wires share.
+**It stands on its edge:** on the holder's roof, ceramic facing the phone's top edge, its metal cap toward the
+T-Deck. GPS passes through plastic, so it needs no window.
 
 **As it arrived (15 Nov 2026)** ([build log, with photos](build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)):
-- **Width and height:** under 19 mm, so the 19.5 mm width is fine.
-- **Thickness: 9 mm.** A metal cap over the amplifier covers almost the whole back of the board, so turning the
-  antenna doesn't help: the slot has about 6 mm, and **it is about 3 mm short.**
+- **Width and height:** under 19 mm, so the slot's 19.5 mm width is fine.
+- **Thickness: 9 mm.** A metal cap over the amplifier covers almost the whole back of the board. The slot as first
+  drawn had about 6 mm, so it was about 3 mm short.
 - **Cable:** leaves from the middle of one side of the board.
 
 **Tested (15 Nov 2026), at a window on the bench:** it works about as well as the KTRON patch: 35 satellites in the
@@ -158,13 +152,27 @@ position (KTRON on 5 Nov: 33), HDOP 1.24. It also works standing on its edge, th
 satellites used, the best four at 36–41 dB-Hz. Details in the
 [build log](build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026).
 
-**Making room (open, 15 Nov 2026):** two ways are being weighed. Nothing has changed in the files yet.
-- **The phone 3 mm longer at the top** (113 mm instead of 110): everything above the T-Deck's top edge moves up
-  3 mm in both halves, the case screws, rounded corners and top wall with it. The shape and the way each part prints
-  stay the same.
-- **A bump at the badge:** only the middle of the top edge grows, into a hump about 23 mm wide that stands about
-  3.5 mm proud (the badge stands 1 mm) and covers nearly the full height of the top edge. The back prints standing
-  on its top edge, so it would need a notch there, with the front's part of the bump reaching over to fill it.
+**The GPS bump (decided 15 Nov 2026):** the antenna's room runs out through the top wall into a bump in the middle of
+the top edge, where Alley Cat's badge was. Chosen over making the phone 3 mm longer, so the phone stays 110 mm long.
+The scripts share it in [case/scripts/gps_bump_18650.py](../case/scripts/gps_bump_18650.py).
+- **The room, along the phone:** 0.9 mm from the T-Deck's top edge for the earpiece wires, the antenna's 9 mm (cap
+  4, board 1, ceramic 4), and 0.3 mm of play in front of the ceramic. Across: the slot's 19.5 mm. Up: 19.1 mm, from
+  the holder's roof to the pocket in the back, 0.6 mm more than the board.
+- **The bump:** 22.7 mm wide (a 1.6 mm wall beside the slot), 21.5 mm tall, from 1.5 mm under the antenna's foot to
+  flush with the back's outside face, and 3.5 mm out from the top edge. That leaves 1.3 mm of plastic over the
+  ceramic. Its corners seen end-on are rounded (2.5 mm), and its face has a 0.8 mm chamfer all round.
+- **Split between the halves** at their joint: the front's part is 14 mm tall, the back's 7.5 mm. The joint's groove
+  (each edge rounded in 0.4 mm) carries on across the bump, so the line round the phone doesn't stop at it.
+- **Markings,** engraved 0.5 mm: the rushiWorks logo on the front's part (about 16 × 11 mm) and "rushiworks" on the
+  back's part (19.5 mm long, letters about 2.9 mm tall). Both read the right way up with the phone lying screen-up,
+  and when it stands seen from the grip side, as Alley Cat's badge did (the owner's choice of three).
+- **Plastic over the antenna after engraving:** 0.8 mm in the letters, enough for GPS and for strength.
+- **Its cable:** it leaves the middle of one side of the board, and a board under 19 mm leaves only about 0.5 mm
+  beside it in the slot. So the antenna is pushed against the slot's right-hand side, leaving about 1 mm on the left,
+  and a notch 1 mm into the front's slot wall on the phone's left gives the cable 2 mm. It runs from where the cable
+  leaves the antenna to the slot's end at the T-Deck. The notch stops at 1 mm because the front's left case-screw
+  insert is beside it: 1.25 mm of plastic is left (see [assembly](assembly-18650.md#2-heat-set-inserts) for setting
+  that insert gently).
 
 ## 4G antenna
 
@@ -313,9 +321,6 @@ to its GNSS socket, using about 10 cm of its 15 cm.
 
 ## Printing
 
-> **On hold (15 Nov 2026):** the GPS antenna needs about 3 mm more room than these files give it
-> ([GPS antenna](#gps-antenna)). Don't print the front, back or earpiece holder until that's settled.
-
 > **Print it in ASA only.** The files are built 1 % larger to allow for ASA's shrinkage; in PLA, PLA+ or PETG the
 > parts would come out too large. ASA also takes the heat of a pocket or a car.
 
@@ -324,31 +329,33 @@ set. **Print them at 100 % in the slicer.** Each file is already turned the way 
 
 | File | What it is | How it prints |
 |---|---|---|
-| [case/18650/stl/back-18650.stl](../case/18650/stl/back-18650.stl) | Back, with the grip | Standing on its top edge (111 mm tall), with a brim. The outside needs no supports. Inside, the standoffs, the channel under the cell and the support wall need a few supports, which stay hidden |
-| [case/18650/stl/front-18650.stl](../case/18650/stl/front-18650.stl) | Front | Screen side down, no supports |
+| [case/18650/stl/back-18650.stl](../case/18650/stl/back-18650.stl) | Back, with the grip | Lying on its outside face, the owner's way (it can't stand on its top edge any more: the GPS bump is there). The grip touches the bed first, so the flat part of the back, with the bump's back part, sits about 6 mm up and needs supports under it. Inside, the standoffs, the channel under the cell and the support wall need a few supports too |
+| [case/18650/stl/front-18650.stl](../case/18650/stl/front-18650.stl) | Front | Screen side down. The GPS bump's underside stands out 3.5 mm about 5 mm above the bed, so it needs a small support |
 | [case/18650/stl/earpiece-holder-18650.stl](../case/18650/stl/earpiece-holder-18650.stl) | Low earpiece holder | On its T-Deck-side face, no supports |
 | [case/18650/stl/alley-chat-td1-switch.stl](../case/18650/stl/alley-chat-td1-switch.stl) | Alley Cat's slider for the T-Deck's switch | As in the current set |
 | [case/18650/stl/alley-chat-td1-reset-button.stl](../case/18650/stl/alley-chat-td1-reset-button.stl) | Alley Cat's reset button | As in the current set |
 | [case/18650/stl/alley-chat-td1-x-antenna-plug-gsm.stl](../case/18650/stl/alley-chat-td1-x-antenna-plug-gsm.stl) | Alley Cat's antenna plug, for the 4G (GSM) hole, top-right | Only if that hole stays empty (an internal 4G antenna) |
 | [case/18650/stl/alley-chat-td1-x-antenna-plug-lora.stl](../case/18650/stl/alley-chat-td1-x-antenna-plug-lora.stl) | The same plug, for the LoRa hole, top-left | Only if that hole stays empty |
 
-**Print the back first.** It's the part most worth testing early: the grip, standing up on the bed, and the fit of
-the cell, contacts and protection board. First layer standing up: about 64 × 4 mm, so use a brim of 5–8 mm.
+**Print the back first.** It's the part most worth testing early: the grip, and the fit of the cell, contacts and
+protection board.
 
 ## Making the files
 
-Run these from the `case/` folder, with Alley Cat's original files beside it (see
+Run these from the `case/` folder. Alley Cat's two original files are kept in
+[case/alley-cat-originals/](../case/alley-cat-originals/) (see
 [case/README.md](../case/README.md#making-the-files-again)):
 
 ```
-python scripts/make_back_18650.py --scale 1.01 --stand "Alley Chat TD1 S Inside Cat Edition.stl" "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
-python scripts/make_front_18650.py --scale 1.01 "Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
+python scripts/make_back_18650.py --scale 1.01 "alley-cat-originals/Alley Chat TD1 S Inside Cat Edition.stl" "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/back-18650.stl
+python scripts/make_front_18650.py --scale 1.01 "alley-cat-originals/Alley Chat TD1 Standard Front GPS Inserts.stl" 18650/stl/front-18650.stl
 python scripts/make_earpiece_holder_18650.py --scale 1.01 18650/stl/earpiece-holder-18650.stl
 ```
 
-Without `--scale 1.01` they make the 100 % parts. `--stand` saves the back standing on its top edge, as it prints;
-without it, the back keeps the design's position, which the pictures and checks use. The back script reads Alley
-Cat's switch slot from her front file, which is why it needs both.
+Without `--scale 1.01` they make the 100 % parts. The back is saved lying on its outside face, as it prints, which is
+also the design's position the pictures and checks use. (`--stand` still saves it standing on its top edge, but that
+is no longer how it prints.) The back script reads Alley Cat's switch slot from her front file, which is why it
+needs both.
 
 The pictures on this page are drawn from the 100 % parts by
 [case/scripts/make_18650_pictures.py](../case/scripts/make_18650_pictures.py). The wiring picture is drawn by
@@ -366,7 +373,7 @@ The case opens with its two screws, so a problem found in testing means opening 
 
 ## Still to do
 
-1. **GPS antenna:** check its real size and where its amplifier sits (above).
+1. **GPS antenna:** done. It arrived, was tested, and fits in the GPS bump (above).
 2. **4G antenna:** fit the 41 × 12 mm antenna and test its signal. The stubby is the backup ([above](#4g-antenna)).
 3. **Assembly steps:** drafted in [assembly-18650.md](assembly-18650.md). Check them at the dry fit after the back's
    test print.
@@ -383,5 +390,5 @@ The case opens with its two screws, so a problem found in testing means opening 
 
 The back, the front and the switch cut-out are changed versions of **"Lilygo T-Deck TD1 Case" by Alley Cat**
 (Printables 741124), [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). The printed files are shared
-under the same licence. Her cat and "Alley Chat TD1 S" stay engraved inside the back. The rushiWorks logo on the badge
-isn't covered by either licence (see the [README](../README.md#licence)).
+under the same licence. Her cat and "Alley Chat TD1 S" stay engraved inside the back. The rushiWorks logo and name on the GPS bump
+aren't covered by either licence (see the [README](../README.md#licence)).

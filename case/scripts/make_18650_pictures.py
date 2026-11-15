@@ -20,6 +20,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from matplotlib.patches import Circle, Polygon as MPoly, Rectangle  # noqa: E402
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import gps_bump_18650 as G  # noqa: E402
 import make_back_18650 as B  # noqa: E402
 import make_front_18650 as FF  # noqa: E402
 import make_earpiece_holder as H  # noqa: E402
@@ -28,7 +29,8 @@ from make_diagrams import render, show, COL, NAVY  # noqa: E402
 
 TO_FRONT = np.array([[-1, 0, 0, -10], [0, 1, 0, 0], [0, 0, -1, 0.8], [0, 0, 0, 1]], float)       # 18650 back
 OLD_TO_FRONT = np.array([[-1, 0, 0, -10], [0, 1, 0, 0], [0, 0, -1, -4.7], [0, 0, 0, 1]], float)  # current back
-ANTENNA = 18.5                    # the GPS antenna's board, assumed square (see design-18650.md)
+ANTENNA = 18.5                    # the GPS antenna's board: under 19 mm square (measured 15 Nov 2026)
+CAP, BOARD, CERAMIC = 4.0, 1.0, 4.0   # its metal cap, board and ceramic: 9 mm in all
 GOLD = "#c9a227"                  # the battery contacts
 
 
@@ -82,7 +84,8 @@ def inside_layout(back, path):
     for x0 in (-2.0, 66.6):
         ax.add_patch(Rectangle((x0, yp - 3.5), 3.4, 7.0, fc=GOLD, alpha=0.8, ec="#8a6d10", lw=1.2))
     gx0, gx1 = B.TOPGPS_X
-    ax.add_patch(Rectangle((34 - ANTENNA / 2, 100.0), ANTENNA, 6.0, fc=COL["patch"], alpha=0.55, ec=COL["patch"], lw=2))
+    ax.add_patch(Rectangle((34 - ANTENNA / 2, G.ANT_BACK), ANTENNA, G.ANT_T, fc=COL["patch"], alpha=0.55,
+                           ec=COL["patch"], lw=2))
     yc, _ = B.SWITCH_AT
     face = B.SWITCH_PAD_X[0]                                           # the switch: plate, body and pins
     ax.add_patch(Rectangle((face - 8.5, yc - 5.75), 8.5, 11.5, fc="#c0392b", alpha=0.3, ec="#c0392b", lw=2, ls="--"))
@@ -90,7 +93,8 @@ def inside_layout(back, path):
     lab(ax, 34, B.CELL_Y, "18650 cell (LG MJ1)\nin a channel in the grip", 34, B.CELL_Y, COL["battery"])
     lab(ax, 0.0, yp + 2, "\u2212 contact\n(\u2212 engraved on the floor)", 10, 104, "#8a6d10", 8)
     lab(ax, 68.3, yp + 2, "+ contact\n(+ engraved on the floor)", 58, 104, "#8a6d10", 8)
-    lab(ax, 34, 103, "GPS antenna, standing on its edge\nin the top slot (over the earpiece)", 34, 113, COL["patch"])
+    lab(ax, 34, 104, "GPS antenna, standing on its edge in the top\nslot (over the earpiece), out into the bump", 34, 115,
+        COL["patch"])
     lab(ax, 26, sy0 - 1.0, "protection board, glued to the wall along the cell", 30, 66.5, COL["cable"], 8.5)
     lab(ax, -1.9, 81.0, "its nickel strips run to\nbehind the contacts", 14, 59, "#5d6d7e", 8)
     lab(ax, 22, 44, "modem board\non four 8 mm standoffs", 22, 44, COL["board"])
@@ -373,7 +377,7 @@ def front_inside(front, path):
     blk(-80.6, 43.7, 3.0, 8.0, small)                                      # Alley Cat's switch slider
     blk(-9.4, 65.5, 3.0, 6.0, small)                                       # Alley Cat's reset button
     blk(-50.0, 100.6, 12.0, 6.0, ear)                                      # earpiece (under the holder and antenna)
-    blk(-44.0 - 9.25, 101.0, 18.5, 5.0, gps, a=0.55)                       # GPS antenna, standing on the holder
+    blk(-44.0 - 9.25, G.ANT_BACK, 18.5, G.ANT_T, gps, a=0.55)              # GPS antenna, standing on the holder
     blk(-29.0 - 3.15, -0.8, 6.3, 2.7, ear)                                 # mic, in its pocket in the bottom wall
     blk(-18.95 - 4.2, 96.0, 8.4, 11.0, metal, a=0.7)                       # LoRa SMA socket
     ax.add_patch(Rectangle((-69.05 - 4.2, 96.0), 8.4, 11.0, fc=metal, alpha=0.3, ec="k", lw=0.8, ls="--"))
@@ -428,7 +432,7 @@ def side_by_side(new_phone, old_phone, path):
                          (axs[1], new_phone, "18650 version: slim back with the grip")):
         img, ext, _, _ = render(ph, (-1, 0, 0), (0, 0, 1), res=0.1)
         show(ax, img, ext)
-        ax.set_xlim(-4, 110); ax.set_ylim(-17, 24)
+        ax.set_xlim(-4, 114); ax.set_ylim(-17, 24)
         thick = ph.bounds[1][2] - ph.bounds[0][2]
         ax.set_title(f"{name}: {thick:.1f} mm at the thickest point", fontsize=10)
     fig.suptitle("Side view at the same scale (screen side down, the phone's top on the right)", fontsize=11)
@@ -483,10 +487,10 @@ def right_side(phone, path):
 
 
 def top_edge(phone, path):
-    x0, x1, z0, z1 = FF.BADGE_FACE_18650
+    (x0, x1), (z0, z1) = G.BX, G.BZ
     fig, axs = plt.subplots(1, 2, figsize=(16, 8.5), dpi=110)
     for ax, (f, up, t) in zip(axs, (((0.30, -1.0, 0.70), (0, 0, -1), "Top edge, lying screen-up (no T-Deck drawn)"),
-                                    ((0.30, -1.0, -0.70), (0, 0, 1), "Top edge, lying screen-down"))):
+                                    ((0.8, -1.0, -0.9), (0, 1, 0), "Top edge, standing, seen from the grip side"))):
         f = np.asarray(f, float); f /= np.linalg.norm(f)
         w = np.asarray(up, float); w = w - (w @ f) * f; w /= np.linalg.norm(w)
         res = 0.07
@@ -494,7 +498,7 @@ def top_edge(phone, path):
         ny, nx = img.shape
         U, W = np.meshgrid(ext[0] + (np.arange(nx) + .5) * res, ext[2] + (np.arange(ny) + .5) * res)
         P = U[..., None] * r + W[..., None] * w2 - zb[..., None] * f
-        floor = ((np.abs(P[..., 1] - (109.0 - FF.LOGO_DEPTH)) < 0.12) & (P[..., 0] > x0) & (P[..., 0] < x1)
+        floor = ((np.abs(P[..., 1] - (G.BUMP_Y - G.MARK_DEPTH)) < 0.12) & (P[..., 0] > x0) & (P[..., 0] < x1)
                  & (P[..., 2] > z0) & (P[..., 2] < z1))
         img = img.copy(); img[floor] *= 0.35
         img = np.where(np.isinf(zb), 1.0, img)
@@ -532,18 +536,29 @@ def top_slot_cut(front, back_f, path):
     ear_y0 = H.HOLDER_Y[0] + H.NEAR_WALL
     ax.add_patch(Rectangle((ear_y0, floor), H.EAR_W, H.EAR_BODY_H - H.SQUEEZE, fc="#c0392b", ec="k", lw=0.6,
                            label="earpiece"))
-    ax.add_patch(Rectangle((102.0, L.ROOF_Z + (ANTENNA - 18) / 2), 4.0, 18, fc="#7b4fb3", alpha=0.6, ec="#7b4fb3",
-                           label="GPS antenna: 18 mm ceramic"))
-    ax.add_patch(Rectangle((101.0, L.ROOF_Z), 1.0, ANTENNA, fc="#3c7a3c", alpha=0.7, ec="#3c7a3c",
-                           label=f"its circuit board, about {ANTENNA} mm"))
+    a0 = G.ANT_BACK
+    ax.add_patch(Rectangle((a0, L.ROOF_Z + 1.0), CAP, ANTENNA - 2.0, fc="#a0a7b0", ec="#555555", lw=0.8,
+                           label="GPS antenna: metal cap over its amplifier"))
+    ax.add_patch(Rectangle((a0 + CAP, L.ROOF_Z), BOARD, ANTENNA, fc="#3c7a3c", alpha=0.8, ec="#3c7a3c",
+                           label=f"its board, under 19 mm"))
+    ax.add_patch(Rectangle((a0 + CAP + BOARD, L.ROOF_Z + (ANTENNA - 18) / 2), CERAMIC, 18, fc="#7b4fb3", alpha=0.6,
+                           ec="#7b4fb3", label="its 18 mm ceramic, facing the top edge"))
+    ax.annotate("", (a0, -12.6), (G.ANT_FACE, -12.6), arrowprops=dict(arrowstyle="<->", lw=1.2, color="#7b4fb3"))
+    ax.text((a0 + G.ANT_FACE) / 2, -13.8, "9 mm", ha="center", fontsize=9, color="#7b4fb3", weight="bold")
     ax.annotate("earpiece wires: up the holder's grooves,\nthen between the T-Deck's top edge\nand the antenna's "
-                "board", (100.6, -5.5), (80.5, -19.5), fontsize=9, arrowprops=dict(arrowstyle="->", lw=0.8))
+                "cap (0.9 mm)", (100.45, -5.5), (80.5, -19.5), fontsize=9, arrowprops=dict(arrowstyle="->", lw=0.8))
+    ax.annotate(f"the GPS bump: {G.BUMP_Y - G.TOP_EDGE:.1f} mm out from the\ntop edge, {G.WALL} mm of plastic "
+                "over the\nceramic (logo and name engraved\n0.5 mm into its face)", (G.BUMP_Y - 0.3, -3.0),
+                (113.0, -12.5), fontsize=9, arrowprops=dict(arrowstyle="->", lw=0.8))
+    ax.axvline(G.TOP_EDGE, color="#999999", lw=0.8, ls="--")
+    ax.text(G.TOP_EDGE - 0.3, 19.0, "the top edge", rotation=90, fontsize=8, color="#777777", ha="right", va="top")
     ax.annotate("0.9 mm of plastic\nover the antenna", (104.0, 11.4), (110.5, 15.5), fontsize=9,
                 arrowprops=dict(arrowstyle="->", lw=0.8))
-    ax.set_xlim(74, 122); ax.set_ylim(-22, 20); ax.set_aspect("equal"); ax.grid(alpha=0.2)
+    ax.set_xlim(74, 126); ax.set_ylim(-22, 20); ax.set_aspect("equal"); ax.grid(alpha=0.2)
     ax.set_xlabel("<- toward the keyboard          along the phone (mm)          top edge ->", fontsize=9)
     ax.set_ylabel("screen side (bottom) to the back of the phone (top)", fontsize=9)
-    ax.set_title("Cut through the top slot: earpiece, low holder, GPS antenna, cell", fontsize=11)
+    ax.set_title("Cut through the top slot: earpiece, low holder, the 9 mm GPS antenna reaching into the bump, cell",
+                 fontsize=11)
     ax.legend(loc="lower right", fontsize=8.5, framealpha=0.95)
     fig.tight_layout(); fig.savefig(path); plt.close(fig)
 

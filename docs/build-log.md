@@ -69,7 +69,8 @@ size.
 - **Width and height:** under 19 mm, so it fits the slot's 19.5 mm width.
 - **Thickness: 9 mm.** A metal cap over its amplifier covers almost the whole back of the board (only about 1 mm of
   green shows along two edges). The slot was drawn for about 6 mm, so **it doesn't fit the top slot as drawn**: it
-  needs about 3 mm more room. See [design-18650.md](design-18650.md#gps-antenna) for the ways being weighed.
+  needs about 3 mm more room. It got it in a bump on the top edge, decided the same day
+  ([design-18650.md](design-18650.md#gps-antenna)).
 - **Cable:** 15 cm, with a U.FL plug. It leaves from the middle of one side of the board, not from the back.
 
 **Tested on the bench:** the modem board on its own, as in step 2 (5 V on VCC, the CP2102 to the Mac), with no SIM.

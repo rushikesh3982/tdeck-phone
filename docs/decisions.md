@@ -249,9 +249,27 @@ board goes below it on 8 mm standoffs, in Alley Cat's slim S back made 0.5 mm de
 - **Speaker:** Alley Cat's same cavity and grille, moved to the right side below the T-Deck's switch. The stretch
   between the T-Deck's switch and the microSD slot is left alone: the notch that holds the T-Deck and the slot for
   the switch's slider piece are there.
-- **Badge:** the rushiWorks logo on the top edge. Alley Cat's cat and "Alley Chat TD1 S" stay engraved inside the
-  back as her credit.
+- **Badge:** the rushiWorks logo on the top edge (replaced on 15 Nov 2026 by the GPS bump, below). Alley Cat's cat
+  and "Alley Chat TD1 S" stay engraved inside the back as her credit.
 - **Battery contacts:** taken from an 18650 holder and set into the case, instead of fitting the whole holder.
 - **No soldering at the battery (12 Nov 2026, the owner's idea):** a thin wall along the cell's modem side holds
   the cell and carries the protection board. The board's own nickel strips pass through slits and are pressed
   behind the contacts by the cell's springs. The contacts moved 2 mm toward the board so the strips reach.
+
+**GPS bump (decided 15 Nov 2026):** the Eteily antenna arrived 9 mm thick (a metal cap over its amplifier covers almost
+the whole back of its board), about 3 mm more than the top slot had. It tested well, also standing on its edge
+([build log](build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)), so it stays, and the case makes room:
+- **A bump in the middle of the top edge,** where the badge was: 22.7 mm wide, 3.5 mm out, covering the antenna from
+  just under its foot to the back's outside face. The phone stays 110 mm long.
+  - Rejected: **the phone 3 mm longer**, which would move the whole top end of both halves.
+  - Rejected: **the antenna on the back panel,** as the KTRON patch was in the X back: the 18650 back has no free
+    corner for it, it would sit within 10–20 mm of the 4G antenna (the rule is 60 mm), and it would face the table
+    when the phone lies screen-up.
+- **The joint's groove** carries on across the bump, as round the rest of the phone.
+- **Markings:** the rushiWorks logo on the front's part, "rushiworks" on the back's part, both reading with the phone
+  lying screen-up (one of three ways shown; the owner chose it on the assistant's recommendation, so both read
+  together).
+- **The back now prints lying on its outside face** (the owner's way); the bump is on the edge it used to stand on.
+- **A 1 mm notch for the antenna's cable** in the front's slot wall on the phone's left, with the antenna pushed
+  against the other side: the cable leaves the board's side, where the slot leaves only about 0.5 mm. It stops at
+  1 mm because a case-screw insert is beside it (1.25 mm of plastic left; a 1.5 mm notch would leave 0.75 mm).

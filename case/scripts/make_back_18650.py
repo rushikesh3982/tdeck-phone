@@ -12,9 +12,12 @@ Built from Alley Cat's slim S back ("Alley Chat TD1 S Inside Cat Edition.stl"), 
   the floor;
 - a thin support wall along the cell's modem side, with the battery protection board (32 x 4-5 mm) glued to its
   back; the board's own nickel strips reach behind the contacts through slits, so the contacts need no soldering;
-- the active GPS antenna (18 x 18 mm ceramic, its board likely about 18.5 mm) standing on its edge in the top slot, facing the phone's top edge, above the
-  earpiece: the S back's gap between its two screw blocks is kept open for it, with a 0.9 mm-deep pocket in the floor
-  for its top edge (0.9 mm of plastic left outside). The earpiece holder's roof is the separator below it;
+- the active GPS antenna (Eteily: 18 x 18 mm ceramic on a board under 19 mm square, 9 mm thick with the metal cap over
+  its amplifier) standing on its edge in the top slot, facing the phone's top edge, above the earpiece: the S back's
+  gap between its two screw blocks is kept open for it, with a 0.9 mm-deep pocket in the floor for its top edge (0.9 mm
+  of plastic left outside). The earpiece holder's roof is the separator below it. At 9 mm it needs more room than the
+  top wall leaves, so it reaches out into the GPS bump (gps_bump_18650.py): the back has the bump's smaller part, with
+  the joint's groove carried across it and "rushiworks" engraved on it;
 - the modem's power switch (SS-12F15) on the back's right wall, just below the cell, using Alley Cat's switch slot
   and screw holes (taken from her front file);
 - the network-LED light tube and window. Inside, Alley Cat's own engraved cat and "Alley Chat TD1 S" stay on the
@@ -30,7 +33,8 @@ they need no grooves of their own.
 Usage:
     python make_back_18650.py "<Alley Chat TD1 S Inside Cat Edition.stl>" "<...Standard Front GPS Inserts.stl>" <output.stl>
     python make_back_18650.py --scale 1.01 "<...S Inside Cat Edition.stl>" "<...Front GPS Inserts.stl>" <output.stl>
-    python make_back_18650.py --scale 1.01 --stand ...   (saved standing on its top edge, as it prints)
+    python make_back_18650.py --scale 1.01 --stand ...   (saved standing on its top edge; no longer how it prints,
+                                                          since the GPS bump is on that edge)
 
 Coordinates are the S back's own, after the 0.5 mm slice: outside face z = -11, inside floor z = -9.2, rim z = -3.5
 (where the front's mating face, z = 4.3 in the front's file, meets it), the T-Deck's back at z = +3.5. As in
@@ -51,6 +55,7 @@ from shapely.ops import unary_union
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from make_back import prism_z, prism_x  # noqa: E402
+import gps_bump_18650 as G  # noqa: E402
 
 # ---- the S back and its extra depth --------------------------------------------------------------------------
 OUTER_Z, FLOOR_Z = -11.0, -9.2
@@ -171,6 +176,10 @@ def contact_pad(scale):
 TOPGPS_X = (24.25, 43.75)                   # 19.5 mm: an 18.5 mm board + 0.5 each side (a slightly crooked ceramic)
 TOPGPS_Y = (98.6, 106.1)                    # ceramic 4 + board 1, then 2.4 mm for its amplifier; 1.1 mm wall to the cell
 TOPGPS_FLOOR = OUTER_Z + 0.9                # -10.1
+# The antenna as it arrived (15 Nov 2026) is 9 mm thick, a metal cap covering almost the whole back of its board, so
+# the amplifier note above no longer applies: the room for it runs on out of this slot into the GPS bump
+# (gps_bump_18650.py, shared with the front), which stands 3.5 mm out from the top edge.
+assert G.SLOT_X == (-TOPGPS_X[1] - 10.0, -TOPGPS_X[0] - 10.0), "the bump's slot must match TOPGPS_X"
 # Above the grip, three outside grooves run on to y 101.5 as short stubs: the middle one (over the antenna's pocket) and
 # the two at the corners are filled, so the top above the grip is plain.
 GROOVE_STUBS = [(31.0, 97.0, 37.0, 103.0), (0.0, 97.0, 8.0, 103.0), (60.0, 97.0, 68.0, 103.0)]
@@ -458,9 +467,12 @@ def main(src, front_src, dst, scale=1.0, stand=False):
     # Trim the inside additions to the cover's outer shape (its convex hull, carried straight up past the rim).
     envelope = trimesh.convex.convex_hull(np.vstack([back.vertices, back.vertices + [0, 0, 10.0]]))
     inside = [trimesh.boolean.intersection([m, envelope], engine="manifold") for m in stubs + a_gr + a_led]
-    shell = trimesh.boolean.union([back, ridge] + inside + sw_adds, engine="manifold")
+    bump = G.to_back(G.back_part())                       # the GPS bump's back part, and the antenna's room into it
+    bump_cuts = [G.to_back(m) for m in [G.room()] + G.name_cuts()]
+    shell = trimesh.boolean.union([back, ridge, bump] + inside + sw_adds, engine="manifold")
     shell = trimesh.boolean.difference([shell, trimesh.boolean.union(c_led + c_gr + [top_gps] + sw_cuts + recesses
-                                                                     + polarity_marks(), engine="manifold")],
+                                                                     + polarity_marks() + bump_cuts,
+                                                                     engine="manifold")],
                                        engine="manifold")
     if scale != 1.0:
         shell.apply_scale(scale)
@@ -481,7 +493,8 @@ def main(src, front_src, dst, scale=1.0, stand=False):
     out = trimesh.boolean.union([out] + a_ct, engine="manifold")
     out = trimesh.boolean.difference([out, trimesh.boolean.union(c_ct, engine="manifold")], engine="manifold")
     assert out.is_watertight, "result is not watertight"
-    if stand:   # as it prints: standing on its top edge (the first layer is about 64 x 4 mm; use a brim)
+    if stand:   # standing on its top edge. Not how it prints any more: the GPS bump is on that edge (it is printed
+                # lying on its outside face, as saved without --stand)
         out = out.copy()
         out.apply_transform(np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, -1, 0, 0], [0, 0, 0, 1]], float))
         lo, hi = out.bounds

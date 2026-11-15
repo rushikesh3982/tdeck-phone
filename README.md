@@ -77,12 +77,11 @@ fallback and GNSS.
    ([docs/wiring.md](docs/wiring.md), section 4).
 2. **18650 version** ([docs/design-18650.md](docs/design-18650.md)):
    - GPS antenna: arrived and tested on 15 Nov 2026, and it works well
-     ([build log](docs/build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)). At 9 mm thick it needs about
-     3 mm more room in the top slot: choose between a phone 3 mm longer and a bump at the badge.
+     ([build log](docs/build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)). At 9 mm thick it now has its
+     room in a bump in the middle of the top edge, which carries the logo and the name.
    - Fit and test the 4G antenna: a 41 × 12 mm flexible one inside, with a 50 mm stubby in the top-right hole as
      the backup.
-   - Print the back first, then the front and the earpiece holder, once the GPS antenna's room is settled. The
-     files now in [case/18650/stl/](case/18650/stl/) don't fit the antenna.
+   - Print the back first ([case/18650/stl/](case/18650/stl/), ready), then the front and the earpiece holder.
    - Check the assembly steps ([docs/assembly-18650.md](docs/assembly-18650.md), a draft) at the first dry fit.
 3. **Testing:** one round after assembly, with the test program
    ([firmware/test-program/](firmware/test-program/README.md), written, not run yet) and the checklist
@@ -116,8 +115,8 @@ fallback and GNSS.
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). Modified case files from this project must be
   shared under the same licence, with this credit. Alley Cat's
   cat-head logo, taken from her TD1 files, is on the front's top-edge badge as a visible credit. In the 18650
-  version the badge carries the rushiWorks logo instead, and her cat and "Alley Chat TD1 S" stay engraved on the
-  back's inside floor.
+  version the badge gives way to the GPS bump, which carries the rushiWorks logo and name instead, and her cat and
+  "Alley Chat TD1 S" stay engraved on the back's inside floor.
 - LilyGO T-Deck by LilyGO (Xinyuan-LilyGO).
 - KTRON for the published board drawings, reference circuit and Eagle library.
 
@@ -128,7 +127,7 @@ fallback and GNSS.
 - **Case files modified from Alley Cat's design.** These stay under
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), as the original requires.
 - **The rushiWorks name and logo** ([case/logo/rushi-logo.jpg](case/logo/rushi-logo.jpg), and the logo engraved on
-  the case: on the back cover, and on the front's top-edge badge in the 18650 version).
+  the case: on the back cover, and with the name on the GPS bump at the top edge in the 18650 version).
   These belong to Rushikesh Deshmukh. The MIT licence doesn't cover them, and CC BY-SA 4.0 doesn't license
   trademark rights, so neither licence lets anyone else use the name or logo.
 
