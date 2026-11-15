@@ -1,11 +1,11 @@
 # 18650 version
 
-**Status (12 Nov 2026): designed, and the print files are ready in [case/18650/stl/](../case/18650/stl/). Not printed
-yet.** This is option 3 of the
+**Status (15 Nov 2026): designed, not printed yet. The print files in [case/18650/stl/](../case/18650/stl/) are on
+hold:** the GPS antenna arrived on 15 Nov 2026 and works well, but at 9 mm thick it doesn't fit the top slot as drawn
+(see [GPS antenna](#gps-antenna)). Don't print the front, back or earpiece holder until its room is settled. This is
+option 3 of the
 [slim layout plan](slim-layout-plan.md), chosen on 9 Nov 2026. The scripts that make its three new parts are in
 [case/scripts/](../case/scripts/). The battery contacts' holders were added on 12 Nov 2026, from the real contacts.
-The GPS antenna hasn't arrived, so its slot is sized for the board we expect (see [GPS antenna](#gps-antenna)). The
-antenna can go in later: the case opens with its two screws.
 
 Until then, the other docs ([wiring.md](wiring.md), [assembly.md](assembly.md), [case.md](case.md) and the files in
 case/x-back-5000mah/stl/) still describe the current build: the X back with the 5000 mAh pouch over the modem board.
@@ -132,13 +132,14 @@ it, and the GPS antenna stands on them.
 ## GPS antenna
 
 **Eteily ET-GPL12-5L15C-U-184:** an active GPS/GLONASS ceramic patch (18 × 18 × 4 mm), with a 15 cm cable and a
-U.FL plug, 2.2–5 V, 5–15 mA, 28 dB gain. Two are ordered (quotation of 10 Nov 2026). Its supply comes from the
+U.FL plug, 2.2–5 V, 5–15 mA, 28 dB gain. Two were ordered (quotation of 10 Nov 2026) and arrived on 15 Nov 2026.
+Its supply comes from the
 modem's GNSS socket (U.FL2): 3.0 V, the modem's default (`AT+CVAUXV?` reads 3000).
 
 **It stands on its edge:** on the holder's roof, ceramic facing the phone's top edge. GPS passes through plastic, so
 it needs no window.
 
-**Room for it:**
+**Room for it, as drawn on 12 Nov 2026,** before the antenna arrived:
 - **Width:** 19.5 mm, for a board expected to be about 18.5 mm (by the same rule as the KTRON patch, whose board is
   larger than its "25 × 25" ceramic).
 - **Height:** 19.1 mm, from the roof to the pocket in the back.
@@ -146,8 +147,24 @@ it needs no window.
   - **Amplifier on the back of the board:** turn the antenna so its amplifier is at the end toward the back cover.
     There's 2.4 mm there, but only about 1 mm beside the T-Deck's top edge, which the earpiece wires share.
 
-**Check it when it arrives:** the board's size and thickness, and where its amplifier sits. Eteily hasn't sent a
-drawing yet.
+**As it arrived (15 Nov 2026)** ([build log, with photos](build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)):
+- **Width and height:** under 19 mm, so the 19.5 mm width is fine.
+- **Thickness: 9 mm.** A metal cap over the amplifier covers almost the whole back of the board, so turning the
+  antenna doesn't help: the slot has about 6 mm, and **it is about 3 mm short.**
+- **Cable:** leaves from the middle of one side of the board.
+
+**Tested (15 Nov 2026), at a window on the bench:** it works about as well as the KTRON patch: 35 satellites in the
+position (KTRON on 5 Nov: 33), HDOP 1.24. It also works standing on its edge, the way it sits in the slot: 15–17
+satellites used, the best four at 36–41 dB-Hz. Details in the
+[build log](build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026).
+
+**Making room (open, 15 Nov 2026):** two ways are being weighed. Nothing has changed in the files yet.
+- **The phone 3 mm longer at the top** (113 mm instead of 110): everything above the T-Deck's top edge moves up
+  3 mm in both halves, the case screws, rounded corners and top wall with it. The shape and the way each part prints
+  stay the same.
+- **A bump at the badge:** only the middle of the top edge grows, into a hump about 23 mm wide that stands about
+  3.5 mm proud (the badge stands 1 mm) and covers nearly the full height of the top edge. The back prints standing
+  on its top edge, so it would need a notch there, with the front's part of the bump reaching over to fill it.
 
 ## 4G antenna
 
@@ -295,6 +312,9 @@ to its GNSS socket, using about 10 cm of its 15 cm.
 **Mic:** as now. The pocket is in the front's bottom wall, and its wires go through the groove in the lip.
 
 ## Printing
+
+> **On hold (15 Nov 2026):** the GPS antenna needs about 3 mm more room than these files give it
+> ([GPS antenna](#gps-antenna)). Don't print the front, back or earpiece holder until that's settled.
 
 > **Print it in ASA only.** The files are built 1 % larger to allow for ASA's shrinkage; in PLA, PLA+ or PETG the
 > parts would come out too large. ASA also takes the heat of a pocket or a car.

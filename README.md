@@ -76,10 +76,13 @@ fallback and GNSS.
 1. **Mic:** done. It works with a 1 kΩ resistor from M− to GND on the modem board
    ([docs/wiring.md](docs/wiring.md), section 4).
 2. **18650 version** ([docs/design-18650.md](docs/design-18650.md)):
-   - Check the Eteily GPS antenna's real size when it arrives.
+   - GPS antenna: arrived and tested on 15 Nov 2026, and it works well
+     ([build log](docs/build-log.md#3-gps-antenna-arrived-and-tested-15-nov-2026)). At 9 mm thick it needs about
+     3 mm more room in the top slot: choose between a phone 3 mm longer and a bump at the badge.
    - Fit and test the 4G antenna: a 41 × 12 mm flexible one inside, with a 50 mm stubby in the top-right hole as
      the backup.
-   - Print the back first ([case/18650/stl/](case/18650/stl/), ready), then the front and the earpiece holder.
+   - Print the back first, then the front and the earpiece holder, once the GPS antenna's room is settled. The
+     files now in [case/18650/stl/](case/18650/stl/) don't fit the antenna.
    - Check the assembly steps ([docs/assembly-18650.md](docs/assembly-18650.md), a draft) at the first dry fit.
 3. **Testing:** one round after assembly, with the test program
    ([firmware/test-program/](firmware/test-program/README.md), written, not run yet) and the checklist

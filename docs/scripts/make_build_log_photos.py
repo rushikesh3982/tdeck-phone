@@ -139,6 +139,33 @@ PHOTOS = [
               "#c0392b"),
              ("Earpiece wires, ending in plug\nsockets for the earpiece", (47.5, 92.0), (71.0, 93.0), "#1f77b4"),
          ]),
+    # The Eteily GPS antenna (15 Nov 2026), beside a ruler (cm on top, inches below)
+    dict(src="20261115_154921.jpg", out="07-gps-antenna-ceramic-side.jpg", font=17, crop=(0, 30, 100, 84),
+         # the grey cable, traced from the photo, which the lifting only half kept
+         add_lines=[([(0.0, 47.7), (8.0, 47.83), (15.0, 48.01), (22.0, 48.31), (30.0, 48.71), (36.0, 48.96),
+                     (39.0, 48.9)], 0.9)],
+         hide=[],
+         labels=[
+             ("Ceramic patch: the side\nthat faces the sky", (50.0, 47.0), (80.0, 40.0), "#8c564b"),
+             ("Cable, 15 cm, with a U.FL plug at its\nfar end. It leaves from the board's side", (18.0, 47.6),
+              (22.0, 36.0), "#8c564b"),
+             ("Under 19 mm square", (61.5, 57.5), (82.0, 53.0), "#555555"),
+         ]),
+    dict(src="20261115_154804.jpg", out="08-gps-antenna-metal-cap.jpg", font=17, crop=(22, 26, 100, 76),
+         extra_lift=[(58, 36, 100, 50)],                                            # the grey cable on the wood
+         hide=[],
+         labels=[
+             ("Metal cap over the amplifier: it covers\nalmost the whole back. With it the\nantenna is 9 mm thick",
+              (50.0, 41.0), (70.0, 31.0), "#8c564b"),
+             ("Green board: only\nabout 1 mm shows", (37.0, 44.0), (35.0, 31.5), "#2e7d32"),
+             ("Cable", (80.0, 41.6), (90.0, 46.5), "#8c564b"),
+         ]),
+    dict(src="20261115_154841.jpg", out="09-gps-antenna-cable-side.jpg", font=17, crop=(18, 0, 100, 88),
+         hide=[],
+         labels=[
+             ("The cable leaves from the\nmiddle of one side", (57.5, 27.0), (80.0, 17.0), "#8c564b"),
+             ("Metal cap", (60.0, 45.0), (86.0, 44.0), "#8c564b"),
+         ]),
 ]
 
 
@@ -252,5 +279,8 @@ if __name__ == "__main__":
     src_dir, out_dir = sys.argv[1], sys.argv[2]
     os.makedirs(out_dir, exist_ok=True)
     for p in PHOTOS:
+        if not os.path.exists(os.path.join(src_dir, p["src"])):
+            print("skipped", p["out"], "(its original isn't in", src_dir + ")")   # the photo made earlier stays
+            continue
         make(src_dir, out_dir, p)
         print("made", p["out"])

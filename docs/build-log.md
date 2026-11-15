@@ -51,11 +51,61 @@ on VCC. Wired as in [bring-up.md](bring-up.md#phase-a-the-10-holes-to-solder) an
 - **11 Nov:** the mic works in a call, once the 1 kΩ resistor from M− to ground was added. The mic in the photos is
   the replacement, on new wires: yellow to M+ and green to M−.
 
-## 3. Next: wiring the T-Deck
+## 3. GPS antenna: arrived and tested (15 Nov 2026)
+
+**Why:** the 18650 version swaps the 25 mm KTRON patch for a smaller active antenna from Eteily
+(ET-GPL12-5L15C-U-184), meant to stand on its edge in the case's top slot
+([design-18650.md](design-18650.md#gps-antenna)). Eteily sent no drawing, so the slot was drawn from its listed
+size.
+
+![The Eteily antenna, ceramic side up, beside a ruler](images/build-log/07-gps-antenna-ceramic-side.jpg)
+
+<p align="center">
+  <img src="images/build-log/08-gps-antenna-metal-cap.jpg" width="56%" alt="The back of the antenna: a metal cap covers almost all of it">
+  <img src="images/build-log/09-gps-antenna-cable-side.jpg" width="40%" alt="The back again, turned: the cable leaves from the middle of one side">
+</p>
+
+**Measured:**
+- **Width and height:** under 19 mm, so it fits the slot's 19.5 mm width.
+- **Thickness: 9 mm.** A metal cap over its amplifier covers almost the whole back of the board (only about 1 mm of
+  green shows along two edges). The slot was drawn for about 6 mm, so **it doesn't fit the top slot as drawn**: it
+  needs about 3 mm more room. See [design-18650.md](design-18650.md#gps-antenna) for the ways being weighed.
+- **Cable:** 15 cm, with a U.FL plug. It leaves from the middle of one side of the board, not from the back.
+
+**Tested on the bench:** the modem board on its own, as in step 2 (5 V on VCC, the CP2102 to the Mac), with no SIM.
+The antenna went on U.FL2 in place of the KTRON patch. The modem feeds it 3.0 V (`AT+CVAUXV?`). GPS was switched on
+with `AT+CGNSSPWR=1`, and every 30 seconds the modem's raw satellite data (NMEA, `AT+CGNSSTST=1`) was read for a few
+seconds: which satellites it hears, how strongly, and how many it uses.
+
+**Signal strength** is in dB-Hz, higher is better: over 40 is strong, under 30 weak.
+
+| Where, how | Position | Satellites used | Heard at 30 dB-Hz or more | Best four, average | HDOP (lower is better) |
+|---|---|---|---|---|---|
+| Sofa, away from the window, leaning | none in 7 minutes | — | 0–1 (of 2–4 heard) | 19–26 dB-Hz | — |
+| At the window, lying flat, ceramic up | about 1 minute after GPS was ready, held for 15 minutes | 12–14 (7–11 in the first 4 minutes) | 5–12 | 35–39 dB-Hz | 1.0–3.8 |
+| At the window, on its edge, ceramic toward the glass | held for 15 minutes | 15–17 | 5–9 | 36–41 dB-Hz | mostly 0.8–1.0 |
+
+**Compared with the KTRON patch** at the same window on 5 Nov 2026 ([bring-up.md](bring-up.md#bench-results-so-far-5-nov-2026-no-sim-no-antenna-5-v-on-vcc)):
+
+| | Satellites in the position | HDOP | First position |
+|---|---|---|---|
+| KTRON patch, 5 Nov | 33 (GPS 16, BeiDou 9, Galileo 8) | 1.47 | about 7 minutes |
+| Eteily, 15 Nov, at the end of the on-edge run | 35 (GPS 17, BeiDou 8, Galileo 10) | 1.24 | about 1 minute (lying flat) |
+
+**What it shows:**
+- **The antenna works well,** about as well as the KTRON patch.
+- **It works on its edge,** the way it would sit in the top slot. At a window most of the open sky is through the
+  glass, so facing the glass was its best direction there. Outdoors, with the phone lying flat, on its edge would be
+  somewhat weaker than facing straight up.
+- **Away from a window, GPS hears almost nothing.** That's the room, not the antenna.
+- **The first-position times can't be compared.** The modem had been searching from the sofa ten minutes earlier,
+  which can give it a head start.
+
+## 4. Next: wiring the T-Deck
 
 Photos to come once the printed parts are ready: the four data wires soldered to the T-Deck's Grove pads.
 
-## 4. Next: assembly in the printed case
+## 5. Next: assembly in the printed case
 
 Photos to come: the parts going into the printed 18650 back and front.
 
